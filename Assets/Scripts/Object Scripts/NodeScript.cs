@@ -9,7 +9,10 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
     [Range(0.001f, 1f)]
     public float Radius = .13f;
     public int Owner = 0;
+    public float health = 100;
+    
     public GameObject GhostBridgePiecePrefab;
+    public GameObject AttackerPrefab;
 
     private Toggle ToggleScriptComponent;
     private InputControllerScript inputControllerScript;
@@ -31,27 +34,43 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
         //If our node is selected
         if(inputControllerScript.GetSelectedObject() == gameObject)
         {
-            //Show a highlight or something
-        }
+        		
+       	}
     }
 
     public void OnPointerClick(PointerEventData InputPointerEventData)
     {
-        //We need to see if we're in place mode
-
-        if(ToggleScriptComponent.isOn && Owner == 1)
-        {
-            //Tell input controller we've selected an object
-            inputControllerScript.SetSelectedObject(gameObject);
-
-            //Create a ghost bridge for the circle
-            Instantiate(GhostBridgePiecePrefab, transform.position, transform.rotation);
+    	//Do we own the node?
+    	if(Owner == 1)
+    	{
+    		//If left click
+    		if (InputPointerEventData.button == PointerEventData.InputButton.Left)
+    		   	{
+    		   		//We need to see if we're in place mode
+    		   		if(ToggleScriptComponent.isOn)
+    		   		{
+    		   		    //Tell input controller we've selected an object
+    		   		    inputControllerScript.SetSelectedObject(gameObject);
+		
+    		   		    //Create a ghost bridge for the circle
+    		   		    Instantiate(GhostBridgePiecePrefab, transform.position, transform.rotation);
+    		   		}
+    		   		else
+    		   		{
+    		   		    inputControllerScript.SetSelectedObject(null);
+    		   		}
+        	}
+        	//If right click
+        	else if(InputPointerEventData.button == PointerEventData.InputButton.Right)
+        	{
+        		Instantiate(AttackerPrefab, transform.position, transform.rotation);	
+        	}
         }
         else
         {
-            inputControllerScript.SetSelectedObject(null);
+        	//We clicked on this node and we don't own it
+        	//TODO: attack
         }
-
     }
 
     public float GetRadius()

@@ -25,10 +25,8 @@ public class GhostBridgeScript : MonoBehaviour
 
     public int BridgePieceCollisions = 0;
 	private bool CanPlace = true;
-	private bool CanPlaceSkinState = true;
+	private bool PreviousCanPlace = true;
 
-	private bool nodeMode = false;
-	private bool bridgeMode = false;
 
 	public const float possibleOverlap = 0.1f;
 
@@ -51,12 +49,10 @@ public class GhostBridgeScript : MonoBehaviour
         if(SelectedObject.tag == "Node")
     	{
     		nodeScript = SelectedObject.GetComponent<NodeScript>();
-			nodeMode = true;
     	}
     	else if(SelectedObject.tag == "BridgePiece")
     	{
     		bridgeScript = SelectedObject.GetComponent<BridgeScript>();
-			bridgeMode = true;
     	}
     	else
     	{
@@ -101,11 +97,11 @@ public class GhostBridgeScript : MonoBehaviour
 	void Update()
     {
 
-		if (CanPlace != CanPlaceSkinState)
+		if (CanPlace != PreviousCanPlace)
 		{
 			//TODO: change skin here
 			
-			CanPlaceSkinState = CanPlace;
+			PreviousCanPlace = CanPlace;
 		}
 
     	//Handle if we're building off of a node
