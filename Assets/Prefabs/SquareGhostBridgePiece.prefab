@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2252604218631590994}
   - component: {fileID: 6509141538400726753}
   m_Layer: 2
-  m_Name: GhostBridgePiece
+  m_Name: SquareGhostBridgePiece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

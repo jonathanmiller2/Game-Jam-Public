@@ -39,7 +39,7 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
     {
         //We need to see if we're in place mode
 
-        if(ToggleScriptComponent.isOn)
+        if(ToggleScriptComponent.isOn && Owner == 1)
         {
             //Tell input controller we've selected an object
             inputControllerScript.SetSelectedObject(gameObject);

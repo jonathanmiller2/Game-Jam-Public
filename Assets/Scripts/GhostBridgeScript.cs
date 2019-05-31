@@ -109,6 +109,8 @@ public class GhostBridgeScript : MonoBehaviour
 
         	transform.up = Direction;
         	transform.position = closestSnapPoint.transform.position;
+
+        	//TODO: Check if the new position would overlap with an existing piece
     	}
     	else
     	{

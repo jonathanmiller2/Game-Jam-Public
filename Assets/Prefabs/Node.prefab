@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 991c8692526ceb94dba8d8f37ec3de70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 0
+  Radius: 0.13
   Owner: 0
   GhostBridgePiecePrefab: {fileID: 8791136961223856860, guid: f269cdaf7308f2041a6bc8abe0d28e26,
     type: 3}
