@@ -81,34 +81,7 @@ public class GhostBridgeScript : MonoBehaviour
 
         	//TODO: Check if the new position would overlap with an existing piece
 
-        	//If we've clicked
-        	if(Input.GetMouseButtonDown(0))
-    		{
-    			//We need to make sure that the click to build isn't a click to try and select another node
-		
-    			//Raycast and check if our click is on another node
-				Ray MouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-		
-				
-				//Raycast and check if our click is on the GUI
-				pointerEventData = new PointerEventData(eventSystem);
-				pointerEventData.position = Input.mousePosition;
-	
-				List<RaycastResult> results = new List<RaycastResult>();
-				Raycaster.Raycast(pointerEventData, results);
-		
-    			if(!Physics2D.Raycast(MouseRay.origin, MouseRay.direction, 100) && results.Count == 0)
-    			{
-    				//Replace with a real bridge piece
-    				Instantiate(BridgePiece, transform.position, transform.rotation);
-   					Destroy(gameObject);
-    			}
-    			else
-    			{
-    				//We either clicked the GUI or something else on our screen, so it should count as us clicking off
-    				Destroy(gameObject);
-    			}
-    		}
+        	
     	}
     	else if(SelectedObject.tag == "BridgePiece")
     	{
@@ -143,6 +116,34 @@ public class GhostBridgeScript : MonoBehaviour
     		Debug.Log("Tag:" + SelectedObject.tag);
     	}
     	
+    	//If we've clicked
+        if(Input.GetMouseButtonDown(0))
+    	{
+    		//We need to make sure that the click to build isn't a click to try and select another node
+		
+    		//Raycast and check if our click is on another node
+			Ray MouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+		
+			
+			//Raycast and check if our click is on the GUI
+			pointerEventData = new PointerEventData(eventSystem);
+			pointerEventData.position = Input.mousePosition;
+	
+			List<RaycastResult> results = new List<RaycastResult>();
+			Raycaster.Raycast(pointerEventData, results);
+		
+    		if(!Physics2D.Raycast(MouseRay.origin, MouseRay.direction, 100) && results.Count == 0)
+    		{
+    			//Replace with a real bridge piece
+    			Instantiate(BridgePiece, transform.position, transform.rotation);
+   				Destroy(gameObject);
+    		}
+    		else
+    		{
+    			//We either clicked the GUI or something else on our screen, so it should count as us clicking off
+    			Destroy(gameObject);
+    		}
+    	}
 
         //If the selection in input controller changes, delete this object
         if(inputControllerScript.GetSelectedObject() != SelectedObject)
@@ -190,4 +191,6 @@ public class GhostBridgeScript : MonoBehaviour
 
         return null;
     }
+
+
 }
