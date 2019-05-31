@@ -2022,7 +2022,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 3d156023e97ef9040a02007b9d7600d4, type: 3}
     volume: 1
     pitch: 1
-    fadeSpeed: 0.05
+    fadeSpeed: 0.1
     targetVolume: 1
     loop: 1
     source: {fileID: 0}
