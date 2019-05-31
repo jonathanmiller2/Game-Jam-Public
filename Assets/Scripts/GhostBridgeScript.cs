@@ -23,10 +23,17 @@ public class GhostBridgeScript : MonoBehaviour
     private NodeScript nodeScript;
     private BridgeScript bridgeScript;
 
-    public int collisions = 0;
+    public int BridgePieceCollisions = 0;
+	private bool CanPlace = true;
+	private bool CanPlaceSkinState = true;
 
-    // Start is called before the first frame update
-    void Start()
+	private bool nodeMode = false;
+	private bool bridgeMode = false;
+
+	public const float possibleOverlap = 0.1f;
+
+	// Start is called before the first frame update
+	void Start()
     {
       	GameObject InputControllerManagerObject = GameObject.Find("InputController");
         inputControllerScript = InputControllerManagerObject.GetComponent<InputControllerScript>();
@@ -44,10 +51,12 @@ public class GhostBridgeScript : MonoBehaviour
         if(SelectedObject.tag == "Node")
     	{
     		nodeScript = SelectedObject.GetComponent<NodeScript>();
+			nodeMode = true;
     	}
     	else if(SelectedObject.tag == "BridgePiece")
     	{
     		bridgeScript = SelectedObject.GetComponent<BridgeScript>();
+			bridgeMode = true;
     	}
     	else
     	{
@@ -56,9 +65,49 @@ public class GhostBridgeScript : MonoBehaviour
     	}
     }
 
-    // Update is called once per frame
-    void Update()
+	private void OnTriggerEnter2D(Collider2D other)
+	{
+		if (other.gameObject.tag == "BridgePiece" && other.gameObject != SelectedObject)
+		{
+
+			//if the new placement would be too far inside of another bridge count it as a collision
+			if (Vector3.Distance(other.gameObject.transform.position, transform.position) < possibleOverlap)
+			{
+				BridgePieceCollisions++;
+				if (BridgePieceCollisions > 0)
+				{
+					CanPlace = false;
+				}
+			}
+		}
+	}
+
+	private void OnTriggerExit2D(Collider2D other)
+	{
+		if (other.gameObject.tag == "BridgePiece" && other.gameObject != SelectedObject)
+		{
+			if (Vector3.Distance(other.gameObject.transform.position, transform.position) < possibleOverlap)
+			{
+				BridgePieceCollisions--;
+				if (BridgePieceCollisions <= 0)
+				{
+					CanPlace = true;
+				}
+			}
+		}
+	}
+
+	// Update is called once per frame
+	void Update()
     {
+
+		if (CanPlace != CanPlaceSkinState)
+		{
+			//TODO: change skin here
+			
+			CanPlaceSkinState = CanPlace;
+		}
+
     	//Handle if we're building off of a node
     	if(SelectedObject.tag == "Node")
     	{
@@ -77,10 +126,6 @@ public class GhostBridgeScript : MonoBehaviour
         	//Show the ghost at the calculated position/direction
         	transform.position = NewPos;
         	transform.up = MousePos - SelectedObject.transform.position;
-
-
-        	//TODO: Check if the new position would overlap with an existing piece
-
         	
     	}
     	else if(SelectedObject.tag == "BridgePiece")
@@ -107,10 +152,15 @@ public class GhostBridgeScript : MonoBehaviour
 
         	Vector3 Direction = Vector3.Normalize(closestSnapPoint.transform.position - CenterPoint.transform.position);
 
+			//If we will change position
+			if (closestSnapPoint.transform.position != gameObject.transform.position)
+			{
+				FindObjectOfType<AudioManager>().Play("Hover Position");
+			}
+
         	transform.up = Direction;
         	transform.position = closestSnapPoint.transform.position;
 
-        	//TODO: Check if the new position would overlap with an existing piece
     	}
     	else
     	{
@@ -118,8 +168,8 @@ public class GhostBridgeScript : MonoBehaviour
     		Debug.Log("Tag:" + SelectedObject.tag);
     	}
     	
-    	//If we've clicked
-        if(Input.GetMouseButtonDown(0))
+    	//If we've clicked and can place
+        if(Input.GetMouseButtonDown(0) && CanPlace)
     	{
     		//We need to make sure that the click to build isn't a click to try and select another node
 		
@@ -136,8 +186,9 @@ public class GhostBridgeScript : MonoBehaviour
 		
     		if(!Physics2D.Raycast(MouseRay.origin, MouseRay.direction, 100) && results.Count == 0)
     		{
-    			//Replace with a real bridge piece
-    			Instantiate(BridgePiece, transform.position, transform.rotation);
+				//Replace with a real bridge piece
+				FindObjectOfType<AudioManager>().Play("Place Bridge Unit");
+				Instantiate(BridgePiece, transform.position, transform.rotation);
    				Destroy(gameObject);
     		}
     		else
@@ -193,6 +244,5 @@ public class GhostBridgeScript : MonoBehaviour
 
         return null;
     }
-
 
 }

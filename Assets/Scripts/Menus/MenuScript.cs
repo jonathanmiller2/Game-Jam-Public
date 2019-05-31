@@ -17,7 +17,7 @@ public class MenuScript : MonoBehaviour
     		//Open the pause menu
     		Pause();
     		PauseMenu.SetActive(true);
-			// FindObjectOfType<AudioManager>().Play("Menu Play");
+			FindObjectOfType<AudioManager>().Play("Menu Play");
 		}
     	//If the pause menu is open
     	else if(PauseMenu.activeSelf)
@@ -25,7 +25,7 @@ public class MenuScript : MonoBehaviour
     		//Close the pause menu
     		Unpause();
     		PauseMenu.SetActive(false);
-			// FindObjectOfType<AudioManager>().Play("Menu Select");
+			FindObjectOfType<AudioManager>().Play("Menu Select");
 		}
     	//If the options menu is open
 		else if(OptionsMenu.activeSelf)
@@ -33,7 +33,7 @@ public class MenuScript : MonoBehaviour
     		//Go back to the pause menu
     		OptionsMenu.SetActive(false);
     		PauseMenu.SetActive(true);
-			// FindObjectOfType<AudioManager>().Play("Menu Select");
+			FindObjectOfType<AudioManager>().Play("Menu Select");
 		}	
     }
 
@@ -42,19 +42,19 @@ public class MenuScript : MonoBehaviour
     	//Go to the options menu
     	OptionsMenu.SetActive(true);
     	PauseMenu.SetActive(false);
-		// FindObjectOfType<AudioManager>().Play("Menu Select");
+		FindObjectOfType<AudioManager>().Play("Menu Select");
 	}
 
     public void ExitToMenuButtonPressed()
     {
     	//Return to main menu
     	SceneManager.LoadScene(0);
-		// FindObjectOfType<AudioManager>().Play("Menu Select");
+		FindObjectOfType<AudioManager>().Play("Menu Select");
 	}
 
     public void ExitToDesktopButtonPressed()
     {
-		// FindObjectOfType<AudioManager>().Play("Menu Select");
+		FindObjectOfType<AudioManager>().Play("Menu Select");
 		Application.Quit();
     }
 
@@ -62,7 +62,7 @@ public class MenuScript : MonoBehaviour
     {
     	PauseMenu.SetActive(false);
     	Unpause();
-		// FindObjectOfType<AudioManager>().Play("Menu Select");
+		FindObjectOfType<AudioManager>().Play("Menu Select");
 	}
 
     public void OptionsBackButtonPressed()
@@ -70,7 +70,7 @@ public class MenuScript : MonoBehaviour
     	//Return to pause menu
     	OptionsMenu.SetActive(false);
     	PauseMenu.SetActive(true);
-		// FindObjectOfType<AudioManager>().Play("Menu Select");
+		FindObjectOfType<AudioManager>().Play("Menu Select");
 	}
 
     private void Pause()

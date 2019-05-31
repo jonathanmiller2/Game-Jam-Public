@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8791136961223856861}
   - component: {fileID: 2252604218631590994}
   - component: {fileID: 6509141538400726753}
+  - component: {fileID: -6472371135999955994}
   m_Layer: 2
   m_Name: SquareGhostBridgePiece
   m_TagString: Untagged
@@ -95,7 +96,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BridgePiece: {fileID: 2738520173740462586, guid: 96ea9bc4d6fef3440be9047c69d0779f,
     type: 3}
-  collisions: 0
+  BridgePieceCollisions: 0
 --- !u!60 &6509141538400726753
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -125,3 +126,24 @@ PolygonCollider2D:
       - {x: -5, y: 0}
       - {x: 5, y: 0}
       - {x: 5, y: 10}
+--- !u!50 &-6472371135999955994
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8791136961223856860}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

@@ -182,6 +182,7 @@ public class AudioManager : MonoBehaviour
 		foreach (Sound s in sounds)
 		{
 			s.source.volume = newVolume;
+			s.targetVolume = newVolume;
 		}
 	}
 
