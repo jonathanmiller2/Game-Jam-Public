@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1912,27 +1912,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playSongNames:
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - MainMenu
   fadeOutSongNames:
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Game
 --- !u!4 &1360279132
 Transform:
   m_ObjectHideFlags: 0
@@ -2024,21 +2006,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sounds:
-  - clipName: 
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
-    fadeSpeed: 0
-    targetVolume: 0
-    loop: 0
+  - clipName: MainMenu
+    clip: {fileID: 8300000, guid: 3d156023e97ef9040a02007b9d7600d4, type: 3}
+    volume: 1
+    pitch: 1
+    fadeSpeed: 0.1
+    targetVolume: 1
+    loop: 1
     source: {fileID: 0}
-  - clipName: 
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
-    fadeSpeed: 0
-    targetVolume: 0
-    loop: 0
+  - clipName: Game
+    clip: {fileID: 8300000, guid: e828dcc372e712744870edf85acf84a0, type: 3}
+    volume: 0.156
+    pitch: 1
+    fadeSpeed: 0.1
+    targetVolume: 1
+    loop: 1
     source: {fileID: 0}
   - clipName: 
     clip: {fileID: 0}
