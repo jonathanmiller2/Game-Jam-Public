@@ -14,20 +14,20 @@ public class ChangeSongs : MonoBehaviour
 		//fade out songs to fade
 		foreach (string songName in fadeOutSongNames)
 		{
-			FindObjectOfType<AudioManager>().FadeOut(songName);
+			// FindObjectOfType<AudioManager>().FadeOut(songName);
 		}
 
 
 		//play songs to play
 		foreach (string songName in playSongNames)
 		{
-			FindObjectOfType<AudioManager>().Play(songName);
+			// FindObjectOfType<AudioManager>().Play(songName);
 		}
 
 		//fade in songs to fade
 		foreach (string songName in fadeInSongNames)
 		{
-			FindObjectOfType<AudioManager>().FadeIn(songName);
+			// FindObjectOfType<AudioManager>().FadeIn(songName);
 		}
 
 	}

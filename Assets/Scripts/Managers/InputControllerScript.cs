@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class InputControllerScript : MonoBehaviour
 {
-	public GameObject MenusObject;
-
 	private bool previousEscapeStatus;
+	//private bool
 
 	void Start()
 	{
@@ -15,6 +14,10 @@ public class InputControllerScript : MonoBehaviour
 
     void Update()
     {   
+    	if(true)
+    	{
+    		
+    	}
         //Check if escape is pressed down
         //if(Input.GetButton("Escape") && previousEscapeStatus == false)
         //{
