@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -442,7 +442,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -571,6 +571,17 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -878,8 +889,8 @@ RectTransform:
   m_Father: {fileID: 466732341}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1911,28 +1922,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2d9c8bcd34adc449af965aa84ddfd34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playSongNames:
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  playSongNames: []
   fadeOutSongNames:
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Game
+  fadeInSongNames:
+  - MainMenu
 --- !u!4 &1360279132
 Transform:
   m_ObjectHideFlags: 0
@@ -2024,82 +2018,74 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sounds:
-  - clipName: 
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
+  - clipName: MainMenu
+    clip: {fileID: 8300000, guid: 3d156023e97ef9040a02007b9d7600d4, type: 3}
+    volume: 1
+    pitch: 1
+    fadeSpeed: 0.1
+    targetVolume: 1
+    loop: 1
+    source: {fileID: 0}
+  - clipName: Game
+    clip: {fileID: 8300000, guid: e828dcc372e712744870edf85acf84a0, type: 3}
+    volume: 0.156
+    pitch: 1
+    fadeSpeed: 0.1
+    targetVolume: 1
+    loop: 1
+    source: {fileID: 0}
+  - clipName: Menu Play
+    clip: {fileID: 8300000, guid: d47ecc8c83633af46a6cd3a610d681c7, type: 3}
+    volume: 1
+    pitch: 1
     fadeSpeed: 0
     targetVolume: 0
     loop: 0
     source: {fileID: 0}
-  - clipName: 
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
+  - clipName: Menu Select
+    clip: {fileID: 8300000, guid: fdeed4fb17151254ab2b8ecd720ba80a, type: 3}
+    volume: 1
+    pitch: 1
     fadeSpeed: 0
     targetVolume: 0
     loop: 0
     source: {fileID: 0}
-  - clipName: 
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
+  - clipName: Gain Unit
+    clip: {fileID: 8300000, guid: 6daeb27d6e2a76446b63c574979529cd, type: 3}
+    volume: 1
+    pitch: 1
     fadeSpeed: 0
     targetVolume: 0
     loop: 0
     source: {fileID: 0}
-  - clipName: 
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
+  - clipName: Hover Position
+    clip: {fileID: 8300000, guid: d9fc72385fb747a4184c8a9f425150fd, type: 3}
+    volume: 1
+    pitch: 1
     fadeSpeed: 0
     targetVolume: 0
     loop: 0
     source: {fileID: 0}
-  - clipName: 
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
+  - clipName: Node Gain
+    clip: {fileID: 8300000, guid: 9ceb8a27fe9a0274eb855f4aac09ab53, type: 3}
+    volume: 1
+    pitch: 1
     fadeSpeed: 0
     targetVolume: 0
     loop: 0
     source: {fileID: 0}
-  - clipName: 
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
+  - clipName: Node Loss
+    clip: {fileID: 8300000, guid: fa16dd5f80bd6d649bb56bb5d7430b29, type: 3}
+    volume: 1
+    pitch: 1
     fadeSpeed: 0
     targetVolume: 0
     loop: 0
     source: {fileID: 0}
-  - clipName: 
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
-    fadeSpeed: 0
-    targetVolume: 0
-    loop: 0
-    source: {fileID: 0}
-  - clipName: 
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
-    fadeSpeed: 0
-    targetVolume: 0
-    loop: 0
-    source: {fileID: 0}
-  - clipName: 
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
-    fadeSpeed: 0
-    targetVolume: 0
-    loop: 0
-    source: {fileID: 0}
-  - clipName: 
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
+  - clipName: Place Bridge Unit
+    clip: {fileID: 8300000, guid: 397952569f06c3241aafacc63ef8fee0, type: 3}
+    volume: 1
+    pitch: 1
     fadeSpeed: 0
     targetVolume: 0
     loop: 0
@@ -2204,10 +2190,21 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1938984399}
+        m_MethodName: VolumeValueChanged
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &2046328553

@@ -10,17 +10,21 @@ public class MainMenuScript : MonoBehaviour
 
     public void PlayButtonPressed()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+		FindObjectOfType<AudioManager>().Play("Menu Play");
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void ExitButtonPressed()
     {
+		FindObjectOfType<AudioManager>().Play("Node Loss");
 		Application.Quit();
     }
 
     public void OptionsButtonPressed()
     {
-    	if(OptionsMenu.activeSelf)
+		FindObjectOfType<AudioManager>().Play("Menu Select");
+
+		if (OptionsMenu.activeSelf)
     	{
     		OptionsMenu.SetActive(false);
     		PlayMenu.SetActive(true);
@@ -34,7 +38,9 @@ public class MainMenuScript : MonoBehaviour
 
     public void OptionsBackButtonPressed()
     {
-    	OptionsMenu.SetActive(false);
+		FindObjectOfType<AudioManager>().Play("Menu Select");
+
+		OptionsMenu.SetActive(false);
     	PlayMenu.SetActive(true);
     }
 }

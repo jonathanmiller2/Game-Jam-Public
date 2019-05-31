@@ -8,12 +8,17 @@ using UnityEngine;
 */
 public class OptionsMenuScript : MonoBehaviour
 {
+
     /**
 	*	When the volume slider is moved
 	*/
-    public void VolumeValueChanged()
+    public void VolumeValueChanged(float newValue)
     {
-    	//TODO
-    }
+		//Change volume of all sounds
+		FindObjectOfType<AudioManager>().ChangeGlobalVolume(newValue);
+
+		//Play test sound
+		FindObjectOfType<AudioManager>().Play("Menu Select");
+	}
 
 }

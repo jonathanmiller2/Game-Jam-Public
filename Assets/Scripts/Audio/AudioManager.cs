@@ -164,4 +164,25 @@ public class AudioManager : MonoBehaviour
 		s.source.loop = true;
 	}
 
+	public void ChangeGlobalVolume(float newVolume)
+	{
+
+		//Stop fading in or out anything that is
+		for (int i = 0; i < fadingOutSounds.Count; i++)
+		{
+			fadingOutSounds.Remove(fadingOutSounds[i]);
+		}
+
+		for (int i = 0; i < fadingInSounds.Count; i++)
+		{
+			fadingInSounds.Remove(fadingInSounds[i]);
+		}
+
+		//Change all sound's volume
+		foreach (Sound s in sounds)
+		{
+			s.source.volume = newVolume;
+		}
+	}
+
 }
