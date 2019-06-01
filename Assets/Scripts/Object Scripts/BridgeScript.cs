@@ -8,11 +8,16 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
 {
 	public GameObject GhostBridge;
 	public int Owner = 1;
+
+	private bool Supported = true;
 	
     private InputControllerScript inputControllerScript;
     private GameObject SelectedObject;
 
     private Toggle ToggleScriptComponent;
+
+    private float TimeCounter = 0f;
+    private const float SecondsPerCheck = 2f;
 
 
     // Start is called before the first frame update
@@ -29,8 +34,31 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
     // Update is called once per frame
     void Update()
     {
+    	//Determine if our bridge is attached to something that's supported
+
+    	//Check to see if we're attached to a node
     	
+
+
+    	//Check once every couple seconds if our bridge is supported, if not, delete it
+    	//This check is delayed because the order that the other bridge pieces will check is unknown, so we delay to allow all of them to check
+    	if(TimeCounter > SecondsPerCheck)
+    	{
+    		if(!Supported)
+    		{
+    			//TODO: Play breaking animation
+    			Destroy(gameObject);
+    		}
+    		TimeCounter = 0;
+    	}
+    	else
+    	{
+    		TimeCounter += Time.deltaTime;
+    	}
     }
+
+
+
 
     //Added just in case
     public void SetOwner(int NewOwner)
@@ -60,24 +88,18 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
 				//We need to see if we're in place mode
         		if(ToggleScriptComponent.isOn)
         		{
-	    	        //Tell input controller we've selected an object
-        	    	inputControllerScript.SetSelectedObject(gameObject);
-	
         	    	//Create a ghost bridge for the circle
         	    	Instantiate(GhostBridge, transform.position, transform.rotation);
-        		}
-        		else
-        		{
-	    	        inputControllerScript.SetSelectedObject(null);
         		}
         	}
     	}
     	else
     	{
     		//We've selected an enemy bridge!
-    		//TODO: Anything?
+    		//TODO: Whatever happens when you select an enemy bridge
     	}
     }
+
 
     public List<GameObject> GetChildObjectsWithTag(string Tag)
     {

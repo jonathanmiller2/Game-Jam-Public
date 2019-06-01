@@ -114,10 +114,9 @@ public class GhostBridgeScript : MonoBehaviour
 			PreviousCanPlace = CanPlace;
 		}
 
-    	//Handle if we're building off of a node
+    	//Handle if we're building off of a node (show the ghost in a radius around the node)
     	if(SelectedObject.tag == "Node")
     	{
-
     		//Get positions
         	Vector3 MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         	MousePos.z = 0;
@@ -134,17 +133,25 @@ public class GhostBridgeScript : MonoBehaviour
         	transform.up = MousePos - SelectedObject.transform.position;
         	
     	}
+    	//Handle if we're building off a bridge (snap to snap points)
     	else if(SelectedObject.tag == "BridgePiece")
     	{
-        	//Find closest snap point
+        	//Find closest empty snap point
+
+        	//Get snap points
         	List<GameObject> SnapPoints = GetChildObjectsWithTag(SelectedObject.transform, "SnapPoint");
+        	
+        	//Iterate over the snap points
         	float smallestDistance = 1000;
         	GameObject closestSnapPoint = null;
         	foreach(GameObject sp in SnapPoints)
         	{
+        		//Get the script on the snap point to check if it's holding another object
+        		SnapPointScript spscript = sp.GetComponent<SnapPointScript>();
+        		
         		//Get position of mouse
         		Vector3 MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
+	
         		//Check if the snap point is closest to mouse
         		if(Vector3.Distance(sp.transform.position, MousePos) < smallestDistance)
         		{
@@ -152,6 +159,7 @@ public class GhostBridgeScript : MonoBehaviour
         			smallestDistance = Vector3.Distance(sp.transform.position, MousePos);
         			closestSnapPoint = sp;
         		}
+        		
         	}
 
         	GameObject CenterPoint = GetChildObjectWithTag(SelectedObject.transform, "CenterPoint");
@@ -161,47 +169,59 @@ public class GhostBridgeScript : MonoBehaviour
 			//If we will change position
 			if (closestSnapPoint.transform.position != gameObject.transform.position)
 			{
+				//TODO: Prevent spamming of this when our ghost glitches out
 				FindObjectOfType<AudioManager>().Play("Hover Position");
 			}
 
         	transform.up = Direction;
         	transform.position = closestSnapPoint.transform.position;
+    	}
 
-    	}
-    	else
-    	{
-    		Debug.Log("GhostBridge is being deleted because neither a node or a bridge piece is selected");
-    		Destroy(gameObject);
-    		//Debug.Log("Tag:" + SelectedObject.tag);
-    	}
+    	/*
     	
     	//If we've clicked and can place
         if(Input.GetMouseButtonDown(0) && CanPlace)
     	{
     		string WhatDidIClickOn = inputControllerScript.WhatDidIClickOn(Input.mousePosition);
-    		Debug.Log(WhatDidIClickOn);
 
     		if(WhatDidIClickOn == "Nothing")
     		{
-    			//Replace with a real bridge piece
-				FindObjectOfType<AudioManager>().Play("Place Bridge Unit");
-				GameObject newBridgePiece = Instantiate(BridgePiece, transform.position, transform.rotation);
+				//In order to chain, we don't delete the ghost (we'll reuse it to keep chaining)
+				//Also we set our selection to the object we just placed
 				inputControllerScript.SetSelectedObject(newBridgePiece);
-   				Destroy(gameObject);
+				SelectedObject = newBridgePiece;
     		}
     		else
     		{
-    			Debug.Log("We clicked on something else so we're destroying this game object");
-    			Destroy(gameObject);
+    			//We've clicked on something else
+    			//Our selection
     		}
 			
     	}
+    	*/
 
-        //If the selection in input controller changes, delete this object
+        //If the selection in input controller changes due to another script, delete this object
         if(inputControllerScript.GetSelectedObject() != SelectedObject)
         {
         	Destroy(gameObject);
         }
+
+    }
+
+    public GameObject Build()
+    {
+    	//Replace with a real bridge piece
+		FindObjectOfType<AudioManager>().Play("Place Bridge Unit");
+		GameObject newBridgePiece = Instantiate(BridgePiece, transform.position, transform.rotation);
+		SelectedObject = newBridgePiece;
+		inputControllerScript.SetSelectedObject(newBridgePiece);
+
+		return newBridgePiece;
+    }
+
+    public void Delete()
+    {
+    	Destroy(gameObject);
     }
 
     //Helper functions

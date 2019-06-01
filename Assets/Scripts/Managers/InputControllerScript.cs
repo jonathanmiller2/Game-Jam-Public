@@ -12,7 +12,9 @@ public class InputControllerScript : MonoBehaviour
 	private EventSystem eventSystem;
 
 
+	private GameObject ClickedGameObject;
 	private GameObject SelectedObject;
+	private GameObject DebugTarget;
 	//private bool
 
 	void Start()
@@ -21,6 +23,8 @@ public class InputControllerScript : MonoBehaviour
 		GameObject GUIEventSystemObject = GameObject.Find("EventSystem");
         Raycaster = Canvas.GetComponent<GraphicRaycaster>();
         eventSystem = GUIEventSystemObject.GetComponent<EventSystem>();		
+
+        DebugTarget = GameObject.Find("DebugTarget");
 
 
 		Cursor.visible = true;
@@ -37,8 +41,90 @@ public class InputControllerScript : MonoBehaviour
 			SetBuildState(false);
 		}
 
+
+		//Handle clicking and ALL selection logic
+		if(Input.GetMouseButtonDown(0))
+		{
+			string WhatIsClicked = WhatDidIClickOn(Input.mousePosition);
+
+			if(WhatIsClicked == "GUI")
+			{
+				//Clear selection
+				SelectedObject = null;
+			}
+			else if(WhatIsClicked == "GameObject")
+			{
+				if(SelectedObject && SelectedObject.tag == "Attacker" && SelectedObject.GetComponent<AttackerScript>().GetOwner() == 1)
+				{
+					if(ClickedGameObject.tag == "Attacker" && ClickedGameObject.GetComponent<AttackerScript>().GetOwner() == 1)
+					{
+						SelectedObject = ClickedGameObject;
+					}
+					else
+					{
+						SelectedObject.GetComponent<AttackerScript>().SetTarget(Input.mousePosition);
+					}
+				}
+				else
+				{
+					SelectedObject = ClickedGameObject;
+				}
+			}
+			else if(WhatIsClicked == "Nothing")
+			{
+
+				if(GameObject.Find("PlaceModeToggle").GetComponent<Toggle>().isOn)
+				{
+					if(SelectedObject && SelectedObject.tag == "Node")
+					{
+						if(SelectedObject.GetComponent<NodeScript>().GetOwner() == 1)
+						{
+							//We should have a ghost, as we are in build mode and we have a node or bridge selected
+							GameObject.FindWithTag("GhostBridgePiece").GetComponent<GhostBridgeScript>().Build();
+						}
+						else
+						{
+							SelectedObject = null;
+						}
+					}
+					else if(SelectedObject && SelectedObject.tag == "BridgePiece")
+					{
+						if(SelectedObject.GetComponent<BridgeScript>().GetOwner() == 1)
+						{
+							//We should have a ghost, as we are in build mode and we have a node or bridge selected
+							GameObject.FindWithTag("GhostBridgePiece").GetComponent<GhostBridgeScript>().Build();
+						}
+						else
+						{
+							SelectedObject = null;
+						}
+					}
+					else
+					{
+						SelectedObject = null;
+					}
+				}
+				else
+				{
+					SelectedObject = null;
+				}
+			}
+		}
+
+
+		//Debug target handler (brown square)
+		if(SelectedObject)
+		{
+			DebugTarget.transform.position = SelectedObject.transform.position;
+		}
+		else
+		{
+			DebugTarget.transform.position = new Vector3(0f,0f,0f);
+		}
+
 	}
 
+	//This will return a string, but will also set ClickedGameObject
 	public string WhatDidIClickOn(Vector3 mousePosition)
 	{
 		//We need to make sure that the click to build isn't a click to try and select another node
@@ -55,8 +141,8 @@ public class InputControllerScript : MonoBehaviour
 		
     	if(raycastHit && raycastHit.transform && raycastHit.transform.gameObject)
     	{
-    		Debug.Log("The raycast hit a transform");
-    		return raycastHit.transform.gameObject.name;
+    		ClickedGameObject = raycastHit.transform.gameObject;
+    		return "GameObject";
     	}
 
     	List<RaycastResult> results = new List<RaycastResult>();
@@ -70,6 +156,7 @@ public class InputControllerScript : MonoBehaviour
     	return "Nothing";
 	}
 
+	// Should ONLY be used from MiscInputManager for escape handling
 	public void SetSelectedObject(GameObject Selection)
 	{
 		SelectedObject = Selection;

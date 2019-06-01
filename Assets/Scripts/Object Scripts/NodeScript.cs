@@ -59,21 +59,15 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
     		   		//We need to see if we're in place mode
     		   		if(ToggleScriptComponent.isOn)
     		   		{
-    		   		    //Tell input controller we've selected an object
-    		   		    inputControllerScript.SetSelectedObject(gameObject);
-		
     		   		    //Create a ghost bridge for the circle
     		   		    Instantiate(GhostBridgePiecePrefab, transform.position, transform.rotation);
-    		   		}
-    		   		else
-    		   		{
-    		   		    inputControllerScript.SetSelectedObject(null);
     		   		}
         	}
         	//If right click
         	else if(InputPointerEventData.button == PointerEventData.InputButton.Right)
         	{
-        		Instantiate(AttackerPrefab, transform.position, transform.rotation);	
+        		GameObject NewAttacker = Instantiate(AttackerPrefab, transform.position, transform.rotation);	
+        		inputControllerScript.SetSelectedObject(NewAttacker);
         	}
         }
         else

@@ -14,17 +14,34 @@ public class MiscInputManagerScript : MonoBehaviour
     //We're looking for edges where it goes from status up (0) to status down (1)
     private bool PreviousEscapeStatus = false;
 
+    private InputControllerScript inputControllerScript;
+
 	public GameObject MenusObject;
 
+    void Start()
+    {
+        GameObject InputControllerManagerObject = GameObject.Find("InputController");
+        inputControllerScript = InputControllerManagerObject.GetComponent<InputControllerScript>();
+    }
+
     void Update()
-    {   
+    {
+        
         bool EscapePressed = Input.GetButton("Escape");
         //Check if escape is pressed down
         if(EscapePressed && !PreviousEscapeStatus)
         {
-        	//We handle what escape should actually do elsewhere
-        	MenuScript menuScript = (MenuScript) MenusObject.GetComponent(typeof(MenuScript));
-            menuScript.EscapePressed();
+            //If we have something selected, clear selection
+        	if(inputControllerScript.GetSelectedObject() != null)
+            {
+                //Open menu
+                MenuScript menuScript = (MenuScript) MenusObject.GetComponent(typeof(MenuScript));
+                menuScript.EscapePressed();
+            }
+            else
+            {
+                inputControllerScript.SetSelectedObject(null);
+            }
         }
         PreviousEscapeStatus = EscapePressed;
     }
