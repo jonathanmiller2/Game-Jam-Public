@@ -51,7 +51,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: afe0f5e2bcf63e5458e8bab5258417cb, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -91,7 +91,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8791136961223856860}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 902c63c4c3cafc749b30320026cd553f, type: 3}
+  m_Script: {fileID: 11500000, guid: 5a57cc0135c7eec4fad56bd3f0e79426, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   BridgePiece: {fileID: 2738520173740462586, guid: 96ea9bc4d6fef3440be9047c69d0779f,
