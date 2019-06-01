@@ -53,7 +53,7 @@ public class InputControllerScript : MonoBehaviour
 	
 		RaycastHit2D raycastHit = Physics2D.Raycast(MouseRay.origin, MouseRay.direction, 100);
 		
-    	if(raycastHit.transform.gameObject != null)
+    	if(raycastHit && raycastHit.transform && raycastHit.transform.gameObject)
     	{
     		Debug.Log("The raycast hit a transform");
     		return raycastHit.transform.gameObject.name;

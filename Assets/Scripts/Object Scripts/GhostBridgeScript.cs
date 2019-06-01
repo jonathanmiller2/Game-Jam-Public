@@ -179,6 +179,7 @@ public class GhostBridgeScript : MonoBehaviour
         if(Input.GetMouseButtonDown(0) && CanPlace)
     	{
     		string WhatDidIClickOn = inputControllerScript.WhatDidIClickOn(Input.mousePosition);
+    		Debug.Log(WhatDidIClickOn);
 
     		if(WhatDidIClickOn == "Nothing")
     		{
