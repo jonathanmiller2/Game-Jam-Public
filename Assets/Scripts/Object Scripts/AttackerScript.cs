@@ -16,7 +16,7 @@ public class AttackerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       	if(Vector3.Distance(gameObject.transform, Target) < .01)
+       	if(Vector3.Distance(gameObject.transform.position, Target) < .01)
        	{
        		//Path to target
        		MovingToTarget = false;
