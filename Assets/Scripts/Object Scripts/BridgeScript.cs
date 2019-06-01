@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class BridgeScript : MonoBehaviour, IPointerClickHandler
 {
 	public GameObject GhostBridge;
+	public int Owner = 1;
 	
     private InputControllerScript inputControllerScript;
     private GameObject SelectedObject;
@@ -31,22 +32,51 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
     	
     }
 
+    //Added just in case
+    public void SetOwner(int NewOwner)
+    {
+    	Owner = NewOwner;
+    }
+
+    public int GetOwner()
+    {
+    	return Owner;
+    }
+
     //When clicked
     public void OnPointerClick(PointerEventData InputPointerEventData)
     {
-        //We need to see if we're in place mode
-        if(ToggleScriptComponent.isOn)
-        {
-            //Tell input controller we've selected an object
-            inputControllerScript.SetSelectedObject(gameObject);
-
-            //Create a ghost bridge for the circle
-            Instantiate(GhostBridge, transform.position, transform.rotation);
-        }
-        else
-        {
-            inputControllerScript.SetSelectedObject(null);
-        }
+    	//We can only select pieces we own
+    	if(Owner == 1)
+    	{
+    		//If we're trying to move an attacker to this bridge piece
+    		if(inputControllerScript.GetSelectedObject().tag == "Attacker")
+    		{
+        		inputControllerScript.GetSelectedObject().GetComponent<AttackerScript>().SetTarget(transform.position);
+        	}
+        	//If we're trying to select the bridge
+        	else
+        	{
+				//We need to see if we're in place mode
+        		if(ToggleScriptComponent.isOn)
+        		{
+	    	        //Tell input controller we've selected an object
+        	    	inputControllerScript.SetSelectedObject(gameObject);
+	
+        	    	//Create a ghost bridge for the circle
+        	    	Instantiate(GhostBridge, transform.position, transform.rotation);
+        		}
+        		else
+        		{
+	    	        inputControllerScript.SetSelectedObject(null);
+        		}
+        	}
+    	}
+    	else
+    	{
+    		//We've selected an enemy bridge!
+    		//TODO: Anything?
+    	}
     }
 
     public List<GameObject> GetChildObjectsWithTag(string Tag)

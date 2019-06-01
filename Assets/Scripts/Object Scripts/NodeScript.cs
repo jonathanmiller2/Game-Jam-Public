@@ -9,7 +9,7 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
     [Range(0.001f, 1f)]
     public float Radius = .13f;
     public int Owner = 0;
-    public float health = 100;
+    public float Health = 100;
     
     public GameObject GhostBridgePiecePrefab;
     public GameObject AttackerPrefab;
@@ -30,6 +30,16 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
     void Update()
     {
         transform.localScale = new Vector3(Radius, Radius, 1f);
+
+        //TODO: 
+
+        if(Health == 0)
+        {
+        	//TODO: Destroy bridge objects touching node that belong to previous owner
+
+        	Health = 100 * Radius;
+        	Owner = 0;
+        }
 
         //If our node is selected
         if(inputControllerScript.GetSelectedObject() == gameObject)

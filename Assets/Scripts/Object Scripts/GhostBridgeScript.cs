@@ -18,6 +18,9 @@ public class GhostBridgeScript : MonoBehaviour
     private InputControllerScript inputControllerScript;
     private PolygonCollider2D PolygonCollider;
 
+    //UI
+    private Toggle ToggleScriptComponent;
+
 
     //Controller variables, only one will be used
     private NodeScript nodeScript;
@@ -45,6 +48,9 @@ public class GhostBridgeScript : MonoBehaviour
 
         PolygonCollider = gameObject.GetComponent<PolygonCollider2D>();
 
+        GameObject ToggleButtonGameObject = GameObject.Find("PlaceModeToggle");
+        ToggleScriptComponent = ToggleButtonGameObject.GetComponent<Toggle>();
+
         //Find the controller for the selected object
         if(SelectedObject.tag == "Node")
     	{
@@ -65,7 +71,6 @@ public class GhostBridgeScript : MonoBehaviour
 	{
 		if (other.gameObject.tag == "BridgePiece" && other.gameObject != SelectedObject)
 		{
-
 			//if the new placement would be too far inside of another bridge count it as a collision
 			if (Vector3.Distance(other.gameObject.transform.position, transform.position) < possibleOverlap)
 			{
@@ -96,6 +101,11 @@ public class GhostBridgeScript : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
+    	//Check if we left placing mode
+    	if(!ToggleScriptComponent.isOn)
+    	{
+    		Destroy(gameObject);
+    	}
 
 		if (CanPlace != PreviousCanPlace)
 		{
@@ -160,38 +170,30 @@ public class GhostBridgeScript : MonoBehaviour
     	}
     	else
     	{
-    		Debug.Log("Unrecognized selection!");
-    		Debug.Log("Tag:" + SelectedObject.tag);
+    		Debug.Log("GhostBridge is being deleted because neither a node or a bridge piece is selected");
+    		Destroy(gameObject);
+    		//Debug.Log("Tag:" + SelectedObject.tag);
     	}
     	
     	//If we've clicked and can place
         if(Input.GetMouseButtonDown(0) && CanPlace)
     	{
-    		//We need to make sure that the click to build isn't a click to try and select another node
-		
-    		//Raycast and check if our click is on another node
-			Ray MouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-		
-			
-			//Raycast and check if our click is on the GUI
-			pointerEventData = new PointerEventData(eventSystem);
-			pointerEventData.position = Input.mousePosition;
-	
-			List<RaycastResult> results = new List<RaycastResult>();
-			Raycaster.Raycast(pointerEventData, results);
-		
-    		if(!Physics2D.Raycast(MouseRay.origin, MouseRay.direction, 100) && results.Count == 0)
+    		string WhatDidIClickOn = inputControllerScript.WhatDidIClickOn(Input.mousePosition);
+
+    		if(WhatDidIClickOn == "Nothing")
     		{
-				//Replace with a real bridge piece
+    			//Replace with a real bridge piece
 				FindObjectOfType<AudioManager>().Play("Place Bridge Unit");
-				Instantiate(BridgePiece, transform.position, transform.rotation);
+				GameObject newBridgePiece = Instantiate(BridgePiece, transform.position, transform.rotation);
+				inputControllerScript.SetSelectedObject(newBridgePiece);
    				Destroy(gameObject);
     		}
     		else
     		{
-    			//We either clicked the GUI or something else on our screen, so it should count as us clicking off
+    			Debug.Log("We clicked on something else so we're destroying this game object");
     			Destroy(gameObject);
     		}
+			
     	}
 
         //If the selection in input controller changes, delete this object

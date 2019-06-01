@@ -9,6 +9,7 @@ TagManager:
   - GhostBridgePiece
   - SnapPoint
   - CenterPoint
+  - Attacker
   layers:
   - Default
   - TransparentFX
