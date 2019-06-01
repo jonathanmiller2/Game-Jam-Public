@@ -5,6 +5,7 @@ using UnityEngine;
 public class ChangeSongs : MonoBehaviour
 {
 	public string[] playSongNames = new string[10];
+	public string[] stopSongNames = new string[10];
 	public string[] fadeOutSongNames = new string[10];
 	public string[] fadeInSongNames = new string[10];
 
@@ -22,6 +23,12 @@ public class ChangeSongs : MonoBehaviour
 		foreach (string songName in playSongNames)
 		{
 			FindObjectOfType<AudioManager>().Play(songName);
+		}
+
+		//stop songs to stop
+		foreach (string songName in stopSongNames)
+		{
+			FindObjectOfType<AudioManager>().Stop(songName);
 		}
 
 		//fade in songs to fade

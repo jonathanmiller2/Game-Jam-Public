@@ -2018,11 +2018,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2d9c8bcd34adc449af965aa84ddfd34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playSongNames: []
-  fadeOutSongNames:
-  - Game
-  fadeInSongNames:
+  playSongNames:
   - MainMenu
+  stopSongNames:
+  - Game
+  fadeOutSongNames: []
+  fadeInSongNames: []
 --- !u!4 &1360279132
 Transform:
   m_ObjectHideFlags: 0

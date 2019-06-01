@@ -38,8 +38,6 @@ public class AudioManager : MonoBehaviour
 
 	public void Update()
 	{
-		Debug.Log("Fading length: " + fadingInSounds.Count);
-
 		//Fade sound fading out
 		for (int i = 0; i < fadingOutSounds.Count; i++)
 		{
@@ -57,8 +55,6 @@ public class AudioManager : MonoBehaviour
 		//Fade sounds fading in
 		for (int i = 0; i < fadingInSounds.Count; i++)
 		{
-
-			Debug.Log("Fading in : " + fadingInSounds[i].clipName);
 			fadingInSounds[i].source.volume = fadingInSounds[i].source.volume + fadingInSounds[i].fadeSpeed;
 			if (fadingInSounds[i].volume >= fadingInSounds[i].targetVolume)
 			{
