@@ -50,7 +50,7 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
     	if(Owner == 1)
     	{
     		//If we're trying to move an attacker to this bridge piece
-    		if(inputControllerScript.GetSelectedObject().tag == "Attacker")
+    		if(inputControllerScript.GetSelectedObject() && inputControllerScript.GetSelectedObject().tag == "Attacker")
     		{
         		inputControllerScript.GetSelectedObject().GetComponent<AttackerScript>().SetTarget(transform.position);
         	}
