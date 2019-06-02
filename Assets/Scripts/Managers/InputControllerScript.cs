@@ -32,6 +32,7 @@ public class InputControllerScript : MonoBehaviour
 
     void Update()
     {
+    	/*
 		if (Input.GetButtonDown("BuildMode"))
 		{
 			SetBuildState(true);
@@ -40,11 +41,21 @@ public class InputControllerScript : MonoBehaviour
 		{
 			SetBuildState(false);
 		}
+		*/
 
 
 		//Handle clicking and ALL selection logic
 		if(Input.GetMouseButtonDown(0))
 		{
+			if(SelectedObject)
+			{
+				Debug.Log("Old Selected Object:" + SelectedObject.name);
+			}
+			else
+			{
+				Debug.Log("Old Selected Object: null");
+			}
+
 			string WhatIsClicked = WhatDidIClickOn(Input.mousePosition);
 
 			if(WhatIsClicked == "GUI")
@@ -67,7 +78,7 @@ public class InputControllerScript : MonoBehaviour
 				}
 				else
 				{
-					SelectedObject = ClickedGameObject;
+					SelectedObject = ClickedGameObject;	
 				}
 			}
 			else if(WhatIsClicked == "Nothing")
@@ -89,7 +100,7 @@ public class InputControllerScript : MonoBehaviour
 					}
 					else if(SelectedObject && SelectedObject.tag == "BridgePiece")
 					{
-						if(SelectedObject.GetComponent<BridgeScript>().GetOwner() == 1)
+						if(GameObject.FindWithTag("GhostBridgePiece") && SelectedObject.GetComponent<BridgeScript>().GetOwner() == 1)
 						{
 							//We should have a ghost, as we are in build mode and we have a node or bridge selected
 							GameObject.FindWithTag("GhostBridgePiece").GetComponent<GhostBridgeScript>().Build();
@@ -109,9 +120,19 @@ public class InputControllerScript : MonoBehaviour
 					SelectedObject = null;
 				}
 			}
+			/*
+			if(SelectedObject)
+			{
+				Debug.Log("New Selected Object:" + SelectedObject.name);
+			}
+			else
+			{
+				Debug.Log("New Selected Object: null");
+			}
+			*/
 		}
 
-
+		
 		//Debug target handler (brown square)
 		if(SelectedObject)
 		{
@@ -121,6 +142,7 @@ public class InputControllerScript : MonoBehaviour
 		{
 			DebugTarget.transform.position = new Vector3(0f,0f,0f);
 		}
+		
 
 	}
 

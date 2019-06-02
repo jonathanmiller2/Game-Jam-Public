@@ -31,8 +31,8 @@ public class MiscInputManagerScript : MonoBehaviour
         //Check if escape is pressed down
         if(EscapePressed && !PreviousEscapeStatus)
         {
-            //If we have something selected, clear selection
-        	if(inputControllerScript.GetSelectedObject() != null)
+            //If we don't have anything selected
+        	if(inputControllerScript.GetSelectedObject() == null)
             {
                 //Open menu
                 MenuScript menuScript = (MenuScript) MenusObject.GetComponent(typeof(MenuScript));
@@ -40,6 +40,7 @@ public class MiscInputManagerScript : MonoBehaviour
             }
             else
             {
+                //Clear our selection
                 inputControllerScript.SetSelectedObject(null);
             }
         }

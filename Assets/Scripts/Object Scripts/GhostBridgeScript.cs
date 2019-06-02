@@ -62,8 +62,8 @@ public class GhostBridgeScript : MonoBehaviour
     	}
     	else
     	{
-    		Debug.Log("Unrecognized selection!");
-    		Debug.Log("Tag:" + SelectedObject.tag);
+    		// Debug.Log("Unrecognized selection!");
+    		Destroy(gameObject);
     	}
     }
 
@@ -81,10 +81,12 @@ public class GhostBridgeScript : MonoBehaviour
 				}
 			}
 		}
+
 	}
 
 	private void OnTriggerExit2D(Collider2D other)
 	{
+		// Debug.Log("Nope");
 		if (other.gameObject.tag == "BridgePiece" && other.gameObject != SelectedObject)
 		{
 			if (Vector3.Distance(other.gameObject.transform.position, transform.position) < possibleOverlap)
@@ -107,12 +109,14 @@ public class GhostBridgeScript : MonoBehaviour
     		Destroy(gameObject);
     	}
 
+    	
 		if (CanPlace != PreviousCanPlace)
 		{
 			//TODO: change skin here
 			
 			PreviousCanPlace = CanPlace;
 		}
+		
 
     	//Handle if we're building off of a node (show the ghost in a radius around the node)
     	if(SelectedObject.tag == "Node")
@@ -177,28 +181,6 @@ public class GhostBridgeScript : MonoBehaviour
         	transform.position = closestSnapPoint.transform.position;
     	}
 
-    	/*
-    	
-    	//If we've clicked and can place
-        if(Input.GetMouseButtonDown(0) && CanPlace)
-    	{
-    		string WhatDidIClickOn = inputControllerScript.WhatDidIClickOn(Input.mousePosition);
-
-    		if(WhatDidIClickOn == "Nothing")
-    		{
-				//In order to chain, we don't delete the ghost (we'll reuse it to keep chaining)
-				//Also we set our selection to the object we just placed
-				inputControllerScript.SetSelectedObject(newBridgePiece);
-				SelectedObject = newBridgePiece;
-    		}
-    		else
-    		{
-    			//We've clicked on something else
-    			//Our selection
-    		}
-			
-    	}
-    	*/
 
         //If the selection in input controller changes due to another script, delete this object
         if(inputControllerScript.GetSelectedObject() != SelectedObject)
@@ -210,13 +192,22 @@ public class GhostBridgeScript : MonoBehaviour
 
     public GameObject Build()
     {
-    	//Replace with a real bridge piece
-		FindObjectOfType<AudioManager>().Play("Place Bridge Unit");
-		GameObject newBridgePiece = Instantiate(BridgePiece, transform.position, transform.rotation);
-		SelectedObject = newBridgePiece;
-		inputControllerScript.SetSelectedObject(newBridgePiece);
-
-		return newBridgePiece;
+    	if(CanPlace)
+    	{
+    		// Debug.Log("Placing with:" + BridgePieceCollisions + " BridgePieceCollisions");
+    		//Replace with a real bridge piece
+			FindObjectOfType<AudioManager>().Play("Place Bridge Unit");
+			GameObject newBridgePiece = Instantiate(BridgePiece, transform.position, transform.rotation);
+			SelectedObject = newBridgePiece;
+			inputControllerScript.SetSelectedObject(newBridgePiece);
+	
+			return newBridgePiece;
+		}
+		else
+		{
+			Destroy(gameObject);
+			return null;
+		}
     }
 
     public void Delete()

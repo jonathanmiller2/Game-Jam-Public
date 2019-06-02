@@ -56,8 +56,8 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
     		//If left click
     		if (InputPointerEventData.button == PointerEventData.InputButton.Left)
     		   	{
-    		   		//We need to see if we're in place mode
-    		   		if(ToggleScriptComponent.isOn)
+    		   		//We need to see if we're in place mode and we don't have a ghost bridge piece
+    		   		if(ToggleScriptComponent.isOn && !GameObject.FindWithTag("GhostBridgePiece"))
     		   		{
     		   		    //Create a ghost bridge for the circle
     		   		    Instantiate(GhostBridgePiecePrefab, transform.position, transform.rotation);
@@ -66,6 +66,7 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
         	//If right click
         	else if(InputPointerEventData.button == PointerEventData.InputButton.Right)
         	{
+        		Debug.Log("Dut");
         		GameObject NewAttacker = Instantiate(AttackerPrefab, transform.position, transform.rotation);	
         		inputControllerScript.SetSelectedObject(NewAttacker);
         	}
