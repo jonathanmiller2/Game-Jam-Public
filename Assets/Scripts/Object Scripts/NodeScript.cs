@@ -9,13 +9,16 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
     [Range(0.001f, 1f)]
     public float Radius = .13f;
     public int Owner = 0;
-    public float Health = 100;
     
     public GameObject GhostBridgePiecePrefab;
     public GameObject AttackerPrefab;
 
     private Toggle ToggleScriptComponent;
     private InputControllerScript inputControllerScript;
+
+    //Conversion data
+    private float CheckTimer = 0f;
+    private float SecondsPerCheck = 1f;
 
     // Start is called before the first frame update
     void Start()
@@ -33,19 +36,21 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
 
         //TODO: 
 
-        if(Health == 0)
-        {
-        	//TODO: Destroy bridge objects touching node that belong to previous owner
+        //Check once a second how many attackers we have on our node
+        //If it's imbalanced start a conversion timer
 
-        	Health = 100 * Radius;
-        	Owner = 0;
+        if(CheckTimer > SecondsPerCheck)
+        {
+        	CheckTimer = 0;
+        	
+        	//Check how many attackers are on this node
+
+
         }
-
-        //If our node is selected
-        if(inputControllerScript.GetSelectedObject() == gameObject)
+        else
         {
-        		
-       	}
+        	CheckTimer += Time.deltaTime;
+        }        
     }
 
     public void OnPointerClick(PointerEventData InputPointerEventData)

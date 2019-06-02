@@ -209,6 +209,7 @@ public class GhostBridgeScript : MonoBehaviour
 		}
 		else
 		{
+			/*
 			if(SmallestBridgeDist <= MinimumBridgeDistance)
 			{
 				Debug.Log("Too Close to Bridge!");
@@ -217,6 +218,7 @@ public class GhostBridgeScript : MonoBehaviour
 			{
 				Debug.Log("Too Close to Node!");
 			}
+			*/
 
 			inputControllerScript.SetSelectedObject(null);
 			Destroy(gameObject);

@@ -47,6 +47,7 @@ public class InputControllerScript : MonoBehaviour
 		//Handle clicking and ALL selection logic
 		if(Input.GetMouseButtonDown(0))
 		{
+			/*
 			if(SelectedObject)
 			{
 				Debug.Log("Old Selected Object:" + SelectedObject.name);
@@ -55,6 +56,7 @@ public class InputControllerScript : MonoBehaviour
 			{
 				Debug.Log("Old Selected Object: null");
 			}
+			*/
 
 			string WhatIsClicked = WhatDidIClickOn(Input.mousePosition);
 
