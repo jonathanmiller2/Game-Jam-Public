@@ -10,6 +10,7 @@ TagManager:
   - SnapPoint
   - CenterPoint
   - Attacker
+  - Enemy
   layers:
   - Default
   - TransparentFX

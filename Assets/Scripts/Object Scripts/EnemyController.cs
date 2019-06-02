@@ -7,7 +7,8 @@ public class EnemyController : MonoBehaviour
 	public GameObject BridgePiece;
 
 	public int OwnerID = 2;
-	public float Points = 100f;
+	public float Points = 0f;
+	public Color color = new Color();
 
 	public const int PlayerID = 1;
 
@@ -18,12 +19,22 @@ public class EnemyController : MonoBehaviour
 
 	public string[] BuildStyle = new string[3];
 
+	public List<GameObject> AttackableNodes = new List<GameObject>();
+
 	private const int BridgePieceCost = 1;
 	private const float PointsPerRadius = 0.1f;
 
 	// Start is called before the first frame update
 	void Start()
     {
+		//generate color
+		float r = Random.Range(0.3f, 1f);
+		float g = Random.Range(0f, r);
+		float b = Random.Range(0f, r);
+		float a = 1f;
+
+		color = new Color(r, g, b, a);
+
 		//generate personality
 		Personality[0] = Random.Range(0f, 1f);
 		Personality[1] = Random.Range(0f, 1f);
@@ -42,8 +53,8 @@ public class EnemyController : MonoBehaviour
     void FixedUpdate()
     {
 		AquirePoints();
+		UpdateAttackableNodes();
 		DecideAction();
-
 	}
 
 	public void DecideAction()
@@ -95,8 +106,6 @@ public class EnemyController : MonoBehaviour
 		{
 			string BuildChoice = BuildStyle[Random.Range(0, BuildStyle.Length)];
 
-			Debug.Log(BuildChoice);
-
 			if (BuildChoice == "CrazyAction")
 			{
 				CrazyAction();
@@ -145,19 +154,29 @@ public class EnemyController : MonoBehaviour
 		{
 			if (obj.GetComponent<BridgeScript>().GetOwner() == OwnerID)
 			{
-				Vector3 ClosestPlayernodeCenterPointPosition = GetPlayerNodeClosestToPoint(obj.transform.position).transform.position;
+				GameObject ClosestNonAttackablePlayer = GetNonAttackablePlayerNodeClosestToPoint(obj.transform.position);
 
-				float CurrentUnitDelta = Vector3.Distance(ClosestPlayernodeCenterPointPosition, obj.transform.position);
+				//if this is null there are no non attackable player nodes. We should tell it to attack
+				if (ClosestNonAttackablePlayer != null)
+				{
+					Vector3 ClosestPlayernodeCenterPointPosition = ClosestNonAttackablePlayer.transform.position;
 
-				if (CurrentUnitDelta < SmallestDelta)
-				{
-					SmallestDelta = CurrentUnitDelta;
-					ClosestBridgePiece = obj;
-				}
-				else if (SmallestDelta == -1f)
-				{
-					SmallestDelta = CurrentUnitDelta;
-					ClosestBridgePiece = obj;
+					//if this is null it means all player nodes are either gone or attackable. We should try to attack here if that is the case.
+					if (ClosestPlayernodeCenterPointPosition != null)
+					{
+						float CurrentUnitDelta = Vector3.Distance(ClosestPlayernodeCenterPointPosition, obj.transform.position);
+
+						if (CurrentUnitDelta < SmallestDelta)
+						{
+							SmallestDelta = CurrentUnitDelta;
+							ClosestBridgePiece = obj;
+						}
+						else if (SmallestDelta == -1f)
+						{
+							SmallestDelta = CurrentUnitDelta;
+							ClosestBridgePiece = obj;
+						}
+					}
 				}
 			}
 		}
@@ -165,7 +184,7 @@ public class EnemyController : MonoBehaviour
 
 		if (ClosestBridgePiece != null)
 		{
-			GameObject ClosestPlayerNode = GetPlayerNodeClosestToPoint(ClosestBridgePiece.transform.position);
+			GameObject ClosestPlayerNode = GetNonAttackablePlayerNodeClosestToPoint(ClosestBridgePiece.transform.position);
 			GameObject snapPoint = GetSnapPointClosestToPoint(ClosestBridgePiece, ClosestPlayerNode.transform.position);
 			Build(snapPoint.transform.position, snapPoint.transform.position - GetChildObjectWithTag(ClosestBridgePiece.transform, "CenterPoint").transform.position);
 		}
@@ -180,26 +199,33 @@ public class EnemyController : MonoBehaviour
 			{
 				if (obj.GetComponent<NodeScript>().GetOwner() == OwnerID)
 				{
-					Vector3 ClosestPlayernodeCenterPointPosition = GetPlayerNodeClosestToPoint(obj.transform.position).transform.position;
 
-					float CurrentNodeDelta = Vector3.Distance(ClosestPlayernodeCenterPointPosition, obj.transform.position);
+					GameObject ClosestNonAttackablePlayerNode = GetNonAttackablePlayerNodeClosestToPoint(obj.transform.position);
 
-					if (CurrentNodeDelta < SmallestNodeDelta)
+					//if null theres no non attackable player nodes we should attack
+					if (ClosestNonAttackablePlayerNode != null)
 					{
-						SmallestNodeDelta = CurrentNodeDelta;
-						ClosestNode = obj;
-					}
-					else if (SmallestNodeDelta == -1f)
-					{
-						SmallestNodeDelta = CurrentNodeDelta;
-						ClosestNode = obj;
+						Vector3 ClosestPlayernodeCenterPointPosition = ClosestNonAttackablePlayerNode.transform.position;
+
+						float CurrentNodeDelta = Vector3.Distance(ClosestPlayernodeCenterPointPosition, obj.transform.position);
+
+						if (CurrentNodeDelta < SmallestNodeDelta)
+						{
+							SmallestNodeDelta = CurrentNodeDelta;
+							ClosestNode = obj;
+						}
+						else if (SmallestNodeDelta == -1f)
+						{
+							SmallestNodeDelta = CurrentNodeDelta;
+							ClosestNode = obj;
+						}
 					}
 				}
 			}
 
 			if (ClosestNode != null)
 			{
-				GameObject ClosestPlayerNode = GetPlayerNodeClosestToPoint(ClosestNode.transform.position);
+				GameObject ClosestPlayerNode = GetNonAttackablePlayerNodeClosestToPoint(ClosestNode.transform.position);
 
 				//Get positions
 				Vector3 TargetPos = ClosestPlayerNode.transform.position;
@@ -240,23 +266,26 @@ public class EnemyController : MonoBehaviour
 		{
 			if (obj.GetComponent<BridgeScript>().GetOwner() == OwnerID)
 			{
-				GameObject EmptyNode = GetEmptyNodeClosestToPoint(obj.transform.position);
+				GameObject EmptyNode = GetNonAttackableEmptyNodeClosestToPoint(obj.transform.position);
 
-				Vector3 EmptyNodeCenterPointPosition = EmptyNode.transform.position;
-
-				float CurrentUnitDelta = Vector3.Distance(EmptyNodeCenterPointPosition, obj.transform.position);
-
-				if (CurrentUnitDelta < SmallestDelta)
+				if (EmptyNode != null)
 				{
-					SmallestDelta = CurrentUnitDelta;
-					ClosestBridgePiece = obj;
-					ClosestEmptyNode = EmptyNode;
-				}
-				else if (SmallestDelta == -1f)
-				{
-					SmallestDelta = CurrentUnitDelta;
-					ClosestBridgePiece = obj;
-					ClosestEmptyNode = EmptyNode;
+					Vector3 EmptyNodeCenterPointPosition = EmptyNode.transform.position;
+
+					float CurrentUnitDelta = Vector3.Distance(EmptyNodeCenterPointPosition, obj.transform.position);
+
+					if (CurrentUnitDelta < SmallestDelta)
+					{
+						SmallestDelta = CurrentUnitDelta;
+						ClosestBridgePiece = obj;
+						ClosestEmptyNode = EmptyNode;
+					}
+					else if (SmallestDelta == -1f)
+					{
+						SmallestDelta = CurrentUnitDelta;
+						ClosestBridgePiece = obj;
+						ClosestEmptyNode = EmptyNode;
+					}
 				}
 			}
 		}
@@ -286,7 +315,7 @@ public class EnemyController : MonoBehaviour
 			{
 				if (obj.GetComponent<NodeScript>().GetOwner() == OwnerID)
 				{
-					GameObject EmptyNode = GetEmptyNodeClosestToPoint(obj.transform.position);
+					GameObject EmptyNode = GetNonAttackableEmptyNodeClosestToPoint(obj.transform.position);
 
 					Vector3 EmptyNodeCenterPointPosition = EmptyNode.transform.position;
 
@@ -318,7 +347,6 @@ public class EnemyController : MonoBehaviour
 
 				//Scale according to radius
 				Vector3 NewPos = ClosestNodePos + ClosestNode.GetComponent<NodeScript>().GetRadius() * Direction * 5;
-				Debug.Log("Target: " + TargetPos);
 
 				Vector3 rotation = TargetPos - ClosestNode.transform.position;
 
@@ -351,8 +379,6 @@ public class EnemyController : MonoBehaviour
 				HighestValueNode = obj;
 			}
 		}
-
-		Debug.Log("Greedy target: " + HighestValueNode.transform.position);
 
 		GameObject ClosestBridgePiece = null;
 
@@ -402,24 +428,56 @@ public class EnemyController : MonoBehaviour
 	//takes new bridge unit's location as param
 	public void Build(Vector3 pos, Vector3 rot)
 	{
-
-		Debug.Log("Rot: " + rot);
-
 		pos.z = 0;
 		rot = Vector3.Normalize(rot);
-
-		Debug.Log("Rot Normal: " + rot);
 
 		SpendPoints(BridgePieceCost);
 		GameObject NewBridge = Instantiate(BridgePiece, pos, Quaternion.identity);
 		NewBridge.transform.up = rot;
 
-		Debug.Log("Bridge up: " + NewBridge.transform.up);
-
 		NewBridge.GetComponent<BridgeScript>().SetOwner(OwnerID);
+
+		CheckAttackable(NewBridge);
 
 		FindObjectOfType<AudioManager>().Play("Place Bridge Unit");
 
+	}
+
+	public void CheckAttackable(GameObject NewBridgePiece)
+	{
+		foreach (GameObject node in GameObject.FindGameObjectsWithTag("Node"))
+		{
+			if (node.GetComponent<NodeScript>().GetOwner() != OwnerID)
+			{
+				//check to see if newBP position is less distance away from node than node's radius if so, add node to attackable.
+
+				Vector3 NewBridgePiecePosition = NewBridgePiece.transform.position;
+				Vector3 NodePosition = node.transform.position;
+
+				float NodeRadius = node.GetComponent<NodeScript>().GetRadius();
+
+				float Distance = Vector3.Distance(NewBridgePiecePosition, NodePosition);
+
+				if (Distance <= NodeRadius * 5f)
+				{
+					if (!AttackableNodes.Contains(node))
+					{
+						AttackableNodes.Add(node);
+					}
+				}
+			}
+		}
+	}
+
+	public void UpdateAttackableNodes()
+	{
+		foreach (GameObject node in AttackableNodes)
+		{
+			if (node.GetComponent<NodeScript>().GetOwner() == OwnerID)
+			{
+				AttackableNodes.Remove(node);
+			}
+		}
 	}
 
 	public GameObject GetNodeIOwnClosestToPoint(Vector3 point)
@@ -449,6 +507,36 @@ public class EnemyController : MonoBehaviour
 		return ClosestNode;
 	}
 
+	public GameObject GetNonAttackablePlayerNodeClosestToPoint(Vector3 point)
+	{
+		GameObject ClosestNode = null;
+		float SmallestDelta = -1f;
+
+		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Node"))
+		{
+			if (obj.GetComponent<NodeScript>().GetOwner() == PlayerID)
+			{
+				if (!AttackableNodes.Contains(obj))
+				{
+					float CurrentNodeDelta = Vector3.Distance(obj.transform.position, point);
+
+					if (CurrentNodeDelta < SmallestDelta)
+					{
+						SmallestDelta = CurrentNodeDelta;
+						ClosestNode = obj;
+					}
+					else if (SmallestDelta == -1f)
+					{
+						SmallestDelta = CurrentNodeDelta;
+						ClosestNode = obj;
+					}
+				}
+			}
+		}
+
+		return ClosestNode;
+	}
+
 	public GameObject GetPlayerNodeClosestToPoint(Vector3 point)
 	{
 		GameObject ClosestNode = null;
@@ -469,6 +557,36 @@ public class EnemyController : MonoBehaviour
 				{
 					SmallestDelta = CurrentNodeDelta;
 					ClosestNode = obj;
+				}
+			}
+		}
+
+		return ClosestNode;
+	}
+
+	public GameObject GetNonAttackableEmptyNodeClosestToPoint(Vector3 point)
+	{
+		GameObject ClosestNode = null;
+		float SmallestDelta = -1f;
+
+		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Node"))
+		{
+			if (obj.GetComponent<NodeScript>().GetOwner() == 0)
+			{
+				if (!AttackableNodes.Contains(obj))
+				{
+					float CurrentNodeDelta = Vector3.Distance(obj.transform.position, point);
+
+					if (CurrentNodeDelta < SmallestDelta)
+					{
+						SmallestDelta = CurrentNodeDelta;
+						ClosestNode = obj;
+					}
+					else if (SmallestDelta == -1f)
+					{
+						SmallestDelta = CurrentNodeDelta;
+						ClosestNode = obj;
+					}
 				}
 			}
 		}

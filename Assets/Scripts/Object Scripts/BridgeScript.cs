@@ -56,14 +56,64 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
     	}
     }
 
-
-
-
-    //Added just in case
+    //Added just in case (in case has happened, we need this now)
     public void SetOwner(int NewOwner)
     {
         Owner = NewOwner;
-    }
+
+		if (Owner != 0 && Owner != 1)
+		{
+			foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+			{
+				if (enemy.GetComponent<EnemyController>().OwnerID == Owner)
+				{
+					Color newColor = enemy.GetComponent<EnemyController>().color;
+					Material newMat = null;
+
+					foreach (Material mat in Resources.FindObjectsOfTypeAll<Material>())
+					{
+						if (mat.name == "Enemy")
+						{
+							newMat = mat;
+						}
+					}
+
+					foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
+					{
+						Debug.Log(renderer);
+						renderer.material = newMat;
+						renderer.material.SetColor("Color_6EC6B721", newColor);
+					}
+				}
+			}
+		}
+		else if (Owner == 1)
+		{
+			Material newMat = null;
+
+			foreach (Material mat in Resources.FindObjectsOfTypeAll<Material>())
+			{
+				if (mat.name == "Player")
+				{
+					newMat = mat;
+				}
+			}
+
+			if (newMat)
+			{
+				foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
+				{
+					renderer.material = newMat;
+					//renderer.material.color = newColor;
+				}
+			}
+		}
+		else
+		{
+			//SetMaterial(NutralMaterial);
+		}
+
+	}
 
     public int GetOwner()
     {
@@ -103,8 +153,7 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
         }
     }
 
-
-    public List<GameObject> GetChildObjectsWithTag(string Tag)
+	public List<GameObject> GetChildObjectsWithTag(string Tag)
     {
     	List<GameObject> res = new List<GameObject>();
 
