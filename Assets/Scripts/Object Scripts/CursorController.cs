@@ -14,5 +14,6 @@ public class CursorController : MonoBehaviour
     void Update()
     {
 		gameObject.transform.position = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+		Debug.Log(gameObject.transform.position);
 	}
 }

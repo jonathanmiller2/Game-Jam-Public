@@ -6823,12 +6823,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1117754990}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
-  m_LocalScale: {x: 10, y: 10, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 99.77785}
+  m_LocalScale: {x: 0.2221511, y: 0.2221511, z: 0}
   m_Children:
   - {fileID: 1891024793}
-  m_Father: {fileID: 2046328557}
-  m_RootOrder: 1
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1125525913
 GameObject:
@@ -11428,7 +11428,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1891024793}
   - component: {fileID: 1891024794}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: CurserSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12487,7 +12487,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1258840169}
-  - {fileID: 1117754992}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -39,8 +39,8 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
         GameObject InputControllerManagerObject = GameObject.Find("InputController");
         inputControllerScript = InputControllerManagerObject.GetComponent<InputControllerScript>();
 
-        //GameObject ToggleButtonGameObject = GameObject.Find("PlaceModeToggle");
-        //ToggleScriptComponent = ToggleButtonGameObject.GetComponent<Toggle>();
+        GameObject ToggleButtonGameObject = GameObject.Find("PlaceModeToggle");
+        ToggleScriptComponent = ToggleButtonGameObject.GetComponent<Toggle>();
     }
 
     // Update is called once per frame

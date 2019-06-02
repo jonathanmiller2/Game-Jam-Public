@@ -32,7 +32,7 @@ public class InputControllerScript : MonoBehaviour
 
     void Update()
     {
-    	/*
+    	
 		if (Input.GetButtonDown("BuildMode"))
 		{
 			SetBuildState(true);
@@ -41,8 +41,6 @@ public class InputControllerScript : MonoBehaviour
 		{
 			SetBuildState(false);
 		}
-		*/
-
 
 		//Handle clicking and ALL selection logic
 		if(Input.GetMouseButtonDown(0))
@@ -75,7 +73,7 @@ public class InputControllerScript : MonoBehaviour
 					}
 					else
 					{
-						SelectedObject.GetComponent<AttackerScript>().SetTarget(Input.mousePosition);
+						SelectedObject.GetComponent<AttackerScript>().SetTarget(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 					}
 				}
 				else
@@ -93,7 +91,11 @@ public class InputControllerScript : MonoBehaviour
 						if(SelectedObject.GetComponent<NodeScript>().GetOwner() == 1)
 						{
 							//We should have a ghost, as we are in build mode and we have a node or bridge selected
-							GameObject.FindWithTag("GhostBridgePiece").GetComponent<GhostBridgeScript>().Build();
+							GameObject GBP = GameObject.FindWithTag("GhostBridgePiece");
+							if (GBP)
+							{
+								GBP.GetComponent<GhostBridgeScript>().Build();
+							}
 						}
 						else
 						{
