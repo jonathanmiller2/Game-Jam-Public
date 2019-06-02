@@ -128,6 +128,9 @@ public class EnemyController : MonoBehaviour
 	public void CrazyAction() //A. ag: 1 sp: 6
 	{
 		//random placement
+
+		//Wrong
+		AggressiveAction();
 	}
 
 	public void AggressiveAction() //B. ag: 6 sp: 4
@@ -219,6 +222,9 @@ public class EnemyController : MonoBehaviour
 	public void PlanningAction() //C. ag: 2 sp: 2
 	{
 		//Placement towards highest value AND closest empty node
+
+		//wrong
+		QuickAction();
 
 	}
 
@@ -387,6 +393,9 @@ public class EnemyController : MonoBehaviour
 	public void GoalAction() //F. ag: 5 sp: 5
 	{
 		//placement towards nearest goal
+
+		//worng
+		GreedyAction();
 	}
 	//________________________________________________________________________________________________________________________________________________________________
 
