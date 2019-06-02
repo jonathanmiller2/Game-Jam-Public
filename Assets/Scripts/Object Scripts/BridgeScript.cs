@@ -63,7 +63,7 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
     //Added just in case
     public void SetOwner(int NewOwner)
     {
-    	Owner = NewOwner;
+        Owner = NewOwner;
     }
 
     public int GetOwner()
@@ -75,29 +75,33 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData InputPointerEventData)
     {
     	//We can only select pieces we own
-    	if(Owner == 1)
-    	{
-    		//If we're trying to move an attacker to this bridge piece
-    		if(inputControllerScript.GetSelectedObject() && inputControllerScript.GetSelectedObject().tag == "Attacker")
-    		{
-        		inputControllerScript.GetSelectedObject().GetComponent<AttackerScript>().SetTarget(transform.position);
-        	}
-        	//If we're trying to select the bridge
-        	else
-        	{
-				//We need to see if we're in place mode
-        		if(ToggleScriptComponent.isOn)
-        		{
-        	    	//Create a ghost bridge for the circle
-        	    	Instantiate(GhostBridge, transform.position, transform.rotation);
-        		}
-        	}
-    	}
-    	else
-    	{
-    		//We've selected an enemy bridge!
-    		//TODO: Whatever happens when you select an enemy bridge
-    	}
+        if(Owner == 1)
+        {
+            //If left click
+            if (InputPointerEventData.button == PointerEventData.InputButton.Left)
+            {
+                //If we're trying to move an attacker to this bridge piece
+                if(inputControllerScript.GetSelectedObject() && inputControllerScript.GetSelectedObject().tag == "Attacker")
+                {
+                    inputControllerScript.GetSelectedObject().GetComponent<AttackerScript>().SetTarget(transform.position);
+                }
+                //If we're trying to select the bridge
+                else
+                {
+                    //We need to see if we're in place mode and we don't already have a ghost
+                    if(ToggleScriptComponent.isOn && !GameObject.FindWithTag("GhostBridgePiece"))
+                    {
+                        //Create a ghost bridge for the circle
+                        Instantiate(GhostBridge, transform.position, transform.rotation);
+                    }
+                }
+            }
+        }
+        else
+        {
+        	//We've selected an enemy bridge!
+        	//TODO: Whatever happens when you select an enemy bridge
+        }
     }
 
 
