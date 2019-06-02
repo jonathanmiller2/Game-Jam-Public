@@ -201,6 +201,7 @@ public class GhostBridgeScript : MonoBehaviour
     		//Replace with a real bridge piece
 			FindObjectOfType<AudioManager>().Play("Place Bridge Unit");
 			GameObject newBridgePiece = Instantiate(BridgePiece, transform.position, transform.rotation);
+			newBridgePiece.GetComponent<BridgeScript>().SetOwner(1);
 			SelectedObject = newBridgePiece;
 			inputControllerScript.SetSelectedObject(newBridgePiece);
 	
