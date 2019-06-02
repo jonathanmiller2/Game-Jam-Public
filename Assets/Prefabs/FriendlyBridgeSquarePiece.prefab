@@ -255,7 +255,6 @@ GameObject:
   - component: {fileID: 2738520173740462588}
   - component: {fileID: 5377837168136426139}
   - component: {fileID: 6042597452439699457}
-  - component: {fileID: 8674973164116465681}
   m_Layer: 0
   m_Name: FriendlyBridgeSquarePiece
   m_TagString: BridgePiece
@@ -326,18 +325,6 @@ PolygonCollider2D:
       - {x: -5, y: 0}
       - {x: 5, y: 0}
       - {x: 5, y: 10}
---- !u!114 &8674973164116465681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2738520173740462586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 531f77cdf4027454889ce57a14c4983c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4268483513491432363
 GameObject:
   m_ObjectHideFlags: 0
