@@ -8,12 +8,15 @@ public class CursorController : MonoBehaviour
     void Start()
     {
 		DontDestroyOnLoad(gameObject);
+		
     }
 
     // Update is called once per frame
     void Update()
     {
-		gameObject.transform.position = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+		Cursor.visible = false;
+		gameObject.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 1f);
 		Debug.Log(gameObject.transform.position);
 	}
 }
