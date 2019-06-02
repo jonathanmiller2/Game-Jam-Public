@@ -31,10 +31,10 @@ public class EnemyController : MonoBehaviour
 		//set build style
 		BuildStyle = GenerateBuildStyle(Personality[0], Personality[1]);
 		//TEMP, PLEASE DELETE, YOU MORON!
-		for (int i = 0; i < 3; i++)
-		{
-			BuildStyle[i] = "QuickAction";
-		}
+		//for (int i = 0; i < 3; i++)
+		//{
+		//	BuildStyle[i] = "QuickAction";
+		//}
 
 	}
 
