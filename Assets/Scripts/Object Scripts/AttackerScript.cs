@@ -142,8 +142,8 @@ public class AttackerScript : MonoBehaviour
     private void Dijkstra(GameObject currentNode, Dictionary<GameObject, float[]>  Vertices, GameObject DestinationObject)
     {
         //Only do anything if this node hasn't already been checked
-        // if(Vertices[currentNode][0] == 0)
-        // {
+        if(Vertices[currentNode][0] == 0f)
+        {
             float SmallestTentativeDistance = float.MaxValue;
             GameObject ObjectWithSmallestTDistance = null;
     
@@ -170,6 +170,8 @@ public class AttackerScript : MonoBehaviour
                     }
                 }
             }
+
+            Debug.Log("Calling with next object" + ObjectWithSmallestTDistance.name);
     
             //Mark this node as checked
             Vertices[currentNode] = new float[2]{1, Vertices[currentNode][1]};
@@ -183,7 +185,7 @@ public class AttackerScript : MonoBehaviour
                 ParentDict[ObjectWithSmallestTDistance] = currentNode;
                 Dijkstra(ObjectWithSmallestTDistance, Vertices, DestinationObject);
             }
-        // }
+        }
     }
 
     IEnumerator MoveToTarget()
@@ -205,8 +207,10 @@ public class AttackerScript : MonoBehaviour
 
         while(ParentDict[CurrentlyOn])
         {
+            Debug.Log("Moving to" + ParentDict[CurrentlyOn].name);
             transform.position = ParentDict[CurrentlyOn].transform.position;
             CurrentlyOn = ParentDict[CurrentlyOn];
+            
             yield return new WaitForSeconds(MoveWait);
         }
     }
