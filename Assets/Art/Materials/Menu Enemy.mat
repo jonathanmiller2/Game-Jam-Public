@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Menu Attacker
+  m_Name: Menu Enemy
   m_Shader: {fileID: -6465566751694194690, guid: ebcd88610a3362340903c993c890ef72,
     type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
