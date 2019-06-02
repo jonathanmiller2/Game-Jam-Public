@@ -643,9 +643,9 @@ MonoBehaviour:
   Radius: 0.13
   Owner: 0
   myMaterials:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 2100000, guid: efa014d5b0e988e40b15d6b8ab89fa3a, type: 2}
+  - {fileID: 2100000, guid: a9805ab69dd7c964794d58a81d8da704, type: 2}
+  - {fileID: 2100000, guid: bc77eb8fcd223db49928cff961e333fc, type: 2}
   - {fileID: 0}
   - {fileID: 0}
   GhostBridgePiecePrefab: {fileID: 8791136961223856860, guid: f269cdaf7308f2041a6bc8abe0d28e26,
