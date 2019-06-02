@@ -8,6 +8,10 @@ public class JankFix : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(1, 1, 1);
+        var rot = transform.rotation;
+        rot.x = 0;
+        rot.z = 0;
+        rot.y = 0;
+        transform.rotation = rot;
     }
 }
