@@ -73,6 +73,7 @@ public class InputControllerScript : MonoBehaviour
 					}
 					else
 					{
+						Debug.Log("Targeting" + ClickedGameObject.name);
 						SelectedObject.GetComponent<AttackerScript>().SetTarget(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 					}
 				}

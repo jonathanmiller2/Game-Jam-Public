@@ -27,7 +27,7 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
     private float SecondsForConversion = 0f;
 
     private float ValidAttackerRadius = .6f;
-    private List<int> AttackerCountsOnNode = new List<int>();
+    private List<int> AttackerCountsOnNode = new List<int>() {0,0,0,0,0,0,0,0,0,0};
     private int NextOwner;
 
     
@@ -60,7 +60,7 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
         	//Check how many attackers are on this node
         	foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Attacker"))
         	{
-        		Debug.Log(obj.name);
+        		// Debug.Log(obj.name);
 
         	    Dist = Vector3.Distance(obj.transform.position, gameObject.transform.position);
 	
@@ -162,7 +162,7 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
         	//If right click
         	else if(InputPointerEventData.button == PointerEventData.InputButton.Right)
         	{
-        		Debug.Log("Dut");
+        		// Debug.Log("Dut");
         		GameObject NewAttacker = Instantiate(AttackerPrefab, transform.position, transform.rotation);	
         		inputControllerScript.SetSelectedObject(NewAttacker);
         	}

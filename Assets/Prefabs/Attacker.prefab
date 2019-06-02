@@ -222,6 +222,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1917954453212818725}
   - component: {fileID: 4014481769816381424}
+  - component: {fileID: 3384040704040540712}
   m_Layer: 0
   m_Name: Attacker
   m_TagString: Attacker
@@ -237,7 +238,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6084187635660429880}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.16, y: -1.25, z: 0}
+  m_LocalPosition: {x: -5.16, y: -1.25, z: -3.24}
   m_LocalScale: {x: 0.03, y: 0.03, z: 1}
   m_Children:
   - {fileID: 6468528987623337376}
@@ -256,6 +257,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 834caf6e396dfcc45842c8615c1fe5ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!58 &3384040704040540712
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6084187635660429880}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 5
 --- !u!1 &8437974928086563676
 GameObject:
   m_ObjectHideFlags: 0
