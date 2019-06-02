@@ -4,37 +4,37 @@
             "typeInfo": {
                 "fullName": "UnityEditor.ShaderGraph.TextureShaderProperty"
             },
-            "JSONnodeData": "{\n    \"m_Name\": \"Texture\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"1c77686f-41e5-4c93-873f-a6cd9b2d8421\"\n    },\n    \"m_DefaultReferenceName\": \"Texture2D_96ACAD77\",\n    \"m_OverrideReferenceName\": \"\",\n    \"m_Value\": {\n        \"m_SerializedTexture\": \"\",\n        \"m_Guid\": \"e488cfcd83a26774c9a3442c4b672a25\"\n    },\n    \"m_Modifiable\": true,\n    \"m_DefaultType\": 0\n}"
+            "JSONnodeData": "{\n    \"m_Name\": \"Texture\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"1c77686f-41e5-4c93-873f-a6cd9b2d8421\"\n    },\n    \"m_DefaultReferenceName\": \"Texture2D_96ACAD77\",\n    \"m_OverrideReferenceName\": \"_Texture\",\n    \"m_Value\": {\n        \"m_SerializedTexture\": \"\",\n        \"m_Guid\": \"e488cfcd83a26774c9a3442c4b672a25\"\n    },\n    \"m_Modifiable\": true,\n    \"m_DefaultType\": 0\n}"
         },
         {
             "typeInfo": {
                 "fullName": "UnityEditor.ShaderGraph.Vector1ShaderProperty"
             },
-            "JSONnodeData": "{\n    \"m_Name\": \"Intensity\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"40df821e-c89c-41b2-bcf7-91f8a2f07dbd\"\n    },\n    \"m_DefaultReferenceName\": \"Vector1_7F3E9A7F\",\n    \"m_OverrideReferenceName\": \"\",\n    \"m_Value\": 0.05000000074505806,\n    \"m_FloatType\": 1,\n    \"m_RangeValues\": {\n        \"x\": 0.0,\n        \"y\": 0.20000000298023225\n    },\n    \"m_Hidden\": false\n}"
+            "JSONnodeData": "{\n    \"m_Name\": \"Intensity\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"40df821e-c89c-41b2-bcf7-91f8a2f07dbd\"\n    },\n    \"m_DefaultReferenceName\": \"Vector1_7F3E9A7F\",\n    \"m_OverrideReferenceName\": \"_Intensity\",\n    \"m_Value\": 0.05000000074505806,\n    \"m_FloatType\": 1,\n    \"m_RangeValues\": {\n        \"x\": 0.0,\n        \"y\": 0.20000000298023225\n    },\n    \"m_Hidden\": false\n}"
         },
         {
             "typeInfo": {
                 "fullName": "UnityEditor.ShaderGraph.ColorShaderProperty"
             },
-            "JSONnodeData": "{\n    \"m_Name\": \"Color\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"732935d1-34e0-4f60-8ad7-caf4b1a47095\"\n    },\n    \"m_DefaultReferenceName\": \"Color_6EC6B721\",\n    \"m_OverrideReferenceName\": \"\",\n    \"m_Value\": {\n        \"r\": 1.0,\n        \"g\": 0.9535619020462036,\n        \"b\": 0.0,\n        \"a\": 1.0\n    },\n    \"m_ColorMode\": 0,\n    \"m_Hidden\": false\n}"
+            "JSONnodeData": "{\n    \"m_Name\": \"Color\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"732935d1-34e0-4f60-8ad7-caf4b1a47095\"\n    },\n    \"m_DefaultReferenceName\": \"Color_6EC6B721\",\n    \"m_OverrideReferenceName\": \"_Color\",\n    \"m_Value\": {\n        \"r\": 1.0,\n        \"g\": 0.9535619020462036,\n        \"b\": 0.0,\n        \"a\": 1.0\n    },\n    \"m_ColorMode\": 0,\n    \"m_Hidden\": false\n}"
         },
         {
             "typeInfo": {
                 "fullName": "UnityEditor.ShaderGraph.Vector1ShaderProperty"
             },
-            "JSONnodeData": "{\n    \"m_Name\": \"Zoom\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"b8e336e3-dab8-403c-861a-cac981aecdbf\"\n    },\n    \"m_DefaultReferenceName\": \"Vector1_1C9ECD4F\",\n    \"m_OverrideReferenceName\": \"\",\n    \"m_Value\": 1.0,\n    \"m_FloatType\": 0,\n    \"m_RangeValues\": {\n        \"x\": 0.0,\n        \"y\": 1.0\n    },\n    \"m_Hidden\": false\n}"
+            "JSONnodeData": "{\n    \"m_Name\": \"Zoom\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"b8e336e3-dab8-403c-861a-cac981aecdbf\"\n    },\n    \"m_DefaultReferenceName\": \"Vector1_1C9ECD4F\",\n    \"m_OverrideReferenceName\": \"_Zoom\",\n    \"m_Value\": 1.0,\n    \"m_FloatType\": 0,\n    \"m_RangeValues\": {\n        \"x\": 0.0,\n        \"y\": 1.0\n    },\n    \"m_Hidden\": false\n}"
         },
         {
             "typeInfo": {
                 "fullName": "UnityEditor.ShaderGraph.Vector1ShaderProperty"
             },
-            "JSONnodeData": "{\n    \"m_Name\": \"Alpha\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"ca76ba95-fe26-4177-a836-0f4f1f1baed8\"\n    },\n    \"m_DefaultReferenceName\": \"Vector1_ADA09C6A\",\n    \"m_OverrideReferenceName\": \"\",\n    \"m_Value\": 1.0,\n    \"m_FloatType\": 0,\n    \"m_RangeValues\": {\n        \"x\": 0.0,\n        \"y\": 1.0\n    },\n    \"m_Hidden\": false\n}"
+            "JSONnodeData": "{\n    \"m_Name\": \"Alpha\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"ca76ba95-fe26-4177-a836-0f4f1f1baed8\"\n    },\n    \"m_DefaultReferenceName\": \"Vector1_ADA09C6A\",\n    \"m_OverrideReferenceName\": \"_Alpha\",\n    \"m_Value\": 1.0,\n    \"m_FloatType\": 0,\n    \"m_RangeValues\": {\n        \"x\": 0.0,\n        \"y\": 1.0\n    },\n    \"m_Hidden\": false\n}"
         },
         {
             "typeInfo": {
                 "fullName": "UnityEditor.ShaderGraph.ColorShaderProperty"
             },
-            "JSONnodeData": "{\n    \"m_Name\": \"Emisive\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"921f23ad-818b-44b1-891f-b90d6813e50a\"\n    },\n    \"m_DefaultReferenceName\": \"Color_376FED73\",\n    \"m_OverrideReferenceName\": \"\",\n    \"m_Value\": {\n        \"r\": 0.0,\n        \"g\": 0.0,\n        \"b\": 0.0,\n        \"a\": 0.0\n    },\n    \"m_ColorMode\": 0,\n    \"m_Hidden\": false\n}"
+            "JSONnodeData": "{\n    \"m_Name\": \"Emisive\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"921f23ad-818b-44b1-891f-b90d6813e50a\"\n    },\n    \"m_DefaultReferenceName\": \"Color_376FED73\",\n    \"m_OverrideReferenceName\": \"_Emisive\",\n    \"m_Value\": {\n        \"r\": 0.0,\n        \"g\": 0.0,\n        \"b\": 0.0,\n        \"a\": 0.0\n    },\n    \"m_ColorMode\": 0,\n    \"m_Hidden\": false\n}"
         }
     ],
     "m_GUID": {
