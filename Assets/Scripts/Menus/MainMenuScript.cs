@@ -11,7 +11,7 @@ public class MainMenuScript : MonoBehaviour
     public void PlayButtonPressed()
     {
 		FindObjectOfType<AudioManager>().Play("Menu Play");
-		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+		//SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void ExitButtonPressed()
