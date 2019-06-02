@@ -9,16 +9,27 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
 	public GameObject GhostBridge;
 	public int Owner = 1;
 
-	private bool Supported = true;
+    public Material[] BridgeMaterials;
+
+
 	
     private InputControllerScript inputControllerScript;
     private GameObject SelectedObject;
 
     private Toggle ToggleScriptComponent;
 
-    private float TimeCounter = 0f;
+
+    //Support variables
+    private bool Supported = true;
+
+    private float CheckCounter = 0f;
     private const float SecondsPerCheck = 2f;
 
+    private float UnsupportedCounter = 0f;
+    private const float SecondsToAllowUnsupported = 2f;
+
+    private const float ConnectedDistanceToNode = .5f;
+    private const float ConnectedDistanceToBridge = .5f;
 
     // Start is called before the first frame update
     void Start()
@@ -34,26 +45,77 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
     // Update is called once per frame
     void Update()
     {
+
+        //TODO: Enemy attacker within range of our bridge, start taking damage
+        //Friendly attacker within range of our bridge, heal
+        //Both friendly and enemy attacker within range, do nothing (they're fighting each other)
+
 		//Determine if our bridge is attached to something that's supported
-
-		//Check to see if we're attached to a node
-
-
+        /*
 		//Check once every couple seconds if our bridge is supported, if not, delete it
 		//This check is delayed because the order that the other bridge pieces will check is unknown, so we delay to allow all of them to check
-		if (TimeCounter > SecondsPerCheck)
+		if (CheckCounter > SecondsPerCheck)
     	{
-    		if(!Supported)
-    		{
-    			//TODO: Play breaking animation
-    			Destroy(gameObject);
-    		}
-    		TimeCounter = 0;
+    		Supported = CheckSupport();
+    		CheckCounter = 0;
     	}
     	else
     	{
-    		TimeCounter += Time.deltaTime;
+    		CheckCounter += Time.deltaTime;
     	}
+
+        
+
+        if(!Supported)
+        {
+            //If we are unsupported, we check every tick to make sure the game isn't just taking a second to chain supportedness
+            //TODO: This may cause performance issues
+            Supported = CheckSupport();
+
+            if(UnsupportedCounter > SecondsToAllowUnsupported)
+            {
+                //TODO: Play falling/breaking animation
+                Destroy(gameObject)
+            }
+            else
+            {
+                UnsupportedCounter += Time.deltaTime
+            }
+        }
+        */
+    }
+
+    public bool CheckSupport(List<GameObject> AlreadyChecked)
+    {
+        
+        AlreadyChecked.add(gameObject);    
+        
+        foreach (GameObject node in GameObject.FindGameObjectsWithTag("Node"))
+        {
+            //If we own it and it's close enough
+            if (node.GetComponent<NodeScript>().GetOwner() == Owner && Vector3.Distance(node.transform.position, transform.position) <= ConnectedDistanceToNode)
+            {
+                Supported = true;
+                return Supported;
+            }
+        }
+
+        foreach(GameObject bridge in GameObject.FindGameObjectsWithTag("BridgePiece"))
+        {
+            //If we own it and it's close enough, and we haven't already checked it
+            if (node.GetComponent<NodeScript>().GetOwner() == Owner && Vector3.Distance(bridge.transform.position, transform.position) <= ConnectedDistanceToBridge && !AlreadyChecked.Contains(bridge))
+            {
+                if(bridge.CheckSupport(AlreadyChecked))
+                {
+                    Supported = true;
+                    return Supported;
+                }
+            }
+        }
+
+        //If nothing is supported
+        Supported = false;
+        return false;
     }
 
     //Added just in case (in case has happened, we need this now)
@@ -61,59 +123,42 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
     {
         Owner = NewOwner;
 
-		if (Owner != 0 && Owner != 1)
+        foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
+        {
+            //Clamp as we only have one enemy material
+            if(Owner > 2)
+            {
+                renderer.material = BridgeMaterials[2];    
+            }
+            else
+            {
+                renderer.material = BridgeMaterials[Owner];    
+            }
+        }
+
+
+        //Enemies have different colors
+		if (Owner >= 2)
 		{
 			foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
 			{
 				if (enemy.GetComponent<EnemyController>().OwnerID == Owner)
 				{
 					Color newColor = enemy.GetComponent<EnemyController>().color;
-					Material newMat = null;
-
-					foreach (Material mat in Resources.FindObjectsOfTypeAll<Material>())
-					{
-						if (mat.name == "Enemy")
-						{
-							newMat = mat;
-						}
-					}
 
 					foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
 					{
-						Debug.Log(renderer);
-						renderer.material = newMat;
 						renderer.material.SetColor("Color_6EC6B721", newColor);
 					}
 				}
 			}
 		}
-		else if (Owner == 1)
-		{
-			Material newMat = null;
-
-			foreach (Material mat in Resources.FindObjectsOfTypeAll<Material>())
-			{
-				if (mat.name == "Player")
-				{
-					newMat = mat;
-				}
-			}
-
-			if (newMat)
-			{
-				foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
-				{
-					renderer.material = newMat;
-					//renderer.material.color = newColor;
-				}
-			}
-		}
-		else
-		{
-			//SetMaterial(NutralMaterial);
-		}
-
 	}
+
+    public bool GetSupportedBool()
+    {
+        return Supported;
+    }
 
     public int GetOwner()
     {

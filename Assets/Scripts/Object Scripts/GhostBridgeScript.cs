@@ -131,7 +131,6 @@ public class GhostBridgeScript : MonoBehaviour
         			smallestDistance = Vector3.Distance(sp.transform.position, MousePos);
         			closestSnapPoint = sp;
         		}
-        		
         	}
 
         	GameObject CenterPoint = GetChildObjectWithTag(SelectedObject.transform, "CenterPoint");
