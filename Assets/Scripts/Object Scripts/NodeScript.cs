@@ -27,7 +27,7 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
     private float SecondsForConversion = 0f;
 
     private float ValidAttackerRadius = .6f;
-    private List<int> AttackerCountsOnNode;
+    private List<int> AttackerCountsOnNode = new List<int>();
     private int NextOwner;
 
     
@@ -60,7 +60,9 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
         	//Check how many attackers are on this node
         	foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Attacker"))
         	{
-        	    Dist = Vector3.Distance(GetChildObjectWithTag(obj.transform, "CenterPoint").transform.position, gameObject.transform.position);
+        		Debug.Log(obj.name);
+
+        	    Dist = Vector3.Distance(obj.transform.position, gameObject.transform.position);
 	
         	    if (Dist < ValidAttackerRadius)
         	    {
@@ -125,8 +127,11 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
         	{
         		ConversionTimer = 0;
 
+        		//Debug.Log("Capture!");
         		//TODO: Conversion!
         		//Animation? Set material?
+        		//Child 0 is the sprite displayer object
+        		transform.GetChild(0).GetComponent<Animator>().SetTrigger("Capture");
         		Owner = NextOwner;
         	}
         	else
