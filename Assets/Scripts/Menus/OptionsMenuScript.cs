@@ -9,10 +9,16 @@ using UnityEngine;
 public class OptionsMenuScript : MonoBehaviour
 {
 
-    /**
+	public void Start()
+	{
+		//manualls set the vloume to the position the slider is set to by default.
+		FindObjectOfType<AudioManager>().ChangeGlobalVolume(0.25f);
+	}
+
+	/**
 	*	When the volume slider is moved
 	*/
-    public void VolumeValueChanged(float newValue)
+	public void VolumeValueChanged(float newValue)
     {
 		//Change volume of all sounds
 		FindObjectOfType<AudioManager>().ChangeGlobalVolume(newValue);

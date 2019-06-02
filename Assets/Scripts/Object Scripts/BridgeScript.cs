@@ -47,6 +47,11 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
     void Update()
     {
 
+		//This should be removed eventually. Here to cure cursed geometry.
+		if(transform.rotation.x != 0){
+			transform.rotation = Quaternion.Euler(0, 0, 180f);
+		}
+
         //TODO: Enemy attacker within range of our bridge, start taking damage
         //Friendly attacker within range of our bridge, heal
         //Both friendly and enemy attacker within range, do nothing (they're fighting each other)
