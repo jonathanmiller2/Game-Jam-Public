@@ -10,7 +10,7 @@
             "typeInfo": {
                 "fullName": "UnityEditor.ShaderGraph.Vector1ShaderProperty"
             },
-            "JSONnodeData": "{\n    \"m_Name\": \"Intensity\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"40df821e-c89c-41b2-bcf7-91f8a2f07dbd\"\n    },\n    \"m_DefaultReferenceName\": \"Vector1_7F3E9A7F\",\n    \"m_OverrideReferenceName\": \"\",\n    \"m_Value\": 0.05000000074505806,\n    \"m_FloatType\": 1,\n    \"m_RangeValues\": {\n        \"x\": 0.0,\n        \"y\": 0.800000011920929\n    },\n    \"m_Hidden\": false\n}"
+            "JSONnodeData": "{\n    \"m_Name\": \"Intensity\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"40df821e-c89c-41b2-bcf7-91f8a2f07dbd\"\n    },\n    \"m_DefaultReferenceName\": \"Vector1_7F3E9A7F\",\n    \"m_OverrideReferenceName\": \"\",\n    \"m_Value\": 0.05000000074505806,\n    \"m_FloatType\": 1,\n    \"m_RangeValues\": {\n        \"x\": 0.0,\n        \"y\": 0.20000000298023225\n    },\n    \"m_Hidden\": false\n}"
         },
         {
             "typeInfo": {
@@ -126,12 +126,6 @@
             "typeInfo": {
                 "fullName": "UnityEditor.Graphing.Edge"
             },
-            "JSONnodeData": "{\n    \"m_OutputSlot\": {\n        \"m_SlotId\": 1,\n        \"m_NodeGUIDSerialized\": \"01e8578b-c377-4c8a-9801-fa89bc27288a\"\n    },\n    \"m_InputSlot\": {\n        \"m_SlotId\": 1,\n        \"m_NodeGUIDSerialized\": \"ebacf9a3-7622-4ca9-bb16-99c08b151d95\"\n    }\n}"
-        },
-        {
-            "typeInfo": {
-                "fullName": "UnityEditor.Graphing.Edge"
-            },
             "JSONnodeData": "{\n    \"m_OutputSlot\": {\n        \"m_SlotId\": 0,\n        \"m_NodeGUIDSerialized\": \"9d006e8e-cc3c-4b23-854c-0f36a453c7a5\"\n    },\n    \"m_InputSlot\": {\n        \"m_SlotId\": 1,\n        \"m_NodeGUIDSerialized\": \"08ce8eea-a431-4ec6-a35e-f995816cecfd\"\n    }\n}"
         },
         {
@@ -181,6 +175,12 @@
                 "fullName": "UnityEditor.Graphing.Edge"
             },
             "JSONnodeData": "{\n    \"m_OutputSlot\": {\n        \"m_SlotId\": 0,\n        \"m_NodeGUIDSerialized\": \"d9f67216-b8b0-41ac-97c0-cb62cb9cc581\"\n    },\n    \"m_InputSlot\": {\n        \"m_SlotId\": 4,\n        \"m_NodeGUIDSerialized\": \"6ecc2890-51c5-4e95-90ad-e7b61300c108\"\n    }\n}"
+        },
+        {
+            "typeInfo": {
+                "fullName": "UnityEditor.Graphing.Edge"
+            },
+            "JSONnodeData": "{\n    \"m_OutputSlot\": {\n        \"m_SlotId\": 1,\n        \"m_NodeGUIDSerialized\": \"01e8578b-c377-4c8a-9801-fa89bc27288a\"\n    },\n    \"m_InputSlot\": {\n        \"m_SlotId\": 1,\n        \"m_NodeGUIDSerialized\": \"ebacf9a3-7622-4ca9-bb16-99c08b151d95\"\n    }\n}"
         }
     ],
     "m_PreviewData": {
