@@ -88,7 +88,7 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
     public bool CheckSupport(List<GameObject> AlreadyChecked)
     {
         
-        AlreadyChecked.add(gameObject);    
+        AlreadyChecked.Add(gameObject);    
         
         foreach (GameObject node in GameObject.FindGameObjectsWithTag("Node"))
         {
@@ -103,9 +103,9 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
         foreach(GameObject bridge in GameObject.FindGameObjectsWithTag("BridgePiece"))
         {
             //If we own it and it's close enough, and we haven't already checked it
-            if (node.GetComponent<NodeScript>().GetOwner() == Owner && Vector3.Distance(bridge.transform.position, transform.position) <= ConnectedDistanceToBridge && !AlreadyChecked.Contains(bridge))
+            if (bridge.GetComponent<NodeScript>().GetOwner() == Owner && Vector3.Distance(bridge.transform.position, transform.position) <= ConnectedDistanceToBridge && !AlreadyChecked.Contains(bridge))
             {
-                if(bridge.CheckSupport(AlreadyChecked))
+                if(bridge.GetComponent<BridgeScript>().CheckSupport(AlreadyChecked))
                 {
                     Supported = true;
                     return Supported;
