@@ -7,7 +7,7 @@ public class EnemyController : MonoBehaviour
 	public GameObject BridgePiece;
 
 	public int OwnerID = 2;
-	public float Points = 10f;
+	public float Points = 100f;
 
 	public const int PlayerID = 1;
 
@@ -18,21 +18,23 @@ public class EnemyController : MonoBehaviour
 
 	public string[] BuildStyle = new string[3];
 
-	private const int BridgeUnitCost = 1;
+	private const int BridgePieceCost = 1;
 	private const float PointsPerRadius = 0.1f;
 
 	// Start is called before the first frame update
 	void Start()
     {
 		//generate personality
-		//Personality[0] = Random.Range(0f, 1f);
-		//Personality[1] = Random.Range(0f, 1f);
-
-		Personality[0] = 0f;
-		Personality[1] = 0f;
+		Personality[0] = Random.Range(0f, 1f);
+		Personality[1] = Random.Range(0f, 1f);
 
 		//set build style
 		BuildStyle = GenerateBuildStyle(Personality[0], Personality[1]);
+		//TEMP, PLEASE DELETE, YOU MORON!
+		for (int i = 0; i < 3; i++)
+		{
+			BuildStyle[i] = "QuickAction";
+		}
 
 	}
 
@@ -53,20 +55,21 @@ public class EnemyController : MonoBehaviour
 		float sp = Personality[1];
 
 		//Number of points this personality thinks ought to be saved roughly (Different by a little every tick)
-		float agPointsToSave = (GetPointsPerTime() * 1000) / ag;
-		float spPointsToSave = (GetPointsPerTime() * 100) / sp;
+		float agPointsToSave = (GetPointsPerTime() * 100) / ag;
+		float spPointsToSave = (GetPointsPerTime() * 10) / sp;
 
 		float MinPointsSaved = ((agPointsToSave + spPointsToSave) / 2) + (GetPointsPerTime() * 100 * Random.Range(-1f, 1f));
 
 		if (Points > MinPointsSaved)
 		{
 
-			int Choice = Random.Range(1, 3);
+			//int Choice = Random.Range(1, 3);
+			int Choice = 1;
 
 			if (Choice == 1)
 			{
 				//build if we can otherwise do nothing
-				if (Points - BridgeUnitCost > MinPointsSaved)
+				if (Points - BridgePieceCost > MinPointsSaved)
 				{
 					BuildBridgeDecide();
 				}
@@ -83,15 +86,16 @@ public class EnemyController : MonoBehaviour
 			
 		}
 		
-
 	}
 
 	public void BuildBridgeDecide()
 	{
 		//decided to make a bridge
-		if (Points > BridgeUnitCost)
+		if (Points > BridgePieceCost)
 		{
-			string BuildChoice = BuildStyle[Random.Range(1, BuildStyle.Length - 1)];
+			string BuildChoice = BuildStyle[Random.Range(0, BuildStyle.Length)];
+
+			Debug.Log(BuildChoice);
 
 			if (BuildChoice == "CrazyAction")
 			{
@@ -130,36 +134,37 @@ public class EnemyController : MonoBehaviour
 	{
 		//placement towards player's closest node (From my node with the lowest distance to any player node)
 
-		GameObject ClosestBridgeUnit = null;
+		GameObject ClosestBridgePiece = null;
 		float SmallestDelta = -1f;
 
 		//loop trough all my bridge units find out how far each is from its nearest player node and save that delta
-		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("BridgeUnit"))
+		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("BridgePiece"))
 		{
 			if (obj.GetComponent<BridgeScript>().GetOwner() == OwnerID)
 			{
-				Vector3 ClosestPlayernodeCenterPointPosition = GetChildObjectWithTag(GetPlayerNodeClosestToPoint(obj.transform.position).transform, "CenterPoint").transform.position;
+				Vector3 ClosestPlayernodeCenterPointPosition = GetPlayerNodeClosestToPoint(obj.transform.position).transform.position;
 
 				float CurrentUnitDelta = Vector3.Distance(ClosestPlayernodeCenterPointPosition, obj.transform.position);
 
 				if (CurrentUnitDelta < SmallestDelta)
 				{
 					SmallestDelta = CurrentUnitDelta;
-					ClosestBridgeUnit = obj;
+					ClosestBridgePiece = obj;
 				}
 				else if (SmallestDelta == -1f)
 				{
 					SmallestDelta = CurrentUnitDelta;
-					ClosestBridgeUnit = obj;
+					ClosestBridgePiece = obj;
 				}
 			}
 		}
 
 
-		if (ClosestBridgeUnit != null)
+		if (ClosestBridgePiece != null)
 		{
-			GameObject ClosestPlayerNode = GetPlayerNodeClosestToPoint(ClosestBridgeUnit.transform.position);
-			Build(GetSnapPointClosestToPoint(ClosestBridgeUnit, ClosestPlayerNode.transform.position).transform.position, GetChildObjectWithTag(ClosestBridgeUnit.transform, "CenterPoint").transform.rotation);
+			GameObject ClosestPlayerNode = GetPlayerNodeClosestToPoint(ClosestBridgePiece.transform.position);
+			GameObject snapPoint = GetSnapPointClosestToPoint(ClosestBridgePiece, ClosestPlayerNode.transform.position);
+			Build(snapPoint.transform.position, snapPoint.transform.position - GetChildObjectWithTag(ClosestBridgePiece.transform, "CenterPoint").transform.position);
 		}
 		else
 		{
@@ -172,7 +177,7 @@ public class EnemyController : MonoBehaviour
 			{
 				if (obj.GetComponent<NodeScript>().GetOwner() == OwnerID)
 				{
-					Vector3 ClosestPlayernodeCenterPointPosition = GetChildObjectWithTag(GetPlayerNodeClosestToPoint(obj.transform.position).transform, "CenterPoint").transform.position;
+					Vector3 ClosestPlayernodeCenterPointPosition = GetPlayerNodeClosestToPoint(obj.transform.position).transform.position;
 
 					float CurrentNodeDelta = Vector3.Distance(ClosestPlayernodeCenterPointPosition, obj.transform.position);
 
@@ -203,7 +208,7 @@ public class EnemyController : MonoBehaviour
 				//Scale according to radius
 				Vector3 NewPos = ThisNode + ClosestNode.GetComponent<NodeScript>().GetRadius() * Direction * 5;
 
-				Quaternion rotation = Quaternion.FromToRotation(ClosestNode.transform.position, TargetPos);
+				Vector3 rotation = TargetPos - ClosestNode.transform.position;
 
 				Build(NewPos, rotation);
 			}
@@ -220,36 +225,49 @@ public class EnemyController : MonoBehaviour
 	public void QuickAction() //D. ag: 4 sp: 3
 	{
 		//Placement toward closest empty node
-		GameObject ClosestBridgeUnit = null;
+		GameObject ClosestBridgePiece = null;
+		GameObject ClosestEmptyNode = null;
 		float SmallestDelta = -1f;
 
 		//loop trough all my bridge units find out how far each is from its nearest empty node and save that delta
-		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("BridgeUnit"))
+		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("BridgePiece"))
 		{
 			if (obj.GetComponent<BridgeScript>().GetOwner() == OwnerID)
 			{
-				Vector3 ClosestEmptyNodeCenterPointPosition = GetChildObjectWithTag(GetEmptyNodeClosestToPoint(obj.transform.position).transform, "CenterPoint").transform.position;
+				GameObject EmptyNode = GetEmptyNodeClosestToPoint(obj.transform.position);
 
-				float CurrentUnitDelta = Vector3.Distance(ClosestEmptyNodeCenterPointPosition, obj.transform.position);
+				Vector3 EmptyNodeCenterPointPosition = EmptyNode.transform.position;
+
+				float CurrentUnitDelta = Vector3.Distance(EmptyNodeCenterPointPosition, obj.transform.position);
 
 				if (CurrentUnitDelta < SmallestDelta)
 				{
 					SmallestDelta = CurrentUnitDelta;
-					ClosestBridgeUnit = obj;
+					ClosestBridgePiece = obj;
+					ClosestEmptyNode = EmptyNode;
 				}
 				else if (SmallestDelta == -1f)
 				{
 					SmallestDelta = CurrentUnitDelta;
-					ClosestBridgeUnit = obj;
+					ClosestBridgePiece = obj;
+					ClosestEmptyNode = EmptyNode;
 				}
 			}
 		}
 
-
-		if (ClosestBridgeUnit != null)
+		if (ClosestEmptyNode != null)
 		{
-			GameObject ClosestEmptyNode = GetEmptyNodeClosestToPoint(ClosestBridgeUnit.transform.position);
-			Build(GetSnapPointClosestToPoint(ClosestBridgeUnit, ClosestEmptyNode.transform.position).transform.position, GetChildObjectWithTag(ClosestBridgeUnit.transform, "CenterPoint").transform.rotation);
+			Debug.Log(ClosestEmptyNode.transform.position);
+		}
+		
+
+		if (ClosestBridgePiece != null && ClosestEmptyNode != null)
+		{
+			
+			GameObject snapPoint = GetSnapPointClosestToPoint(ClosestBridgePiece, ClosestEmptyNode.transform.position);
+			Debug.Log("snapPoint: " + snapPoint.transform.position);
+
+			Build(snapPoint.transform.position, snapPoint.transform.position - GetChildObjectWithTag(ClosestBridgePiece.transform, "CenterPoint").transform.position);
 		}
 		else
 		{
@@ -262,38 +280,41 @@ public class EnemyController : MonoBehaviour
 			{
 				if (obj.GetComponent<NodeScript>().GetOwner() == OwnerID)
 				{
-					Vector3 ClosestEmptyNodeCenterPointPosition = GetChildObjectWithTag(GetEmptyNodeClosestToPoint(obj.transform.position).transform, "CenterPoint").transform.position;
+					GameObject EmptyNode = GetEmptyNodeClosestToPoint(obj.transform.position);
 
-					float CurrentNodeDelta = Vector3.Distance(ClosestEmptyNodeCenterPointPosition, obj.transform.position);
+					Vector3 EmptyNodeCenterPointPosition = EmptyNode.transform.position;
+
+					float CurrentNodeDelta = Vector3.Distance(EmptyNodeCenterPointPosition, obj.transform.position);
 
 					if (CurrentNodeDelta < SmallestNodeDelta)
 					{
 						SmallestNodeDelta = CurrentNodeDelta;
 						ClosestNode = obj;
+						ClosestEmptyNode = EmptyNode;
 					}
 					else if (SmallestNodeDelta == -1f)
 					{
 						SmallestNodeDelta = CurrentNodeDelta;
 						ClosestNode = obj;
+						ClosestEmptyNode = EmptyNode;
 					}
 				}
 			}
 
 			if (ClosestNode != null)
 			{
-				GameObject ClosestPlayerNode = GetPlayerNodeClosestToPoint(ClosestNode.transform.position);
-
 				//Get positions
-				Vector3 TargetPos = ClosestPlayerNode.transform.position;
-				Vector3 ThisNode = ClosestNode.transform.position;
+				Vector3 TargetPos = ClosestEmptyNode.transform.position;
+				Vector3 ClosestNodePos = ClosestNode.transform.position;
 
 				//Find vector between positions
-				Vector3 Direction = Vector3.Normalize(TargetPos - ThisNode);
+				Vector3 Direction = Vector3.Normalize(TargetPos - ClosestNodePos);
 
 				//Scale according to radius
-				Vector3 NewPos = ThisNode + ClosestNode.GetComponent<NodeScript>().GetRadius() * Direction * 5;
+				Vector3 NewPos = ClosestNodePos + ClosestNode.GetComponent<NodeScript>().GetRadius() * Direction * 5;
+				Debug.Log("Target: " + TargetPos);
 
-				Quaternion rotation = Quaternion.FromToRotation(ClosestNode.transform.position, TargetPos);
+				Vector3 rotation = TargetPos - ClosestNode.transform.position;
 
 				Build(NewPos, rotation);
 			}
@@ -325,26 +346,28 @@ public class EnemyController : MonoBehaviour
 			}
 		}
 
-		GameObject ClosestBridgeUnit = null;
+		Debug.Log("Greedy target: " + HighestValueNode.transform.position);
 
-		ClosestBridgeUnit = GetBridgeUnitClosestToPoint(GetChildObjectWithTag(HighestValueNode.transform, "CenterPoint").transform.position);
+		GameObject ClosestBridgePiece = null;
 
-		if (ClosestBridgeUnit != null)
+		ClosestBridgePiece = GetBridgePieceClosestToPoint(HighestValueNode.transform.position);
+
+		if (ClosestBridgePiece != null)
 		{
-			Build(GetSnapPointClosestToPoint(ClosestBridgeUnit, HighestValueNode.transform.position).transform.position, GetChildObjectWithTag(ClosestBridgeUnit.transform, "CenterPoint").transform.rotation);
+			GameObject snapPoint = GetSnapPointClosestToPoint(ClosestBridgePiece, HighestValueNode.transform.position);
+			Build(snapPoint.transform.position, snapPoint.transform.position - GetChildObjectWithTag(ClosestBridgePiece.transform, "CenterPoint").transform.position);
 		}
 		else
 		{
 			GameObject ClosestNode = null;
 
-			ClosestNode = GetNodeIOwnClosestToPoint(GetChildObjectWithTag(HighestValueNode.transform, "CenterPoint").transform.position);
+			ClosestNode = GetNodeIOwnClosestToPoint(HighestValueNode.transform.position);
 
 			if (ClosestNode != null)
 			{
-				GameObject ClosestPlayerNode = GetPlayerNodeClosestToPoint(ClosestNode.transform.position);
 
 				//Get positions
-				Vector3 TargetPos = ClosestPlayerNode.transform.position;
+				Vector3 TargetPos = HighestValueNode.transform.position;
 				Vector3 ThisNode = ClosestNode.transform.position;
 
 				//Find vector between positions
@@ -353,7 +376,7 @@ public class EnemyController : MonoBehaviour
 				//Scale according to radius
 				Vector3 NewPos = ThisNode + ClosestNode.GetComponent<NodeScript>().GetRadius() * Direction * 5;
 
-				Quaternion rotation = Quaternion.FromToRotation(ClosestNode.transform.position, TargetPos);
+				Vector3 rotation = TargetPos - ClosestNode.transform.position;
 
 				Build(NewPos, rotation);
 			}
@@ -368,10 +391,26 @@ public class EnemyController : MonoBehaviour
 	//________________________________________________________________________________________________________________________________________________________________
 
 	//takes new bridge unit's location as param
-	public void Build(Vector3 pos, Quaternion rot)
+	public void Build(Vector3 pos, Vector3 rot)
 	{
-		SpendPoints(BridgeUnitCost);
-		Instantiate(BridgePiece, pos, rot);
+
+		Debug.Log("Rot: " + rot);
+
+		pos.z = 0;
+		rot = Vector3.Normalize(rot);
+
+		Debug.Log("Rot Normal: " + rot);
+
+		SpendPoints(BridgePieceCost);
+		GameObject NewBridge = Instantiate(BridgePiece, pos, Quaternion.identity);
+		NewBridge.transform.up = rot;
+
+		Debug.Log("Bridge up: " + NewBridge.transform.up);
+
+		NewBridge.GetComponent<BridgeScript>().SetOwner(OwnerID);
+
+		FindObjectOfType<AudioManager>().Play("Place Bridge Unit");
+
 	}
 
 	public GameObject GetNodeIOwnClosestToPoint(Vector3 point)
@@ -383,7 +422,7 @@ public class EnemyController : MonoBehaviour
 		{
 			if (obj.GetComponent<NodeScript>().GetOwner() == OwnerID)
 			{
-				float CurrentNodeDelta = Vector3.Distance(GetChildObjectWithTag(obj.transform, "CenterPoint").transform.position, point);
+				float CurrentNodeDelta = Vector3.Distance(obj.transform.position, point);
 
 				if (CurrentNodeDelta < SmallestDelta)
 				{
@@ -410,7 +449,7 @@ public class EnemyController : MonoBehaviour
 		{
 			if (obj.GetComponent<NodeScript>().GetOwner() == PlayerID)
 			{
-				float CurrentNodeDelta = Vector3.Distance(GetChildObjectWithTag(obj.transform, "CenterPoint").transform.position, point);
+				float CurrentNodeDelta = Vector3.Distance(obj.transform.position, point);
 
 				if (CurrentNodeDelta < SmallestDelta)
 				{
@@ -437,7 +476,7 @@ public class EnemyController : MonoBehaviour
 		{
 			if (obj.GetComponent<NodeScript>().GetOwner() == 0)
 			{
-				float CurrentNodeDelta = Vector3.Distance(GetChildObjectWithTag(obj.transform, "CenterPoint").transform.position, point);
+				float CurrentNodeDelta = Vector3.Distance(obj.transform.position, point);
 
 				if (CurrentNodeDelta < SmallestDelta)
 				{
@@ -455,12 +494,12 @@ public class EnemyController : MonoBehaviour
 		return ClosestNode;
 	}
 
-	public GameObject GetBridgeUnitClosestToPoint(Vector3 point)
+	public GameObject GetBridgePieceClosestToPoint(Vector3 point)
 	{
-		GameObject ClosestBridgeUnit = null;
+		GameObject ClosestBridgePiece = null;
 		float SmallestDelta = -1f;
 
-		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("BridgeUnit"))
+		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("BridgePiece"))
 		{
 			if (obj.GetComponent<BridgeScript>().GetOwner() == OwnerID)
 			{
@@ -469,27 +508,27 @@ public class EnemyController : MonoBehaviour
 				if (CurrentUnitDelta < SmallestDelta)
 				{
 					SmallestDelta = CurrentUnitDelta;
-					ClosestBridgeUnit = obj;
+					ClosestBridgePiece = obj;
 				}
 				else if (SmallestDelta == -1f)
 				{
 					SmallestDelta = CurrentUnitDelta;
-					ClosestBridgeUnit = obj;
+					ClosestBridgePiece = obj;
 				}
 			}
 		}
 
-		return ClosestBridgeUnit;
+		return ClosestBridgePiece;
 	}
 
-	public GameObject GetSnapPointClosestToPoint(GameObject bridgeUnit, Vector3 point)
+	public GameObject GetSnapPointClosestToPoint(GameObject BridgePiece, Vector3 point)
 	{
 		GameObject ClosestSnapPoint = null;
 		float SmallestDelta = -1f;
 
-		if (bridgeUnit.tag == "BridgeUnit")
+		if (BridgePiece.tag == "BridgePiece")
 		{
-			foreach (GameObject snapPoint in GameObject.FindGameObjectsWithTag(""))
+			foreach (GameObject snapPoint in GameObject.FindGameObjectsWithTag("SnapPoint"))
 			{
 
 				float CurrentPointDelta = Vector3.Distance(snapPoint.transform.position, point);

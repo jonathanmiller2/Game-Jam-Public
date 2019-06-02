@@ -34,15 +34,14 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
     // Update is called once per frame
     void Update()
     {
-    	//Determine if our bridge is attached to something that's supported
+		//Determine if our bridge is attached to something that's supported
 
-    	//Check to see if we're attached to a node
-    	
+		//Check to see if we're attached to a node
 
 
-    	//Check once every couple seconds if our bridge is supported, if not, delete it
-    	//This check is delayed because the order that the other bridge pieces will check is unknown, so we delay to allow all of them to check
-    	if(TimeCounter > SecondsPerCheck)
+		//Check once every couple seconds if our bridge is supported, if not, delete it
+		//This check is delayed because the order that the other bridge pieces will check is unknown, so we delay to allow all of them to check
+		if (TimeCounter > SecondsPerCheck)
     	{
     		if(!Supported)
     		{
