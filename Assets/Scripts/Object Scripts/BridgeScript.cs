@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class BridgeScript : MonoBehaviour, IPointerClickHandler
 {
 	public GameObject GhostBridge;
-	public int Owner = 1;
+	public int Owner = -1;
 
     public Material[] BridgeMaterials;
 
@@ -126,23 +126,22 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
         foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
         {
             //Clamp as we only have one enemy material
-            if(Owner > 2)
+            if(NewOwner > 2)
             {
-                renderer.material = BridgeMaterials[2];    
+                renderer.material = BridgeMaterials[2];
             }
             else
             {
-                renderer.material = BridgeMaterials[Owner];    
+				renderer.material = BridgeMaterials[NewOwner];
             }
         }
 
-
         //Enemies have different colors
-		if (Owner >= 2)
+		if (NewOwner >= 2)
 		{
 			foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
 			{
-				if (enemy.GetComponent<EnemyController>().OwnerID == Owner)
+				if (enemy.GetComponent<EnemyController>().OwnerID == NewOwner)
 				{
 					Color newColor = enemy.GetComponent<EnemyController>().color;
 

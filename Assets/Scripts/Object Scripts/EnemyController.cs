@@ -106,6 +106,8 @@ public class EnemyController : MonoBehaviour
 		{
 			string BuildChoice = BuildStyle[Random.Range(0, BuildStyle.Length)];
 
+			Debug.Log("Enemy " + OwnerID + " chose " + BuildChoice + ".");
+
 			if (BuildChoice == "CrazyAction")
 			{
 				CrazyAction();
@@ -186,6 +188,7 @@ public class EnemyController : MonoBehaviour
 		{
 			GameObject ClosestPlayerNode = GetNonAttackablePlayerNodeClosestToPoint(ClosestBridgePiece.transform.position);
 			GameObject snapPoint = GetSnapPointClosestToPoint(ClosestBridgePiece, ClosestPlayerNode.transform.position);
+			Debug.Log("Aggressive action from enemy " + OwnerID + " placed off of bridge with owner " + ClosestBridgePiece.GetComponent<BridgeScript>().GetOwner() + ".");
 			Build(snapPoint.transform.position, snapPoint.transform.position - GetChildObjectWithTag(ClosestBridgePiece.transform, "CenterPoint").transform.position);
 		}
 		else
@@ -290,18 +293,11 @@ public class EnemyController : MonoBehaviour
 			}
 		}
 
-		if (ClosestEmptyNode != null)
-		{
-			Debug.Log(ClosestEmptyNode.transform.position);
-		}
-		
-
 		if (ClosestBridgePiece != null && ClosestEmptyNode != null)
 		{
 			
 			GameObject snapPoint = GetSnapPointClosestToPoint(ClosestBridgePiece, ClosestEmptyNode.transform.position);
-			Debug.Log("snapPoint: " + snapPoint.transform.position);
-
+			Debug.Log("Quick action from enemy " + OwnerID + " placed off of bridge with owner " + ClosestBridgePiece.GetComponent<BridgeScript>().GetOwner() + ".");
 			Build(snapPoint.transform.position, snapPoint.transform.position - GetChildObjectWithTag(ClosestBridgePiece.transform, "CenterPoint").transform.position);
 		}
 		else
@@ -365,29 +361,40 @@ public class EnemyController : MonoBehaviour
 
 		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Node"))
 		{
-
-			float CurrentNodeRadius = obj.GetComponent<NodeScript>().GetRadius();
-
-			if (CurrentNodeRadius > HighestRadius)
+			//Only check nodes that aren't mine and aren't attackable.
+			if (!AttackableNodes.Contains(obj) && obj.GetComponent<NodeScript>().GetOwner() != OwnerID)
 			{
-				HighestRadius = CurrentNodeRadius;
-				HighestValueNode = obj;
-			}
-			else if (HighestRadius == -1f)
-			{
-				HighestRadius = CurrentNodeRadius;
-				HighestValueNode = obj;
+				float CurrentNodeRadius = obj.GetComponent<NodeScript>().GetRadius();
+
+				if (CurrentNodeRadius > HighestRadius)
+				{
+					HighestRadius = CurrentNodeRadius;
+					HighestValueNode = obj;
+				}
+				else if (HighestRadius == -1f)
+				{
+					HighestRadius = CurrentNodeRadius;
+					HighestValueNode = obj;
+				}
 			}
 		}
 
 		GameObject ClosestBridgePiece = null;
 
-		ClosestBridgePiece = GetBridgePieceClosestToPoint(HighestValueNode.transform.position);
+		if (HighestValueNode)
+		{
+			ClosestBridgePiece = GetBridgePieceClosestToPoint(HighestValueNode.transform.position);
+		}
+		else
+		{
+			//try to attack
+		}
 
 		if (ClosestBridgePiece != null)
 		{
 			GameObject snapPoint = GetSnapPointClosestToPoint(ClosestBridgePiece, HighestValueNode.transform.position);
 			Build(snapPoint.transform.position, snapPoint.transform.position - GetChildObjectWithTag(ClosestBridgePiece.transform, "CenterPoint").transform.position);
+			Debug.Log("Greedy action from enemy " + OwnerID + " placed off of bridge with owner " + ClosestBridgePiece.GetComponent<BridgeScript>().GetOwner() + ".");
 		}
 		else
 		{
@@ -630,6 +637,8 @@ public class EnemyController : MonoBehaviour
 		{
 			if (obj.GetComponent<BridgeScript>().GetOwner() == OwnerID)
 			{
+				Debug.Log("I have decided I own this. I am " + OwnerID + ", it belongs to " + obj.GetComponent<BridgeScript>().GetOwner() + ".");
+
 				float CurrentUnitDelta = Vector3.Distance(GetChildObjectWithTag(obj.transform, "CenterPoint").transform.position, point);
 
 				if (CurrentUnitDelta < SmallestDelta)
@@ -642,6 +651,10 @@ public class EnemyController : MonoBehaviour
 					SmallestDelta = CurrentUnitDelta;
 					ClosestBridgePiece = obj;
 				}
+			}
+			else
+			{
+				Debug.Log("Not my piece. Piece: " + obj.GetComponent<BridgeScript>().GetOwner());
 			}
 		}
 
