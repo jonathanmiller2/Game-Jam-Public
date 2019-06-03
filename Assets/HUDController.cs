@@ -8,6 +8,8 @@ public class HUDController : MonoBehaviour
 
 	private InputControllerScript inputController;
 
+	private int lastPoints = 0;
+
     void Start()
     {
 		inputController = FindObjectOfType<InputControllerScript>();
@@ -25,7 +27,14 @@ public class HUDController : MonoBehaviour
 			}
 			else if (mesh.tag == "Points")
 			{
-				mesh.text = inputController.Points.ToString("f0");
+				string pointsText = inputController.Points.ToString("f0");
+
+				if (int.Parse(pointsText) > lastPoints)
+				{
+					FindObjectOfType<AudioManager>().Play("Gain Point");
+				}
+
+				mesh.text = pointsText;
 			}
 			
 		}
