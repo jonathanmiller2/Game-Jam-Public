@@ -512,7 +512,7 @@ public class EnemyController : MonoBehaviour
 
 		CheckAttackable(NewBridge);
 
-		FindObjectOfType<AudioManager>().Play("Place Bridge Unit");
+		FindObjectOfType<AudioManager>().Play("Enemy Place Bridge");
 	}
 
 	public void CheckAttackable(GameObject NewBridgePiece)

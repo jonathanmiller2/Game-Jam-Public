@@ -43,7 +43,9 @@ public class CursorController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            foreach (Animator anim in transform.GetComponentsInChildren<Animator>())
+			FindObjectOfType<AudioManager>().Play("Click");
+
+			foreach (Animator anim in transform.GetComponentsInChildren<Animator>())
             {
                 anim.ResetTrigger("Release");
                 anim.SetTrigger("Click");

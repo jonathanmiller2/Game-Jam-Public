@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -16952,6 +16952,38 @@ MonoBehaviour:
     source: {fileID: 0}
   - clipName: No Deal
     clip: {fileID: 8300000, guid: fcf5d708e38622245ab683583a41f2b7, type: 3}
+    volume: 1
+    pitch: 1
+    fadeSpeed: 0
+    targetVolume: 0
+    loop: 0
+    source: {fileID: 0}
+  - clipName: Click
+    clip: {fileID: 8300000, guid: 3456bb9c071c2eb48814eb442cb97259, type: 3}
+    volume: 1
+    pitch: 1
+    fadeSpeed: 0
+    targetVolume: 0
+    loop: 0
+    source: {fileID: 0}
+  - clipName: Bridge Destroy
+    clip: {fileID: 8300000, guid: 114585ba6d4b037429e07d94f50215fd, type: 3}
+    volume: 1
+    pitch: 1
+    fadeSpeed: 0
+    targetVolume: 0
+    loop: 0
+    source: {fileID: 0}
+  - clipName: Node Change
+    clip: {fileID: 8300000, guid: 7712cd77347405f42a370ddb60143de0, type: 3}
+    volume: 1
+    pitch: 1
+    fadeSpeed: 0
+    targetVolume: 0
+    loop: 0
+    source: {fileID: 0}
+  - clipName: Enemy Place Bridge
+    clip: {fileID: 8300000, guid: 4a96918c53830724eb19610e88d75592, type: 3}
     volume: 1
     pitch: 1
     fadeSpeed: 0

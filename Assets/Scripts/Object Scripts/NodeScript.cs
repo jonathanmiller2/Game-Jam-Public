@@ -220,8 +220,7 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
 		}
 		else
 		{
-			//need a node change sound
-			//FindObjectOfType<AudioManager>().Play("Node");
+			FindObjectOfType<AudioManager>().Play("Node Change");
 		}
 		
 

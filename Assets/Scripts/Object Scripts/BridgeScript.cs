@@ -58,7 +58,8 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
         {
             // Debug.Log("aaa");
             Destroy(gameObject);
-        }
+			FindObjectOfType<AudioManager>().Play("Bridge Destroy");
+		}
 
 
 
