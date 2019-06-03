@@ -155,6 +155,20 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
 					{
 						renderer.material.SetColor("Color_6EC6B721", newColor);
 					}
+
+					foreach(ParticleSystemRenderer particleSystem in gameObject.GetComponentsInChildren<ParticleSystemRenderer>()){
+						if (NewOwner >= 2)
+						{
+							particleSystem.material = BridgeMaterials[2];
+						}
+						else
+						{
+							particleSystem.material = BridgeMaterials[NewOwner];
+						}
+
+						particleSystem.material.SetColor("Color_6EC6B721", newColor);
+					}
+
 				}
 			}
 		}
