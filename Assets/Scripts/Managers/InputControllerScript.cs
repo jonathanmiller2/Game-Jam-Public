@@ -30,13 +30,27 @@ public class InputControllerScript : MonoBehaviour
         Raycaster = Canvas.GetComponent<GraphicRaycaster>();
         eventSystem = GUIEventSystemObject.GetComponent<EventSystem>();		
 
-        DebugTarget = GameObject.Find("DebugTarget");
+        // DebugTarget = GameObject.Find("DebugTarget");
 
 		Cursor.visible = true;
+
 	}
 
     void Update()
     {
+    	/*
+		//Debug target handler (brown square)
+		if(SelectedObject)
+		{
+			DebugTarget.transform.position = SelectedObject.transform.position;
+		}
+		else
+		{
+			DebugTarget.transform.position = new Vector3(0f,0f,0f);
+		}
+		*/
+
+
 		//Get points
 		AquirePoints();
 
@@ -150,17 +164,6 @@ public class InputControllerScript : MonoBehaviour
 			}
 		}
 
-		
-		//Debug target handler (brown square)
-		if(SelectedObject)
-		{
-			DebugTarget.transform.position = SelectedObject.transform.position;
-		}
-		else
-		{
-			DebugTarget.transform.position = new Vector3(0f,0f,0f);
-		}
-		
 
 	}
 
@@ -289,9 +292,8 @@ public class InputControllerScript : MonoBehaviour
 	{
 		BuildState = newState;
 		
-
-		GameObject.Find("Place Mode Off").SetActive(!newState);	
-		GameObject.Find("Place Mode On").SetActive(newState);	
+		GameObject.Find("GUI").transform.Find("Place Mode On").gameObject.SetActive(newState);	
+		GameObject.Find("GUI").transform.Find("Place Mode Off").gameObject.SetActive(!newState);	
 	}
 
 	public bool GetBuildState()
