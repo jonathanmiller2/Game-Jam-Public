@@ -234,7 +234,6 @@ public class GhostBridgeScript : MonoBehaviour
         else
         {
             //TODO: PLAY CANT AFFORD SOUND
-            Destroy(gameObject);
             return null;
         }
     }
