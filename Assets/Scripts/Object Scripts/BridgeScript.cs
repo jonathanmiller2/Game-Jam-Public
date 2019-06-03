@@ -22,11 +22,11 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
     //Support variables
     private bool Supported = true;
 
-    private float CheckCounter = 0f;
-    private const float SecondsPerCheck = 2f;
+    // private float CheckCounter = 0f;
+    // private const float SecondsPerCheck = 2f;
 
-    private float UnsupportedCounter = 0f;
-    private const float SecondsToAllowUnsupported = 2f;
+    // private float UnsupportedCounter = 0f;
+    // private const float SecondsToAllowUnsupported = 2f;
 
     private const float ConnectedDistanceToNode = .5f;
     private const float ConnectedDistanceToBridge = .5f;

@@ -27,7 +27,7 @@ public class HUDController : MonoBehaviour
 			}
 			else if (mesh.tag == "Points")
 			{
-				string pointsText = inputController.Points.ToString("f0");
+				string pointsText = inputController.GetPoints().ToString("f0");
 
 				if (int.Parse(pointsText) > lastPoints)
 				{
