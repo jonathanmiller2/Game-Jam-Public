@@ -11,7 +11,7 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
     public int Owner = 0;
 
     //Colors
-    public Material[] myMaterials;
+    public Material[] NodeMaterials;
     
     public GameObject GhostBridgePiecePrefab;
     public GameObject AttackerPrefab;
@@ -130,6 +130,10 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
         		//Debug.Log("Capture!");
         		//TODO: Conversion!
         		//Animation? Set material?
+
+
+
+
         		//Child 0 is the sprite displayer object
         		transform.GetChild(0).GetComponent<Animator>().SetTrigger("Capture");
         		Owner = NextOwner;
@@ -174,6 +178,9 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
         }
     }
 
+
+
+
     //(single)
     public GameObject GetChildObjectWithTag(Transform Parent, string Tag)
     {
@@ -198,10 +205,55 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
         return Radius;
     }
 
-    //0 is friendly, nonzero is enemy
-    public void SetOwner(int a)
+    //Added just in case (in case has happened, we need this now)
+    public void SetOwner(int NewOwner)
     {
-        Owner = a;
+        Owner = NewOwner;
+
+        foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
+        {
+            //Clamp as we only have one enemy material
+            if(NewOwner > 2)
+            {
+                renderer.material = NodeMaterials[2];
+            }
+            else
+            {
+                renderer.material = NodeMaterials[NewOwner];
+            }
+        }
+
+        //Enemies have different colors
+        if (NewOwner >= 2)
+        {
+            foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+            {
+                if (enemy.GetComponent<EnemyController>().OwnerID == NewOwner)
+                {
+                    Color newColor = enemy.GetComponent<EnemyController>().color;
+
+                    foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
+                    {
+                        renderer.material.SetColor("Color_6EC6B721", newColor);
+                    }
+
+                    foreach(ParticleSystemRenderer particleSystem in gameObject.GetComponentsInChildren<ParticleSystemRenderer>())
+                    {
+                        if (NewOwner >= 2)
+                        {
+                            particleSystem.material = NodeMaterials[2];
+                        }
+                        else
+                        {
+                            particleSystem.material = NodeMaterials[NewOwner];
+                        }
+
+                        particleSystem.material.SetColor("Color_6EC6B721", newColor);
+                    }
+
+                }
+            }
+        }
     }
 
     public int GetOwner()

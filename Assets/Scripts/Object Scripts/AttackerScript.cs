@@ -23,6 +23,10 @@ public class AttackerScript : MonoBehaviour
     private List<List<GameObject>> ValidPaths = new List<List<GameObject>>();
     private List<GameObject> ShortestPath = null;
 
+    private float HealthTickTimer = 0;
+    private float SecondsPerHealthTick = 3;
+    private float HealthTickRadius = 1f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,7 +38,32 @@ public class AttackerScript : MonoBehaviour
     {
         //TODO: Attacking and crap
 
+        if(HealthTickTimer > SecondsPerHealthTick)
+        {
+            HealthTickTimer = 0;
 
+            foreach(GameObject bridge in GameObject.FindGameObjectsWithTag("BridgePiece"))
+            {
+                float dist = Vector3.Distance(GetChildObjectWithTag(bridge.transform, "CenterPoint").transform.position, transform.position);
+                if(dist < HealthTickRadius)
+                {
+                    if(bridge.GetComponent<BridgeScript>().GetOwner() == Owner)
+                    {
+                        bridge.GetComponent<BridgeScript>().GiveHealth(1);
+                    }
+                    else
+                    {
+                        Debug.Log("bbbb");
+                        bridge.GetComponent<BridgeScript>().TakeHealth(1);
+                    }
+                }
+            }
+        }
+        else
+        {
+            HealthTickTimer += Time.deltaTime;
+        }
+        
     }
 
     public void SetTarget(Vector3 newTarget)
