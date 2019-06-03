@@ -49,7 +49,11 @@ public class MenuScript : MonoBehaviour
     {
     	//Return to main menu
     	SceneManager.LoadScene(0);
-		FindObjectOfType<AudioManager>().Play("Menu Select");
+        // IM SORRY
+        GameObject.FindGameObjectWithTag("Trans").GetComponent<Animator>().gameObject.SetActive(false);
+        //But I did fix this
+        Unpause();
+        FindObjectOfType<AudioManager>().Play("Menu Select");
 	}
 
     public void ExitToDesktopButtonPressed()
@@ -82,6 +86,6 @@ public class MenuScript : MonoBehaviour
     private void Unpause()
     {
     	Time.timeScale = 1f;
-    	// Debug.Log("Unpaused");
+    	 Debug.Log("Unpaused");
     }
 }

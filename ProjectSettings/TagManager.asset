@@ -13,6 +13,7 @@ TagManager:
   - Enemy
   - Points
   - PPS
+  - Trans
   layers:
   - Default
   - TransparentFX
