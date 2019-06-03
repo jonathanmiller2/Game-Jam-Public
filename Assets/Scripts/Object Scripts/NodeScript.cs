@@ -162,16 +162,11 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
         	//If right click
         	else if(InputPointerEventData.button == PointerEventData.InputButton.Right)
         	{
-        		// Debug.Log("Dut");
         		GameObject NewAttacker = Instantiate(AttackerPrefab, transform.position, transform.rotation);
                 NewAttacker.GetComponent<AttackerScript>().SetOwner(1);
         		inputControllerScript.SetSelectedObject(NewAttacker);
-        	}
-        }
-        else
-        {
-        	//We clicked on this node and we don't own it
-        	//TODO: attack
+				FindObjectOfType<AudioManager>().Play("Player Attacker Spawn");
+			}
         }
     }
 
