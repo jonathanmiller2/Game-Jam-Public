@@ -200,9 +200,9 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
     public void GiveHealth(int TakenHealth)
     {
         Health += TakenHealth;
-        if(Health > 2)
+        if(Health > 3)
         {
-            Health = 2;
+            Health = 3;
         }
 
         foreach (SpriteRenderer renderer in SelectedObject.GetComponentsInChildren<SpriteRenderer>())
