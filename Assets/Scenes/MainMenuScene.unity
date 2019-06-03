@@ -18921,7 +18921,7 @@ MonoBehaviour:
     targetVolume: 0
     loop: 0
     source: {fileID: 0}
-  - clipName: Gain Unit
+  - clipName: Gain Point
     clip: {fileID: 8300000, guid: 6daeb27d6e2a76446b63c574979529cd, type: 3}
     volume: 1
     pitch: 1
