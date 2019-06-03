@@ -17,6 +17,10 @@ public class InputControllerScript : MonoBehaviour
 	private GameObject DebugTarget;
 	//private bool
 
+	public float Points = 0f;
+	private const int BridgePieceCost = 1;
+	private const float PointsPerRadius = 0.1f;
+
 	void Start()
 	{
 		GameObject Canvas = GameObject.Find("GUI");
@@ -26,13 +30,14 @@ public class InputControllerScript : MonoBehaviour
 
         DebugTarget = GameObject.Find("DebugTarget");
 
-
 		Cursor.visible = true;
 	}
 
     void Update()
     {
-    	
+		//Get points
+		AquirePoints();
+
 		if (Input.GetButtonDown("BuildMode"))
 		{
 			SetBuildState(true);
@@ -148,6 +153,34 @@ public class InputControllerScript : MonoBehaviour
 		}
 		
 
+	}
+
+	public float GetPointsPerTime()
+	{
+		float PointsPerTime = 0f;
+		float TotalOwnedRadius = 0f;
+
+		//loop through all nodes to find which I own and then total up the points I should get per game tick
+		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Node"))
+		{
+			if (obj.GetComponent<NodeScript>().GetOwner() == 1)
+			{
+				TotalOwnedRadius += obj.GetComponent<NodeScript>().GetRadius();
+			}
+		}
+
+		PointsPerTime = TotalOwnedRadius * PointsPerRadius;
+		return PointsPerTime;
+	}
+
+	public void AquirePoints()
+	{
+		Points += GetPointsPerTime();
+	}
+
+	public void SpendPoints(int toSpend)
+	{
+		Points -= toSpend;
 	}
 
 	//This will return a string, but will also set ClickedGameObject

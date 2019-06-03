@@ -11,6 +11,8 @@ public class AudioManager : MonoBehaviour
 	private System.Collections.Generic.List<Sound> fadingInSounds = new System.Collections.Generic.List<Sound>();
 
 	public static AudioManager instance;
+	[Range(0f, 1f)]
+	public float StartVolume;
 
     private void Awake()
     {
@@ -34,7 +36,9 @@ public class AudioManager : MonoBehaviour
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
 		}
-    }
+
+		//ChangeGlobalVolume(StartVolume);
+	}
 
 	public void Update()
 	{

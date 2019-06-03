@@ -20,12 +20,15 @@ public class EnemyController : MonoBehaviour
 	public string[] BuildStyle = new string[3];
 
 	public List<GameObject> AttackableNodes = new List<GameObject>();
+	public List<GameObject> AttackableBridges = new List<GameObject>();
 
 	private const int BridgePieceCost = 1;
 	private const float PointsPerRadius = 0.1f;
+	private const float BridgeOriginDistance = 0.25f;
+	private const float minimumPlacementDistance = 0.15f;
 
 	private float nextUpdate = 0f;
-	private const float timeBetweenUpdates = 0.5f;
+	private const float timeBetweenUpdates = 1f;
 
 	// Start is called before the first frame update
 	void Start()
@@ -55,9 +58,8 @@ public class EnemyController : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate()
     {
-
-
 		AquirePoints();
+
 		if (Time.time >= nextUpdate)
 		{
 			nextUpdate = Time.time + timeBetweenUpdates;
@@ -191,14 +193,27 @@ public class EnemyController : MonoBehaviour
 			}
 		}
 
+		bool placementFailed = false;
 
 		if (ClosestBridgePiece != null)
 		{
 			GameObject ClosestPlayerNode = GetNonAttackablePlayerNodeClosestToPoint(ClosestBridgePiece.transform.position);
 			GameObject snapPoint = GetSnapPointClosestToPoint(ClosestBridgePiece, ClosestPlayerNode.transform.position);
-			Build(snapPoint.transform.position, snapPoint.transform.position - GetChildObjectWithTag(ClosestBridgePiece.transform, "CenterPoint").transform.position);
+
+			Vector3 pos = snapPoint.transform.position;
+			Vector3 rot = snapPoint.transform.position - GetChildObjectWithTag(ClosestBridgePiece.transform, "CenterPoint").transform.position;
+
+			if (!CheckNewBridgeColides(pos, rot))
+			{
+				Build(pos, rot);
+			}
+			else
+			{
+				placementFailed = true;
+			}
 		}
-		else
+
+		if (placementFailed && ClosestBridgePiece == null)
 		{
 			//find closest node to player and place in correct direction
 			GameObject ClosestNode = null;
@@ -249,7 +264,15 @@ public class EnemyController : MonoBehaviour
 
 				Vector3 rotation = TargetPos - ClosestNode.transform.position;
 
-				Build(NewPos, rotation);
+				if (!CheckNewBridgeColides(NewPos, rotation))
+				{
+					Build(NewPos, rotation);
+				}
+				else
+				{
+					Debug.Log("Failed to place off of a node because I collided ");
+				}
+				
 			}
 
 		}
@@ -300,15 +323,29 @@ public class EnemyController : MonoBehaviour
 			}
 		}
 
+		bool placementFailed = false;
+
 		if (ClosestBridgePiece != null && ClosestEmptyNode != null)
 		{
-			
 			GameObject snapPoint = GetSnapPointClosestToPoint(ClosestBridgePiece, ClosestEmptyNode.transform.position);
-			Build(snapPoint.transform.position, snapPoint.transform.position - GetChildObjectWithTag(ClosestBridgePiece.transform, "CenterPoint").transform.position);
+
+			Vector3 pos = snapPoint.transform.position;
+			Vector3 rot = snapPoint.transform.position - GetChildObjectWithTag(ClosestBridgePiece.transform, "CenterPoint").transform.position;
+
+			if (!CheckNewBridgeColides(pos, rot))
+			{
+				Build(pos, rot);
+			}
+			else
+			{
+				placementFailed = true;
+			}
+			
 		}
-		else
+
+		if(placementFailed && ClosestBridgePiece == null)
 		{
-			//find closest node to empty and place in correct direction
+			//find closest node to empty node and place in correct direction
 			GameObject ClosestNode = null;
 			float SmallestNodeDelta = -1f;
 
@@ -355,7 +392,14 @@ public class EnemyController : MonoBehaviour
 
 				Vector3 rotation = TargetPos - ClosestNode.transform.position;
 
-				Build(NewPos, rotation);
+				if (!CheckNewBridgeColides(NewPos, rotation))
+				{
+					Build(NewPos, rotation);
+				}
+				else
+				{
+					//try to attack
+				}
 			}
 
 		}
@@ -432,7 +476,14 @@ public class EnemyController : MonoBehaviour
 
 				Vector3 rotation = TargetPos - ClosestNode.transform.position;
 
-				Build(NewPos, rotation);
+				if (!CheckNewBridgeColides(NewPos, rotation))
+				{
+					Build(NewPos, rotation);
+				}
+				else
+				{
+					//try to attack
+				}
 			}
 		}
 
@@ -466,24 +517,51 @@ public class EnemyController : MonoBehaviour
 
 	public void CheckAttackable(GameObject NewBridgePiece)
 	{
+
+		Vector3 NewBridgePiecePosition = GetChildObjectWithTag(NewBridgePiece.transform, "CenterPoint").transform.position;
+
+		//nodes
 		foreach (GameObject node in GameObject.FindGameObjectsWithTag("Node"))
 		{
 			if (node.GetComponent<NodeScript>().GetOwner() != OwnerID)
 			{
 				//check to see if newBP position is less distance away from node than node's radius if so, add node to attackable.
-
-				Vector3 NewBridgePiecePosition = NewBridgePiece.transform.position;
 				Vector3 NodePosition = node.transform.position;
 
-				float NodeRadius = node.GetComponent<NodeScript>().GetRadius();
+				//5f is to scale to worldspace
+				float NodeCollideRadius = (node.GetComponent<NodeScript>().GetRadius() * 5f);
 
 				float Distance = Vector3.Distance(NewBridgePiecePosition, NodePosition);
 
-				if (Distance <= NodeRadius * 5f)
+				
+				if (Distance <= NodeCollideRadius)
 				{
 					if (!AttackableNodes.Contains(node))
 					{
 						AttackableNodes.Add(node);
+					}
+				}
+			}
+		}
+
+		//bridges
+		foreach (GameObject bridge in GameObject.FindGameObjectsWithTag("BridgePiece"))
+		{
+			if (bridge.GetComponent<BridgeScript>().GetOwner() != OwnerID)
+			{
+				//check to see if newBP position is less distance away from node than node's radius if so, add node to attackable.
+
+				Vector3 BridgePosition = bridge.transform.position;
+
+				float BridgeCollideRadius = (BridgeOriginDistance * 2f) + (BridgeOriginDistance / 2f);
+
+				float Distance = Vector3.Distance(NewBridgePiecePosition, BridgePosition);
+
+				if (Distance <= BridgeCollideRadius)
+				{
+					if (!AttackableBridges.Contains(bridge))
+					{
+						AttackableBridges.Add(bridge);
 					}
 				}
 			}
@@ -697,6 +775,73 @@ public class EnemyController : MonoBehaviour
 		}
 
 		return ClosestSnapPoint;
+	}
+
+	public bool CheckNewBridgeColides(Vector3 pos, Vector3 rot)
+	{
+		//this function DOES collide if the other Player's object I
+		//normally would have NOT counted is attackable, meaning I already collided with it once.
+		//center point is 0.25 away from origin point
+		bool collides = false;
+
+		GameObject centerPoint = new GameObject();
+		GameObject newBridgeCenterPoint = Instantiate(centerPoint, pos, Quaternion.identity);
+		Destroy(centerPoint);
+		newBridgeCenterPoint.transform.up = rot;
+		newBridgeCenterPoint.name = "BridgeCenterTester - Attempted Loc: " + pos + " (Without translation)";
+
+		//Move to the hypothetical center point of new block.
+		Transform self = newBridgeCenterPoint.transform;
+		newBridgeCenterPoint.transform.Translate(transform.up * BridgeOriginDistance, self);
+		
+		//Check bridges
+		foreach (GameObject bridge in GameObject.FindGameObjectsWithTag("BridgePiece"))
+		{
+			float DistanceFromBridge = Vector3.Distance(GetChildObjectWithTag(bridge.transform, "CenterPoint").transform.position, newBridgeCenterPoint.transform.position);
+
+			if (DistanceFromBridge <= (BridgeOriginDistance) + minimumPlacementDistance)
+			{
+				if (bridge.GetComponent<BridgeScript>().GetOwner() == OwnerID)
+				{
+					//No deal!
+					collides = true;
+					Debug.Log("Collides with own bridge");
+				}
+				else if (AttackableBridges.Contains(bridge))
+				{
+					//If it belongs to someone else and we have already added it to attackable then don't build.
+					collides = true;
+					Debug.Log("Collides with attackable bridge");
+				}
+			}
+		}
+
+		//Check nodes
+		foreach (GameObject node in GameObject.FindGameObjectsWithTag("Node"))
+		{
+			float DistanceFromNode = Vector3.Distance(node.transform.position, newBridgeCenterPoint.transform.position);
+
+			//5f to convert to worldspace
+			if (DistanceFromNode <= (node.GetComponent<NodeScript>().GetRadius() * 5f) + minimumPlacementDistance)
+			{
+				if (node.GetComponent<NodeScript>().GetOwner() == OwnerID)
+				{
+					//If it would collide with a node that I own.
+					collides = true;
+					Debug.Log("Collides with own node");
+				}
+				else if (AttackableNodes.Contains(node))
+				{
+					//If it belongs to someone else and we have already added it to attackable then don't build.
+					collides = true;
+					Debug.Log("Collides with attackable node");
+				}
+			}
+		}
+
+		Destroy(newBridgeCenterPoint);
+
+		return collides;
 	}
 
 	public float GetPointsPerTime()
