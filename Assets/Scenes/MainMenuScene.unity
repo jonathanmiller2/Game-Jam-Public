@@ -994,7 +994,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: When paths are damage they get darker
+  m_text: Paths get darker as they are damaged
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1063,7 +1063,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: -185.32947, w: -60.674366}
   m_textInfo:
     textComponent: {fileID: 132421296}
-    characterCount: 37
+    characterCount: 36
     spriteCount: 0
     spaceCount: 6
     wordCount: 7
@@ -2304,9 +2304,9 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 'Clicking on nodes, paths, or attackers selects them
+  m_text: 'Clicking on nodes, paths, or attackers selects them.
 
-    press escape to deselect'
+    Press escape to deselect.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2351,7 +2351,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 52
+  m_firstOverflowCharacterIndex: 53
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -2375,7 +2375,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 285705900}
-    characterCount: 76
+    characterCount: 78
     spriteCount: 0
     spaceCount: 11
     wordCount: 12
@@ -3062,11 +3062,10 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 'Nodes give you more points per second
+  m_text: 'Your goal is to capture all nodes. Nodes give you more points per second.
 
-    and let you place paths off fo them
 
-    Right Click on a node to spawn an attacker'
+    Right click on a node to buy an attacker.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3138,9 +3137,9 @@ MonoBehaviour:
     characterCount: 116
     spriteCount: 0
     spaceCount: 23
-    wordCount: 24
+    wordCount: 23
     linkCount: 0
-    lineCount: 3
+    lineCount: 4
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -12513,7 +12512,7 @@ GameObject:
   - component: {fileID: 1081729724}
   - component: {fileID: 1081729723}
   m_Layer: 0
-  m_Name: Enemey Text
+  m_Name: Enemy Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12558,7 +12557,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Emenies will build twords you to take out your bridges and nodes
+  m_text: These are enemies
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -12603,7 +12602,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 59
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -12627,12 +12626,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1081729723}
-    characterCount: 64
+    characterCount: 17
     spriteCount: 0
-    spaceCount: 11
-    wordCount: 12
+    spaceCount: 2
+    wordCount: 3
     linkCount: 0
-    lineCount: 3
+    lineCount: 1
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -16979,10 +16978,10 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 'Attackers heal friendly paths and hurt narby enemy paths
+  m_text: 'Attackers heal friendly paths and hurt enemy paths
 
 
-    Click attackers then click a connected node to make move him'
+    With an attacker selected, click where you want them to go'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -17051,10 +17050,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: -185.32947, w: -60.674366}
   m_textInfo:
     textComponent: {fileID: 1761855351}
-    characterCount: 118
+    characterCount: 110
     spriteCount: 0
-    spaceCount: 20
-    wordCount: 20
+    spaceCount: 19
+    wordCount: 19
     linkCount: 0
     lineCount: 5
     pageCount: 1
@@ -18367,7 +18366,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Holding shift lets you place paths off of the currently selected object
+  m_text: Holding puts you into build mode. You can build off of friendly nodes and
+    bridges.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -18436,12 +18436,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: -128.10312, w: 0}
   m_textInfo:
     textComponent: {fileID: 1915350160}
-    characterCount: 71
+    characterCount: 82
     spriteCount: 0
-    spaceCount: 11
-    wordCount: 12
+    spaceCount: 14
+    wordCount: 15
     linkCount: 0
-    lineCount: 2
+    lineCount: 3
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
