@@ -11,6 +11,8 @@ TagManager:
   - CenterPoint
   - Attacker
   - Enemy
+  - Points
+  - PPS
   layers:
   - Default
   - TransparentFX
