@@ -12,7 +12,7 @@ public class AttackerScript : MonoBehaviour
     const float NodeConnectedRadius = 1.5f;
     const float BridgeConnectedRadius = 1.5f;
 
-	private int Owner = 1;
+	public int Owner = 1;
 
     private float MoveWait = .5f;
 
@@ -53,7 +53,6 @@ public class AttackerScript : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("bbbb");
                         bridge.GetComponent<BridgeScript>().TakeHealth(1);
                     }
                 }
@@ -100,7 +99,7 @@ public class AttackerScript : MonoBehaviour
 
         ActualTarget = ClosestObject;
 
-        Debug.Log("Moving to object:" + ActualTarget.name);
+        // Debug.Log("Moving to object:" + ActualTarget.name);
 
 
         DijkstraSetup(ActualTarget);
@@ -256,7 +255,7 @@ public class AttackerScript : MonoBehaviour
     IEnumerator MoveToTarget()
     {
 
-        Debug.Log(ShortestPath.Count);
+        // Debug.Log(ShortestPath.Count);
 
         foreach(GameObject GO in ShortestPath)
         {
