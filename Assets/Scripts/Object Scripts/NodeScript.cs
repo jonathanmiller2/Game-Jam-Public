@@ -24,13 +24,13 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
     private float SecondsPerCheck = 1f;
 
     private float ConversionTimer = 0f;
-    private float SecondsForConversion = 0f;
+    private float SecondsForConversion = 2f;
 
     private float ValidAttackerRadius = .6f;
     private List<int> AttackerCountsOnNode = new List<int>() {0,0,0,0,0,0,0,0,0,0};
-    private int NextOwner;
+    private int NextOwner = -1;
 
-    
+    private bool tie = true;
 
     // Start is called before the first frame update
     void Start()
@@ -49,12 +49,16 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
         //TODO: 
 
         float Dist = 1000f;
-        bool tie = true;
+
 
         //Check once a second how many attackers we have on our node
         //If it's imbalanced start a conversion timer
         if(CheckTimer > SecondsPerCheck)
         {
+            AttackerCountsOnNode = new List<int>() {0,0,0,0,0,0,0,0,0,0};
+            NextOwner = -1;
+            tie = false;
+
         	CheckTimer = 0;
         	
         	//Check how many attackers are on this node
@@ -67,20 +71,14 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
         	    if (Dist < ValidAttackerRadius)
         	    {
         	        int OwnerOfAttacker = obj.GetComponent<AttackerScript>().GetOwner();
-        	        if(AttackerCountsOnNode[OwnerOfAttacker] == null)
-        	        {
-        	        	AttackerCountsOnNode[OwnerOfAttacker] = 1;
-        	        }
-        	        else
-        	        {
-        	        	AttackerCountsOnNode[OwnerOfAttacker] += 1;
-        	        }
+        	        AttackerCountsOnNode[OwnerOfAttacker] += 1;
+
         	    }
         	}
 
         	//Find owner with highest attacker count
         	int HighestAmountOfAttackers = -1;
-        	int OwnerOfHighestAttackers = 0;
+        	int OwnerOfHighestAttackers = -1;
         	for(int i = 0; i < AttackerCountsOnNode.Count; i++)
         	{
         		if(AttackerCountsOnNode[i] > HighestAmountOfAttackers)
@@ -89,7 +87,6 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
         			OwnerOfHighestAttackers = i;
         		}
         	}
-	
 	
         	//Check if there's a tie
         	for(int i = 0; i < AttackerCountsOnNode.Count; i++)
@@ -107,7 +104,7 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
 	
         	if(!tie)
        	 	{
-        		NextOwner = OwnerOfHighestAttackers;
+                NextOwner = OwnerOfHighestAttackers;
         	}
         }
         else
@@ -115,33 +112,33 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
         	CheckTimer += Time.deltaTime;
         }
 
-        //Check if we have an imbalance of power
+        //Check if we have an balance of power
         if(tie)
         {
+            //If we have a tie, clear our next owner and reset conversion timer
         	NextOwner = Owner;
         	ConversionTimer = 0;
         }
+        //Check if we have an imbalance of power
         else
         {
-        	if(ConversionTimer > SecondsForConversion)
-        	{
-        		ConversionTimer = 0;
-
-        		//Debug.Log("Capture!");
-        		//TODO: Conversion!
-        		//Animation? Set material?
-
-
-
-
-        		//Child 0 is the sprite displayer object
-        		transform.GetChild(0).GetComponent<Animator>().SetTrigger("Capture");
-        		Owner = NextOwner;
-        	}
-        	else
-        	{
-        		ConversionTimer += Time.deltaTime;
-        	}
+            //Check if the imbalance is caused by someone other than ourselves
+            if(NextOwner != Owner)
+            {
+                if(ConversionTimer > SecondsForConversion)
+                {
+                    ConversionTimer = 0;
+    
+                    //Child 0 is the sprite displayer object
+                    transform.GetChild(0).GetComponent<Animator>().SetTrigger("Capture");
+                    SetOwner(NextOwner);
+                    Owner = NextOwner;
+                }
+                else
+                {
+                    ConversionTimer += Time.deltaTime;
+                }
+            }
         }
 
        
@@ -167,7 +164,8 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
         	else if(InputPointerEventData.button == PointerEventData.InputButton.Right)
         	{
         		// Debug.Log("Dut");
-        		GameObject NewAttacker = Instantiate(AttackerPrefab, transform.position, transform.rotation);	
+        		GameObject NewAttacker = Instantiate(AttackerPrefab, transform.position, transform.rotation);
+                NewAttacker.GetComponent<AttackerScript>().SetOwner(1);
         		inputControllerScript.SetSelectedObject(NewAttacker);
         	}
         }
