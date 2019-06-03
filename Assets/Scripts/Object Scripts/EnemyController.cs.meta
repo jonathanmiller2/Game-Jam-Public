@@ -6,6 +6,8 @@ MonoImporter:
   defaultReferences:
   - BridgePiece: {fileID: 2738520173740462586, guid: 96ea9bc4d6fef3440be9047c69d0779f,
       type: 3}
+  - Attacker: {fileID: 6084187635660429880, guid: 9d181dbebb9aea644b2c103f4603ec4a,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

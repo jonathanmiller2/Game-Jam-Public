@@ -18954,7 +18954,7 @@ MonoBehaviour:
     loop: 0
     source: {fileID: 0}
   - clipName: Place Bridge Unit
-    clip: {fileID: 8300000, guid: 397952569f06c3241aafacc63ef8fee0, type: 3}
+    clip: {fileID: 8300000, guid: 1738cfc761bdb9d4c9324d5d92550550, type: 3}
     volume: 1
     pitch: 1
     fadeSpeed: 0
@@ -18995,6 +18995,30 @@ MonoBehaviour:
     source: {fileID: 0}
   - clipName: Enemy Place Bridge
     clip: {fileID: 8300000, guid: 4a96918c53830724eb19610e88d75592, type: 3}
+    volume: 1
+    pitch: 1
+    fadeSpeed: 0
+    targetVolume: 0
+    loop: 0
+    source: {fileID: 0}
+  - clipName: Enemy Attacker Spawn
+    clip: {fileID: 8300000, guid: 13feaebb9348af3478dfa91a7c42c13b, type: 3}
+    volume: 1
+    pitch: 1
+    fadeSpeed: 0
+    targetVolume: 0
+    loop: 0
+    source: {fileID: 0}
+  - clipName: Player Attacker Spawn
+    clip: {fileID: 8300000, guid: b2e55dd80fa561b45b88dd58c6ec6a05, type: 3}
+    volume: 1
+    pitch: 1
+    fadeSpeed: 0
+    targetVolume: 0
+    loop: 0
+    source: {fileID: 0}
+  - clipName: Attacker Death
+    clip: {fileID: 8300000, guid: 19bcae8e3fc98bb4ea6b44b0b7585af6, type: 3}
     volume: 1
     pitch: 1
     fadeSpeed: 0
