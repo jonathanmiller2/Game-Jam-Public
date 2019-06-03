@@ -31,6 +31,8 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
 
     private bool tie = true;
 
+    private int AttackerPointCost = 5;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,8 +46,6 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
     void Update()
     {
         transform.localScale = new Vector3(Radius, Radius, 1f);
-
-        //TODO: 
 
         float Dist = 1000f;
 
@@ -139,9 +139,6 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
                 }
             }
         }
-
-       
-
     }
 
     public void OnPointerClick(PointerEventData InputPointerEventData)
@@ -162,11 +159,20 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
         	//If right click
         	else if(InputPointerEventData.button == PointerEventData.InputButton.Right)
         	{
-        		GameObject NewAttacker = Instantiate(AttackerPrefab, transform.position, transform.rotation);
-                NewAttacker.GetComponent<AttackerScript>().SetOwner(1);
-        		inputControllerScript.SetSelectedObject(NewAttacker);
-				FindObjectOfType<AudioManager>().Play("Player Attacker Spawn");
+                if(inputControllerScript.GetPoints() > AttackerPointCost)
+                {
+                    inputControllerScript.SpendPoints(AttackerPointCost);
+                    GameObject NewAttacker = Instantiate(AttackerPrefab, transform.position, transform.rotation);
+                    NewAttacker.GetComponent<AttackerScript>().SetOwner(1);
+                    inputControllerScript.SetSelectedObject(NewAttacker);
+                    FindObjectOfType<AudioManager>().Play("Player Attacker Spawn");
+                }
+        		
 			}
+        }
+        else
+        {
+            //TODO: CANT AFFORD SOUND
         }
     }
 

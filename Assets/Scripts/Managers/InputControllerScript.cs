@@ -19,7 +19,7 @@ public class InputControllerScript : MonoBehaviour
 	private GameObject DebugTarget;
 	//private bool
 
-	public float Points = 0f;
+	private float Points = 0f;
 	private const int BridgePieceCost = 1;
 	private const float PointsPerRadius = 0.01f;
 
@@ -195,6 +195,11 @@ public class InputControllerScript : MonoBehaviour
 	public void SpendPoints(int toSpend)
 	{
 		Points -= toSpend;
+	}
+
+	public float GetPoints()
+	{
+		return Points;
 	}
 
 	//This will return a string, but will also set ClickedGameObject

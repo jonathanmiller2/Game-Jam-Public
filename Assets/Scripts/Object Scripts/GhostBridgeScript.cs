@@ -29,6 +29,7 @@ public class GhostBridgeScript : MonoBehaviour
 	private bool CanPlace = true;
 	private bool PreviousCanPlace = true;
 
+    private int BridgePointCost = 1;
 
 	public const float MinimumBridgeDistance = 0.23f;
 	public const float MinimumNodeDistance = 0.5f;
@@ -161,70 +162,81 @@ public class GhostBridgeScript : MonoBehaviour
 
     public GameObject Build()
     {
-    	//Check what the closest 
-        float SmallestBridgeDist = 10000f;
-        float SmallestNodeDist = 10000f;
-        float Dist;
-
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("BridgePiece"))
+        if(inputControllerScript.GetPoints() > BridgePointCost)
         {
-            Dist = Vector3.Distance(GetChildObjectWithTag(obj.transform, "CenterPoint").transform.position, GetChildObjectWithTag(gameObject.transform, "CenterPoint").transform.position);
+            inputControllerScript.SpendPoints(BridgePointCost);
 
-            if (Dist < SmallestBridgeDist)
+            //Check what the closest 
+            float SmallestBridgeDist = 10000f;
+            float SmallestNodeDist = 10000f;
+            float Dist;
+    
+            foreach (GameObject obj in GameObject.FindGameObjectsWithTag("BridgePiece"))
             {
-                SmallestBridgeDist = Dist;
+                Dist = Vector3.Distance(GetChildObjectWithTag(obj.transform, "CenterPoint").transform.position, GetChildObjectWithTag(gameObject.transform, "CenterPoint").transform.position);
+    
+                if (Dist < SmallestBridgeDist)
+                {
+                    SmallestBridgeDist = Dist;
+                }
+                else if (SmallestBridgeDist == 10000f)
+                {
+                    SmallestBridgeDist = Dist;
+                }
             }
-            else if (SmallestBridgeDist == 10000f)
+    
+            foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Node"))
             {
-                SmallestBridgeDist = Dist;
+                Dist = Vector3.Distance(obj.transform.position, GetChildObjectWithTag(gameObject.transform, "CenterPoint").transform.position);
+    
+                if (Dist < SmallestNodeDist)
+                {
+                    SmallestNodeDist = Dist;
+                }
+                else if (SmallestNodeDist == 10000f)
+                {
+                    SmallestNodeDist = Dist;
+                }
             }
+    
+            //Debug.Log(SmallestDelta);
+    
+            if(SmallestBridgeDist > MinimumBridgeDistance && SmallestNodeDist > MinimumNodeDistance)
+            {
+    	   	    // Debug.Log("Placing with:" + BridgePieceCollisions + " BridgePieceCollisions");
+                //Replace with a real bridge piece
+                FindObjectOfType<AudioManager>().Play("Place Bridge Unit");
+                GameObject newBridgePiece = Instantiate(BridgePiece, transform.position, transform.rotation);
+                newBridgePiece.GetComponent<BridgeScript>().SetOwner(1);
+                SelectedObject = newBridgePiece;
+                inputControllerScript.SetSelectedObject(newBridgePiece);
+	       
+		  	   return newBridgePiece;
+		    }
+		    else
+		    {
+		    	/*
+		    	if(SmallestBridgeDist <= MinimumBridgeDistance)
+		    	{
+		    		Debug.Log("Too Close to Bridge!");
+		    	}
+		    	else if(SmallestNodeDist <= MinimumNodeDistance)
+		    	{
+		    		Debug.Log("Too Close to Node!");
+		    	}
+		    	*/
+        
+		    	inputControllerScript.SetSelectedObject(null);
+		    	Destroy(gameObject);
+		    	return null;
+		    }
         }
-
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Node"))
+        else
         {
-            Dist = Vector3.Distance(obj.transform.position, GetChildObjectWithTag(gameObject.transform, "CenterPoint").transform.position);
-
-            if (Dist < SmallestNodeDist)
-            {
-                SmallestNodeDist = Dist;
-            }
-            else if (SmallestNodeDist == 10000f)
-            {
-                SmallestNodeDist = Dist;
-            }
+            //TODO: PLAY CANT AFFORD SOUND
+            Destroy(gameObject);
+            return null;
         }
-
-        //Debug.Log(SmallestDelta);
-
-    	if(SmallestBridgeDist > MinimumBridgeDistance && SmallestNodeDist > MinimumNodeDistance)
-    	{
-    		// Debug.Log("Placing with:" + BridgePieceCollisions + " BridgePieceCollisions");
-    		//Replace with a real bridge piece
-			FindObjectOfType<AudioManager>().Play("Place Bridge Unit");
-			GameObject newBridgePiece = Instantiate(BridgePiece, transform.position, transform.rotation);
-			newBridgePiece.GetComponent<BridgeScript>().SetOwner(1);
-			SelectedObject = newBridgePiece;
-			inputControllerScript.SetSelectedObject(newBridgePiece);
-	
-			return newBridgePiece;
-		}
-		else
-		{
-			/*
-			if(SmallestBridgeDist <= MinimumBridgeDistance)
-			{
-				Debug.Log("Too Close to Bridge!");
-			}
-			else if(SmallestNodeDist <= MinimumNodeDistance)
-			{
-				Debug.Log("Too Close to Node!");
-			}
-			*/
-
-			inputControllerScript.SetSelectedObject(null);
-			Destroy(gameObject);
-			return null;
-		}
     }
 
     //Helper functions
