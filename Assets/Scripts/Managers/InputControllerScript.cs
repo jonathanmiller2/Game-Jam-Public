@@ -81,21 +81,11 @@ public class InputControllerScript : MonoBehaviour
 				{
 					if(ClickedGameObject.tag == "Attacker" && ClickedGameObject.GetComponent<AttackerScript>().GetOwner() == 1)
 					{
+						ClearSelectMat(SelectedObject);
 						//Selection happens here
 						SelectedObject = ClickedGameObject;
                         // Setting isSelected on
-                        foreach (SpriteRenderer renderer in ClickedGameObject.transform.GetComponentsInChildren<SpriteRenderer>())
-                        {
-                            renderer.material.SetFloat("Vector1_63F18585", .8f);
-                        }
-                        foreach (ParticleSystemRenderer particleSystem in ClickedGameObject.GetComponentsInChildren<ParticleSystemRenderer>())
-                        {
-                            particleSystem.material.SetFloat("Vector1_63F18585", .8f);
-                        }
-                        foreach (TrailRenderer trailrenderer in ClickedGameObject.GetComponentsInChildren<TrailRenderer>())
-                        {
-                            trailrenderer.material.SetFloat("Vector1_63F18585", .8f);
-                        }
+                    	SetSelectedObject(SelectedObject);
                     }
 					else
 					{
@@ -104,8 +94,11 @@ public class InputControllerScript : MonoBehaviour
 				}
 				else
 				{
+					ClearSelectMat(SelectedObject);
 					//Selection happens here
-					SelectedObject = ClickedGameObject;	
+					SelectedObject = ClickedGameObject;
+                    // Setting isSelected on
+                    SetSelectedObject(SelectedObject);
 				}
 			}
 			else if(WhatIsClicked == "Nothing")
@@ -193,21 +186,7 @@ public class InputControllerScript : MonoBehaviour
 
 	}
 
-	private void ClearSelectMat(GameObject inp)
-	{
-		foreach (SpriteRenderer renderer in ClickedGameObject.transform.GetComponentsInChildren<SpriteRenderer>())
-        {
-            renderer.material.SetFloat("Vector1_63F18585", 0f);
-        }
-        foreach (ParticleSystemRenderer particleSystem in ClickedGameObject.GetComponentsInChildren<ParticleSystemRenderer>())
-        {
-            particleSystem.material.SetFloat("Vector1_63F18585", 0f);
-        }
-        foreach (TrailRenderer trailrenderer in ClickedGameObject.GetComponentsInChildren<TrailRenderer>())
-        {
-            trailrenderer.material.SetFloat("Vector1_63F18585", 0f);
-        }
-	}
+	
 
 	public float GetPointsPerTime()
 	{
@@ -269,6 +248,39 @@ public class InputControllerScript : MonoBehaviour
     	return "Nothing";
 	}
 
+	public void SetSelectMat(GameObject inp)
+	{
+		//Select new object
+		foreach (SpriteRenderer renderer in inp.transform.GetComponentsInChildren<SpriteRenderer>())
+        {
+            renderer.material.SetFloat("Vector1_63F18585", .8f);
+        }
+        foreach (ParticleSystemRenderer particleSystem in inp.GetComponentsInChildren<ParticleSystemRenderer>())
+        {
+            particleSystem.material.SetFloat("Vector1_63F18585", .8f);
+        }
+        foreach (TrailRenderer trailrenderer in inp.GetComponentsInChildren<TrailRenderer>())
+        {
+            trailrenderer.material.SetFloat("Vector1_63F18585", .8f);
+        }
+	}
+
+	private void ClearSelectMat(GameObject inp)
+	{
+		foreach (SpriteRenderer renderer in ClickedGameObject.transform.GetComponentsInChildren<SpriteRenderer>())
+        {
+            renderer.material.SetFloat("Vector1_63F18585", 0f);
+        }
+        foreach (ParticleSystemRenderer particleSystem in ClickedGameObject.GetComponentsInChildren<ParticleSystemRenderer>())
+        {
+            particleSystem.material.SetFloat("Vector1_63F18585", 0f);
+        }
+        foreach (TrailRenderer trailrenderer in ClickedGameObject.GetComponentsInChildren<TrailRenderer>())
+        {
+            trailrenderer.material.SetFloat("Vector1_63F18585", 0f);
+        }
+	}
+
 	// Should ONLY be used from MiscInputManager for escape handling
 	public void SetSelectedObject(GameObject Selection)
 	{
@@ -277,19 +289,7 @@ public class InputControllerScript : MonoBehaviour
 
 		SelectedObject = Selection;
 
-		//Select new object
-		foreach (SpriteRenderer renderer in Selection.transform.GetComponentsInChildren<SpriteRenderer>())
-        {
-            renderer.material.SetFloat("Vector1_63F18585", .8f);
-        }
-        foreach (ParticleSystemRenderer particleSystem in Selection.GetComponentsInChildren<ParticleSystemRenderer>())
-        {
-            particleSystem.material.SetFloat("Vector1_63F18585", .8f);
-        }
-        foreach (TrailRenderer trailrenderer in Selection.GetComponentsInChildren<TrailRenderer>())
-        {
-            trailrenderer.material.SetFloat("Vector1_63F18585", .8f);
-        }
+		SetSelectMat(SelectedObject);
 	}
 
 	public GameObject GetSelectedObject()

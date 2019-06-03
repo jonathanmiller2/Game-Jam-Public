@@ -2,17 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class WinLossManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private float SecondsPerCheck = 5f;
+    private float CheckTimer = 0;
 
     // Update is called once per frame
     void Update()
     {
-        
+    	if(CheckTimer > SecondsPerCheck)
+    	{
+    		CheckTimer = 0;
+    		
+    		//check if we own all nodes, if so we win
+    		//Check if own no nodes, if so we lose
+    		//foreach()
+
+    	}
+    	else
+    	{
+    		CheckTimer += Time.deltaTime;
+    	}
     }
 }
