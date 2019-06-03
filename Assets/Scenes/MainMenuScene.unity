@@ -2287,6 +2287,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 306751062}
+  - component: {fileID: 306751063}
   m_Layer: 0
   m_Name: Tutorial
   m_TagString: Untagged
@@ -2302,13 +2303,32 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 306751061}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -258, y: 93, z: 0}
-  m_LocalScale: {x: 27.861475, y: 27.861475, z: 27.861475}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 27.86147}
   m_Children:
   - {fileID: 2057056895}
   m_Father: {fileID: 1258840169}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &306751063
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306751061}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c569a94e1f27f9e4d83c007299dfa36e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &320005246
 GameObject:
   m_ObjectHideFlags: 0
@@ -17767,7 +17787,7 @@ GameObject:
   - component: {fileID: 2057056895}
   - component: {fileID: 2057056896}
   m_Layer: 0
-  m_Name: New Sprite
+  m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17782,7 +17802,7 @@ Transform:
   m_GameObject: {fileID: 2057056894}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 1}
   m_Children: []
   m_Father: {fileID: 306751062}
   m_RootOrder: 0
@@ -17804,7 +17824,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: c4922c26067e614428f801ee4407d6e5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

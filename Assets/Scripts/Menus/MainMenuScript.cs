@@ -28,11 +28,11 @@ public class MainMenuScript : MonoBehaviour
 
         if (Tutorial.activeSelf)
         {
-            Tutorial.SetActive(false);
+            Tutorial.GetComponent<Animator>().SetTrigger("Exit");
         }
         else
         {
-            Tutorial.SetActive(true);
+            Tutorial.GetComponent<Animator>().SetTrigger("Enter");
         }
     }
 
