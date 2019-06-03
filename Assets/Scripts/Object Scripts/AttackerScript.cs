@@ -9,12 +9,15 @@ public class AttackerScript : MonoBehaviour
 	Vector3 DesiredTarget;
 	GameObject ActualTarget;
 
-    const float NodeConnectedRadius = 1;
-    const float BridgeConnectedRadius = 1;
+    const float NodeConnectedRadius = 3f;
+    const float BridgeConnectedRadius = 3f;
 
 	private int Owner = 1;
 
     private float MoveWait = 1f;
+
+    public Dictionary<GameObject, GameObject> ChildDict = new Dictionary<GameObject, GameObject>();
+    private GameObject InitialObject;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +35,7 @@ public class AttackerScript : MonoBehaviour
 
     public void SetTarget(Vector3 newTarget)
     {
+        StopAllCoroutines();
     	DesiredTarget = newTarget;
 
     	//Calculate actual target (closest friendly thing)
@@ -39,11 +43,10 @@ public class AttackerScript : MonoBehaviour
         GameObject ClosestObject = null;
         foreach(GameObject bridge in GameObject.FindGameObjectsWithTag("BridgePiece"))
         {
-
             if (bridge.GetComponent<BridgeScript>().GetOwner() == Owner)
             {
                 //Check dist
-                float dist = Vector3.Distance(bridge.transform.position, newTarget);
+                float dist = Vector3.Distance(GetChildObjectWithTag(bridge.transform, "CenterPoint").transform.position, newTarget);
                 if(dist < SmallestDist)
                 {
                     ClosestObject = bridge;
@@ -54,21 +57,39 @@ public class AttackerScript : MonoBehaviour
 
         foreach(GameObject node in GameObject.FindGameObjectsWithTag("Node"))
         {
-            if (node.GetComponent<NodeScript>().GetOwner() == Owner)
+            float dist = Vector3.Distance(node.transform.position, newTarget);
+            if(dist < SmallestDist)
             {
-                float dist = Vector3.Distance(node.transform.position, newTarget);
-                if(dist < SmallestDist)
-                {
-                    ClosestObject = node;
-                    SmallestDist = dist;
-                }
-           }
+                ClosestObject = node;
+                SmallestDist = dist;
+            }
         }
 
         ActualTarget = ClosestObject;
 
+        Debug.Log("Moving to object:" + ActualTarget.name);
+
+
         DijkstraSetup(ActualTarget);
-        StartCoroutine("MoveToTarget");
+
+        //If we can't actually get there, don't move 
+
+        //First find the youngest child
+        GameObject YoungestChild = InitialObject;
+        while(ChildDict.ContainsKey(YoungestChild))
+        {
+            YoungestChild = ChildDict[YoungestChild];
+        }
+
+        //Don't try to move if our last node didn't actually get there
+        if(Vector3.Distance(YoungestChild.transform.position, ActualTarget.transform.position) < .25)
+        {
+            StartCoroutine("MoveToTarget");
+        }
+        else
+        {
+            Debug.Log("Can't reach");
+        }
 
     }
 
@@ -82,13 +103,12 @@ public class AttackerScript : MonoBehaviour
     	Owner = NewOwner;
     }
 
-    public Dictionary<GameObject, GameObject> ParentDict = new Dictionary<GameObject, GameObject>();
-    private GameObject InitialObject;
+    
 
 
     private void DijkstraSetup(GameObject DestinationObject)
     {
-        ParentDict = new Dictionary<GameObject, GameObject>();
+        ChildDict = new Dictionary<GameObject, GameObject>();
 
         //Each vertex will be described with 3 values. 0: GameObject, 1:whether or not it was visited (float, unvisited:0.0, visited:1.0), 2:The Tentative distance
         Dictionary<GameObject, float[]>  Vertices = new Dictionary<GameObject, float[]>();
@@ -104,7 +124,7 @@ public class AttackerScript : MonoBehaviour
                 Vertices[bridge] = new float[]{0f, float.MaxValue};
 
                 //Check dist
-                float dist = Vector3.Distance(bridge.transform.position, transform.position);
+                float dist = Vector3.Distance(GetChildObjectWithTag(bridge.transform, "CenterPoint").transform.position, transform.position);
                 if(dist < SmallestDist)
                 {
                     InitialObject = bridge;
@@ -115,17 +135,15 @@ public class AttackerScript : MonoBehaviour
 
         foreach(GameObject node in GameObject.FindGameObjectsWithTag("Node"))
         {
-            if (node.GetComponent<NodeScript>().GetOwner() == Owner)
-            {
-                Vertices[node] = new float[]{0f, float.MaxValue};
+            Vertices[node] = new float[]{0f, float.MaxValue};
 
-                float dist = Vector3.Distance(node.transform.position, transform.position);
-                if(dist < SmallestDist)
-                {
-                    InitialObject = node;
-                    SmallestDist = dist;
-                }
-            }       
+            float dist = Vector3.Distance(node.transform.position, transform.position);
+            if(dist < SmallestDist)
+            {
+                InitialObject = node;
+                SmallestDist = dist;
+            }
+                  
         }
 
         //Set initial node as current
@@ -144,6 +162,9 @@ public class AttackerScript : MonoBehaviour
         //Only do anything if this node hasn't already been checked
         if(Vertices[currentNode][0] == 0f)
         {
+            //Mark this node as checked
+            Vertices[currentNode] = new float[2]{1, Vertices[currentNode][1]};
+
             float SmallestTentativeDistance = float.MaxValue;
             GameObject ObjectWithSmallestTDistance = null;
     
@@ -155,7 +176,7 @@ public class AttackerScript : MonoBehaviour
                 {
                     //If our entry is close enough to be connected
                     bool NodeAndConnected = entry.Key.tag == "Node" && Vector3.Distance(entry.Key.transform.position, currentNode.transform.position) < NodeConnectedRadius;
-                    bool BridgeAndConnected = entry.Key.tag == "BridgePiece" && Vector3.Distance(entry.Key.transform.position, currentNode.transform.position) < BridgeConnectedRadius;
+                    bool BridgeAndConnected = entry.Key.tag == "BridgePiece" && Vector3.Distance(GetChildObjectWithTag(entry.Key.transform, "CenterPoint").transform.position, currentNode.transform.position) < BridgeConnectedRadius;
                     
                     if(NodeAndConnected || BridgeAndConnected)
                     {
@@ -170,19 +191,14 @@ public class AttackerScript : MonoBehaviour
                     }
                 }
             }
-
-            Debug.Log("Calling with next object" + ObjectWithSmallestTDistance.name);
     
-            //Mark this node as checked
-            Vertices[currentNode] = new float[2]{1, Vertices[currentNode][1]};
-    
-            if(SmallestTentativeDistance == float.MaxValue || Vertices[DestinationObject][0] == 1)
+            if(SmallestTentativeDistance == float.MaxValue || Vertices[DestinationObject][0] == 1 || ObjectWithSmallestTDistance == null)
             {
                 return;
             }
             else
             {
-                ParentDict[ObjectWithSmallestTDistance] = currentNode;
+                ChildDict[currentNode] = ObjectWithSmallestTDistance;
                 Dijkstra(ObjectWithSmallestTDistance, Vertices, DestinationObject);
             }
         }
@@ -197,21 +213,46 @@ public class AttackerScript : MonoBehaviour
         GameObject CurrentlyOn = InitialObject;
 
 
-        /*
-        foreach(KeyValuePair<GameObject, GameObject> entry in ParentDict)
+        while(ChildDict.ContainsKey(CurrentlyOn))
         {
-            Debug.Log("Printing");
-            Debug.Log(entry.Key.name);
-        }
-        */
-
-        while(ParentDict[CurrentlyOn])
-        {
-            Debug.Log("Moving to" + ParentDict[CurrentlyOn].name);
-            transform.position = ParentDict[CurrentlyOn].transform.position;
-            CurrentlyOn = ParentDict[CurrentlyOn];
+            Debug.Log("Moving to" + ChildDict[CurrentlyOn].name);
+            transform.position = ChildDict[CurrentlyOn].transform.position;
+            CurrentlyOn = ChildDict[CurrentlyOn];
             
             yield return new WaitForSeconds(MoveWait);
         }
+    }
+
+    public GameObject KeyByValue(Dictionary<GameObject, GameObject> dict, GameObject val)
+    {
+        GameObject key = null;
+        foreach (KeyValuePair<GameObject, GameObject> pair in dict)
+        {
+            if (pair.Value == val)
+            { 
+                key = pair.Key; 
+                break; 
+            }
+        }
+        return key;
+    }
+
+    //(single)
+    public GameObject GetChildObjectWithTag(Transform Parent, string Tag)
+    {
+        for (int i = 0; i < Parent.childCount; i++)
+        {
+            Transform Child = Parent.GetChild(i);
+            if (Child.tag == Tag)
+            {
+                return Child.gameObject;
+            }
+            if (Child.childCount > 0)
+            {
+                GetChildObjectWithTag(Child, Tag);
+            }
+        }
+
+        return null;
     }
 }
