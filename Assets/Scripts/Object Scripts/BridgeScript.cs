@@ -11,7 +11,7 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
 
     public Material[] BridgeMaterials;
 
-
+    private int Health = 2;
 	
     private InputControllerScript inputControllerScript;
     private GameObject SelectedObject;
@@ -48,9 +48,19 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
     {
 
 		//This should be removed eventually. Here to cure cursed geometry.
-		if(transform.rotation.x != 0){
+		if(transform.rotation.x != 0)
+        {
 			transform.rotation = Quaternion.Euler(0, 0, 180f);
 		}
+
+
+        if(Health <= 0)
+        {
+            // Debug.Log("aaa");
+            Destroy(gameObject);
+        }
+
+
 
         //TODO: Enemy attacker within range of our bridge, start taking damage
         //Friendly attacker within range of our bridge, heal
@@ -70,6 +80,7 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
     		CheckCounter += Time.deltaTime;
     	}
 
+        
         
 
         if(!Supported)
@@ -156,7 +167,8 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
 						renderer.material.SetColor("Color_6EC6B721", newColor);
 					}
 
-					foreach(ParticleSystemRenderer particleSystem in gameObject.GetComponentsInChildren<ParticleSystemRenderer>()){
+					foreach(ParticleSystemRenderer particleSystem in gameObject.GetComponentsInChildren<ParticleSystemRenderer>())
+                    {
 						if (NewOwner >= 2)
 						{
 							particleSystem.material = BridgeMaterials[2];
@@ -173,6 +185,25 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
 			}
 		}
 	}
+
+    public void TakeHealth(int TakenHealth)
+    {
+        // Debug.Log("taken");
+        Health -= TakenHealth;
+    }
+
+    public void GiveHealth(int TakenHealth)
+    {
+        // Debug.Log("given");
+        Health += TakenHealth;
+        if(Health > 2)
+        {
+            Health = 2;
+        }
+        
+    }
+
+
 
     public bool GetSupportedBool()
     {
