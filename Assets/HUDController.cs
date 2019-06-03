@@ -21,11 +21,11 @@ public class HUDController : MonoBehaviour
 		{
 			if (mesh.tag == "PPS")
 			{
-				mesh.text = "" + inputController.GetPointsPerTime();
+				mesh.text = "" + inputController.GetPointsPerTime() * 10f;
 			}
 			else if (mesh.tag == "Points")
 			{
-				mesh.text = "" + inputController.Points;
+				mesh.text = inputController.Points.ToString("f0");
 			}
 			
 		}

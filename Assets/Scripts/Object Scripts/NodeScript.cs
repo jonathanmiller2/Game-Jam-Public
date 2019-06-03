@@ -40,7 +40,9 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
 
         GameObject InputControllerManagerObject = GameObject.Find("InputController");
         inputControllerScript = InputControllerManagerObject.GetComponent<InputControllerScript>();
-    }
+
+		RefreshAppearance();
+	}
 
     void Update()
     {
@@ -206,55 +208,80 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
     //Added just in case (in case has happened, we need this now)
     public void SetOwner(int NewOwner)
     {
-        Owner = NewOwner;
+		//Play sounds before changing owner so we know old and new.
 
-        foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
-        {
-            //Clamp as we only have one enemy material
-            if(NewOwner > 2)
-            {
-                renderer.material = NodeMaterials[2];
-            }
-            else
-            {
-                renderer.material = NodeMaterials[NewOwner];
-            }
-        }
+		if (Owner != 1 && NewOwner == 1)
+		{
+			FindObjectOfType<AudioManager>().Play("Node Gain");
+		}
+		else if (Owner == 1 && NewOwner != 1)
+		{
+			FindObjectOfType<AudioManager>().Play("Node Loss");
+		}
+		else
+		{
+			//need a node change sound
+			//FindObjectOfType<AudioManager>().Play("Node");
+		}
+		
 
-        //Enemies have different colors
-        if (NewOwner >= 2)
-        {
-            foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
-            {
-                if (enemy.GetComponent<EnemyController>().OwnerID == NewOwner)
-                {
-                    Color newColor = enemy.GetComponent<EnemyController>().color;
+		Owner = NewOwner;
 
-                    foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
-                    {
-                        renderer.material.SetColor("Color_6EC6B721", newColor);
-                    }
+		RefreshAppearance();
+	}
 
-                    foreach(ParticleSystemRenderer particleSystem in gameObject.GetComponentsInChildren<ParticleSystemRenderer>())
-                    {
-                        if (NewOwner >= 2)
-                        {
-                            particleSystem.material = NodeMaterials[2];
-                        }
-                        else
-                        {
-                            particleSystem.material = NodeMaterials[NewOwner];
-                        }
+	public void RefreshAppearance()
+	{
+		foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
+		{
+			//Clamp as we only have one enemy material
+			if (Owner > 2)
+			{
+				renderer.material = NodeMaterials[2];
+			}
+			else
+			{
+				renderer.material = NodeMaterials[Owner];
+			}
+		}
 
-                        particleSystem.material.SetColor("Color_6EC6B721", newColor);
-                    }
+		//Enemies have different colors
+		if (Owner > 1)
+		{
+			foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+			{
+				if (enemy.GetComponent<EnemyController>().OwnerID == Owner)
+				{
+					Color newColor = enemy.GetComponent<EnemyController>().color;
 
-                }
-            }
-        }
-    }
+					Debug.Log("Enemy: " + Owner + " Color: " + enemy.GetComponent<EnemyController>().color + " PPS: " + enemy.GetComponent<EnemyController>().GetPointsPerTime());
 
-    public int GetOwner()
+					foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
+					{
+						renderer.material.SetColor("Color_6EC6B721", newColor);
+					}
+
+					foreach (ParticleSystemRenderer particleSystem in gameObject.GetComponentsInChildren<ParticleSystemRenderer>())
+					{
+						//material 2 is enemy material
+						particleSystem.material = NodeMaterials[2];
+						particleSystem.material.SetColor("Color_6EC6B721", newColor);
+					}
+
+				}
+			}
+		}
+		else if(Owner == 1)
+		{
+			foreach (ParticleSystemRenderer particleSystem in gameObject.GetComponentsInChildren<ParticleSystemRenderer>())
+			{
+				//can be owner or nuetral material
+				particleSystem.material = NodeMaterials[Owner];
+			}
+		}
+	}
+
+	public int GetOwner()
     {
         return Owner;
     }
