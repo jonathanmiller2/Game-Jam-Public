@@ -186,13 +186,13 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
     public void TakeHealth(int TakenHealth)
     {
         Health -= TakenHealth;
-        foreach (SpriteRenderer renderer in SelectedObject.transform.GetComponentsInChildren<SpriteRenderer>())
+        foreach (SpriteRenderer renderer in gameObject.transform.GetComponentsInChildren<SpriteRenderer>())
         {
-            renderer.material.SetFloat("Vector1_373BB5F6", .7f);
+            renderer.material.SetFloat("Vector1_373BB5F6", 5f);
         }
-        foreach (ParticleSystemRenderer particleSystem in SelectedObject.transform.GetComponentsInChildren<ParticleSystemRenderer>())
+        foreach (ParticleSystemRenderer particleSystem in gameObject.transform.GetComponentsInChildren<ParticleSystemRenderer>())
         {
-            particleSystem.material.SetFloat("Vector1_373BB5F6", .7f);
+            particleSystem.material.SetFloat("Vector1_373BB5F6", 5f);
         }
 
     }
@@ -205,13 +205,13 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
             Health = 2;
         }
 
-        foreach (SpriteRenderer renderer in SelectedObject.GetComponentsInChildren<SpriteRenderer>())
+        foreach (SpriteRenderer renderer in gameObject.GetComponentsInChildren<SpriteRenderer>())
         {
-            renderer.material.SetFloat("Vector1_373BB5F6", .0f);
+            renderer.material.SetFloat("Vector1_373BB5F6", 1f);
         }
-        foreach (ParticleSystemRenderer particleSystem in SelectedObject.GetComponentsInChildren<ParticleSystemRenderer>())
+        foreach (ParticleSystemRenderer particleSystem in gameObject.GetComponentsInChildren<ParticleSystemRenderer>())
         {
-            particleSystem.material.SetFloat("Vector1_373BB5F6", .0f);
+            particleSystem.material.SetFloat("Vector1_373BB5F6", 1f);
         }
     }
 
