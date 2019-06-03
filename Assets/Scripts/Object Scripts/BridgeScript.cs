@@ -188,11 +188,11 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
         Health -= TakenHealth;
         foreach (SpriteRenderer renderer in gameObject.transform.GetComponentsInChildren<SpriteRenderer>())
         {
-            renderer.material.SetFloat("Vector1_373BB5F6", 5f);
+            renderer.material.SetFloat("Vector1_373BB5F6", (float)Health);
         }
         foreach (ParticleSystemRenderer particleSystem in gameObject.transform.GetComponentsInChildren<ParticleSystemRenderer>())
         {
-            particleSystem.material.SetFloat("Vector1_373BB5F6", 5f);
+            particleSystem.material.SetFloat("Vector1_373BB5F6", (float)Health);
         }
 
     }
@@ -207,11 +207,11 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
 
         foreach (SpriteRenderer renderer in gameObject.GetComponentsInChildren<SpriteRenderer>())
         {
-            renderer.material.SetFloat("Vector1_373BB5F6", 1f);
+            renderer.material.SetFloat("Vector1_373BB5F6", (float)Health);
         }
         foreach (ParticleSystemRenderer particleSystem in gameObject.GetComponentsInChildren<ParticleSystemRenderer>())
         {
-            particleSystem.material.SetFloat("Vector1_373BB5F6", 1f);
+            particleSystem.material.SetFloat("Vector1_373BB5F6", (float)Health);
         }
     }
 

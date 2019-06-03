@@ -289,15 +289,9 @@ public class InputControllerScript : MonoBehaviour
 	{
 		BuildState = newState;
 		
-		if(newState)
-		{
-			GameObject.Find("Place Mode");	
-		}
-		else
-		{
 
-		}
-		
+		GameObject.Find("Place Mode Off").SetActive(!newState);	
+		GameObject.Find("Place Mode On").SetActive(newState);	
 	}
 
 	public bool GetBuildState()
