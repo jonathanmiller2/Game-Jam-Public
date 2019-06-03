@@ -7,6 +7,8 @@ using UnityEngine;
 public class InputControllerScript : MonoBehaviour
 {
 	private bool previousEscapeStatus;
+
+	private bool BuildState = false;
 	
 	private GraphicRaycaster Raycaster;
 	private EventSystem eventSystem;
@@ -19,7 +21,7 @@ public class InputControllerScript : MonoBehaviour
 
 	public float Points = 0f;
 	private const int BridgePieceCost = 1;
-	private const float PointsPerRadius = 0.1f;
+	private const float PointsPerRadius = 0.01f;
 
 	void Start()
 	{
@@ -124,6 +126,10 @@ public class InputControllerScript : MonoBehaviour
 						}
 						else
 						{
+							if(SelectedObject != null)
+							{
+								ClearSelectMat(SelectedObject);	
+							}
 							SelectedObject = null;
 						}
 					}
@@ -136,16 +142,28 @@ public class InputControllerScript : MonoBehaviour
 						}
 						else
 						{
+							if(SelectedObject != null)
+							{
+								ClearSelectMat(SelectedObject);	
+							}
 							SelectedObject = null;
 						}
 					}
 					else
 					{
+						if(SelectedObject != null)
+						{
+							ClearSelectMat(SelectedObject);	
+						}
 						SelectedObject = null;
 					}
 				}
 				else
 				{
+					if(SelectedObject != null)
+					{
+						ClearSelectMat(SelectedObject);	
+					}
 					SelectedObject = null;
 				}
 			}
@@ -173,6 +191,22 @@ public class InputControllerScript : MonoBehaviour
 		}
 		
 
+	}
+
+	private void ClearSelectMat(GameObject inp)
+	{
+		foreach (SpriteRenderer renderer in ClickedGameObject.transform.GetComponentsInChildren<SpriteRenderer>())
+        {
+            renderer.material.SetFloat("Vector1_63F18585", 0f);
+        }
+        foreach (ParticleSystemRenderer particleSystem in ClickedGameObject.GetComponentsInChildren<ParticleSystemRenderer>())
+        {
+            particleSystem.material.SetFloat("Vector1_63F18585", 0f);
+        }
+        foreach (TrailRenderer trailrenderer in ClickedGameObject.GetComponentsInChildren<TrailRenderer>())
+        {
+            trailrenderer.material.SetFloat("Vector1_63F18585", 0f);
+        }
 	}
 
 	public float GetPointsPerTime()
@@ -238,7 +272,24 @@ public class InputControllerScript : MonoBehaviour
 	// Should ONLY be used from MiscInputManager for escape handling
 	public void SetSelectedObject(GameObject Selection)
 	{
+		//Clear old selection
+		ClearSelectMat(SelectedObject);
+
 		SelectedObject = Selection;
+
+		//Select new object
+		foreach (SpriteRenderer renderer in Selection.transform.GetComponentsInChildren<SpriteRenderer>())
+        {
+            renderer.material.SetFloat("Vector1_63F18585", .8f);
+        }
+        foreach (ParticleSystemRenderer particleSystem in Selection.GetComponentsInChildren<ParticleSystemRenderer>())
+        {
+            particleSystem.material.SetFloat("Vector1_63F18585", .8f);
+        }
+        foreach (TrailRenderer trailrenderer in Selection.GetComponentsInChildren<TrailRenderer>())
+        {
+            trailrenderer.material.SetFloat("Vector1_63F18585", .8f);
+        }
 	}
 
 	public GameObject GetSelectedObject()
@@ -248,7 +299,22 @@ public class InputControllerScript : MonoBehaviour
 
 	public void SetBuildState(bool newState)
 	{
-		GameObject.Find("PlaceModeToggle").GetComponent<Toggle>().isOn = newState;
+		BuildState = true;
+		
+		if(newState)
+		{
+			GameObject.Find("Place Mode");	
+		}
+		else
+		{
+
+		}
+		
+	}
+
+	public bool GetBuildState()
+	{
+		return BuildState;
 	}
 
 }
