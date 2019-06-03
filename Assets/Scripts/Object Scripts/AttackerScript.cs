@@ -5,6 +5,11 @@ using UnityEngine;
 public class AttackerScript : MonoBehaviour
 {
 
+	public int Owner = 1;
+
+	//Materials for appearance change
+	public Material[] AttackerMaterials;
+
 	//If our pathfinder can't get to the desired target, then we find whatever is closest and that's desiredtarget
 	private Vector3 DesiredTarget;
 	//GameObject ActualTarget;
@@ -12,9 +17,7 @@ public class AttackerScript : MonoBehaviour
     const float NodeConnectedRadius = 1f;
     const float BridgeConnectedRadius = 1f;
 
-	public int Owner = 1;
-
-    private float MoveWait = .5f;
+	private float MoveWait = .5f;
 
     private int Health = 3;
 	
@@ -25,8 +28,8 @@ public class AttackerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-    }
+		RefreshAppearance();
+	}
 
     // Update is called once per frame
     void Update()
@@ -135,10 +138,59 @@ public class AttackerScript : MonoBehaviour
     public void SetOwner(int NewOwner)
     {
     	Owner = NewOwner;
-    }
+		RefreshAppearance();
+	}
 
+	public void RefreshAppearance()
+	{
+		foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
+		{
+			//Clamp as we only have one enemy material
+			if (Owner > 2)
+			{
+				renderer.material = AttackerMaterials[2];
+			}
+			else
+			{
+				renderer.material = AttackerMaterials[Owner];
+			}
+		}
 
-    private List<GameObject> Dijkstra(GameObject ActualTarget)
+		//Enemies have different colors
+		if (Owner > 1)
+		{
+			foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+			{
+				if (enemy.GetComponent<EnemyController>().OwnerID == Owner)
+				{
+					Color newColor = enemy.GetComponent<EnemyController>().color;
+
+					foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
+					{
+						renderer.material.SetColor("Color_6EC6B721", newColor);
+					}
+
+					foreach (ParticleSystemRenderer particleSystem in gameObject.GetComponentsInChildren<ParticleSystemRenderer>())
+					{
+						//material 2 is enemy material
+						particleSystem.material = AttackerMaterials[2];
+						particleSystem.material.SetColor("Color_6EC6B721", newColor);
+					}
+
+				}
+			}
+		}
+		else if (Owner == 1)
+		{
+			foreach (ParticleSystemRenderer particleSystem in gameObject.GetComponentsInChildren<ParticleSystemRenderer>())
+			{
+				//can be owner or nuetral material
+				particleSystem.material = AttackerMaterials[Owner];
+			}
+		}
+	}
+
+	private List<GameObject> Dijkstra(GameObject ActualTarget)
     {
         Dictionary<GameObject, float>  UnvisitedVertices = new Dictionary<GameObject, float>();
         Dictionary<GameObject, GameObject> prev = new Dictionary<GameObject, GameObject>();

@@ -52,6 +52,15 @@ public class EnemyController : MonoBehaviour
 
 		//set build style
 		BuildStyle = GenerateBuildStyle(Personality[0], Personality[1]);
+
+		//give a self one point for each node I controll
+		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Node"))
+		{
+			if (obj.GetComponent<NodeScript>().GetOwner() == OwnerID)
+			{
+				Points++;
+			}
+		}
 	}
 
 	// Update is called once per frame
@@ -82,7 +91,11 @@ public class EnemyController : MonoBehaviour
 
 		float MinPointsSaved = ((agPointsToSave + spPointsToSave) / 2) + (GetPointsPerTime() * 100 * Random.Range(-1f, 1f));
 
-		if (Points > MinPointsSaved)
+		if ((AttackableBridges.Count > 0 || AttackableNodes.Count > 0) && GetAttackers().Count == 0)
+		{
+			CreateAttacker();
+		}
+		else if (Points > MinPointsSaved)
 		{
 			//int Choice = Random.Range(1, 3);
 			int Choice = Random.Range(1, 3);
@@ -620,7 +633,7 @@ public class EnemyController : MonoBehaviour
 	{
 		Vector3 SpawnPosition = Vector3.zero;
 
-		if (Points >= AttackerCost)
+		if (Points >= AttackerCost && GetAttackers().Count <= MaxAttackers)
 		{
 			foreach (GameObject otherNode in GameObject.FindGameObjectsWithTag("Node"))
 			{
@@ -1124,11 +1137,8 @@ public class EnemyController : MonoBehaviour
 	//later
 	public void Generate()
 	{
-		//set owner id
-		//pick color
 		//pick shape
-		//pick starting node?
-		//pick personality (how and when to spend points)
+		//pick a random node and set ownership of it
 	}
 
 	//---------------------------------------------------------------------------------------------------

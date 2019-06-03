@@ -233,8 +233,8 @@ public class GhostBridgeScript : MonoBehaviour
         }
         else
         {
-            //TODO: PLAY CANT AFFORD SOUND
-            return null;
+			FindObjectOfType<AudioManager>().Play("Not Enough");
+			return null;
         }
     }
 

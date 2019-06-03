@@ -248,6 +248,7 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
                     if(inputControllerScript.GetBuildState() && !GameObject.FindWithTag("GhostBridgePiece"))
                     {
                         //Create a ghost bridge for the circle
+						//why is this not in input controller?
                         Instantiate(GhostBridge, transform.position, transform.rotation);
                     }
                 }

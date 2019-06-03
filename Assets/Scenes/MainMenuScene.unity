@@ -19027,6 +19027,14 @@ MonoBehaviour:
     targetVolume: 0
     loop: 0
     source: {fileID: 0}
+  - clipName: Not Enough
+    clip: {fileID: 8300000, guid: 8f42793430b5fe34cbe0f8e2b8e99f64, type: 3}
+    volume: 1
+    pitch: 1
+    fadeSpeed: 0
+    targetVolume: 0
+    loop: 0
+    source: {fileID: 0}
   StartVolume: 0
 --- !u!4 &1977116885
 Transform:

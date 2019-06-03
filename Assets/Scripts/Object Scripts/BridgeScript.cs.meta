@@ -3,7 +3,9 @@ guid: 834092aaa95fd4642944af7a963dd0b4
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - GhostBridge: {fileID: 8791136961223856860, guid: f269cdaf7308f2041a6bc8abe0d28e26,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

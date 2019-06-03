@@ -40,6 +40,12 @@ public class AudioManager : MonoBehaviour
 		//ChangeGlobalVolume(StartVolume);
 	}
 
+	private void Start()
+	{
+		//manually set the vloume to the starting volume (Sliders need to be set to the same to be synced.).
+		ChangeGlobalVolume(0.25f);
+	}
+
 	public void Update()
 	{
 		//Fade sound fading out

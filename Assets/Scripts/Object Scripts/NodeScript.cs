@@ -63,8 +63,6 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
         	//Check how many attackers are on this node
         	foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Attacker"))
         	{
-        		// Debug.Log(obj.name);
-
         	    Dist = Vector3.Distance(obj.transform.position, gameObject.transform.position);
 	
         	    if (Dist < ValidAttackerRadius)
@@ -159,7 +157,7 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
         	//If right click
         	else if(InputPointerEventData.button == PointerEventData.InputButton.Right)
         	{
-                if(inputControllerScript.GetPoints() > AttackerPointCost)
+                if(inputControllerScript.GetPoints() >= AttackerPointCost)
                 {
                     inputControllerScript.SpendPoints(AttackerPointCost);
                     GameObject NewAttacker = Instantiate(AttackerPrefab, transform.position, transform.rotation);
@@ -167,13 +165,18 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
                     inputControllerScript.SetSelectedObject(NewAttacker);
                     FindObjectOfType<AudioManager>().Play("Player Attacker Spawn");
                 }
+				else
+				{
+					FindObjectOfType<AudioManager>().Play("Not Enough");
+				}
         		
 			}
         }
         else
         {
-            //TODO: CANT AFFORD SOUND
-        }
+			//play sound to indicate I don't own it (Placeholder)
+			FindObjectOfType<AudioManager>().Play("Menu Select");
+		}
     }
 
 
@@ -250,8 +253,6 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
 				if (enemy.GetComponent<EnemyController>().OwnerID == Owner)
 				{
 					Color newColor = enemy.GetComponent<EnemyController>().color;
-
-					Debug.Log("Enemy: " + Owner + " Color: " + enemy.GetComponent<EnemyController>().color + " PPS: " + enemy.GetComponent<EnemyController>().GetPointsPerTime());
 
 					foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
 					{

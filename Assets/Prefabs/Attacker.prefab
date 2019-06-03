@@ -459,6 +459,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 834caf6e396dfcc45842c8615c1fe5ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Owner: 1
+  AttackerMaterials:
+  - {fileID: 2100000, guid: cbad57a63ce0fc2418608156c58793fe, type: 2}
+  - {fileID: 2100000, guid: cbad57a63ce0fc2418608156c58793fe, type: 2}
+  - {fileID: 2100000, guid: cbad57a63ce0fc2418608156c58793fe, type: 2}
 --- !u!58 &3384040704040540712
 CircleCollider2D:
   m_ObjectHideFlags: 0

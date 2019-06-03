@@ -11,8 +11,7 @@ public class OptionsMenuScript : MonoBehaviour
 
 	public void Start()
 	{
-		//manualls set the vloume to the position the slider is set to by default.
-		FindObjectOfType<AudioManager>().ChangeGlobalVolume(0.25f);
+		
 	}
 
 	/**

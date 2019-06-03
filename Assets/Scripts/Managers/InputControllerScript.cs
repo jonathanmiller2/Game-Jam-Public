@@ -6,13 +6,14 @@ using UnityEngine;
 
 public class InputControllerScript : MonoBehaviour
 {
+	public GameObject GhostBridge;
+
 	private bool previousEscapeStatus;
 
 	private bool BuildState = false;
 	
 	private GraphicRaycaster Raycaster;
 	private EventSystem eventSystem;
-
 
 	private GameObject ClickedGameObject;
 	private GameObject SelectedObject;
@@ -21,7 +22,7 @@ public class InputControllerScript : MonoBehaviour
 
 	private float Points = 0f;
 	private const int BridgePieceCost = 1;
-	private const float PointsPerRadius = 0.01f;
+	private const float PointsPerRadius = 0.02f;
 
 	void Start()
 	{
@@ -34,6 +35,14 @@ public class InputControllerScript : MonoBehaviour
 
 		Cursor.visible = true;
 
+		//give a player one point for each node they controll
+		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Node"))
+		{
+			if (obj.GetComponent<NodeScript>().GetOwner() == 1)
+			{
+				Points++;
+			}
+		}
 	}
 
     void Update()
@@ -164,10 +173,25 @@ public class InputControllerScript : MonoBehaviour
 			}
 		}
 
-
+		//If we're in build mode and there is no ghost make the ghost show up
+		if (BuildState && !GameObject.FindWithTag("GhostBridgePiece"))
+		{
+			if (SelectedObject.tag == "Node")
+			{
+				if (SelectedObject.GetComponent<NodeScript>().GetOwner() == 1)
+				{
+					Instantiate(GhostBridge, SelectedObject.transform.position, SelectedObject.transform.rotation);
+				}
+			}
+			else if (SelectedObject.tag == "BridgePiece")
+			{
+				if (SelectedObject.GetComponent<BridgeScript>().GetOwner() == 1)
+				{
+					Instantiate(GhostBridge, SelectedObject.transform.position, SelectedObject.transform.rotation);
+				}
+			}
+		}
 	}
-
-	
 
 	public float GetPointsPerTime()
 	{

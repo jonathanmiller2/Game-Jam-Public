@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using TMPro;
 
@@ -23,11 +24,11 @@ public class HUDController : MonoBehaviour
 		{
 			if (mesh.tag == "PPS")
 			{
-				mesh.text = "" + inputController.GetPointsPerTime() * 10f;
+				mesh.text = "" + Math.Round(inputController.GetPointsPerTime() * 100f, 3);
 			}
 			else if (mesh.tag == "Points")
 			{
-				string pointsText = inputController.GetPoints().ToString("f0");
+				string pointsText = Mathf.Floor(inputController.GetPoints()).ToString("f0");
 
 				if (int.Parse(pointsText) > lastPoints)
 				{
