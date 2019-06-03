@@ -14,6 +14,7 @@ TagManager:
   - Points
   - PPS
   - Trans
+  - Tutorial
   layers:
   - Default
   - TransparentFX

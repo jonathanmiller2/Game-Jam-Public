@@ -7,6 +7,8 @@ public class MainMenuScript : MonoBehaviour
 {
 	public GameObject OptionsMenu;
 	public GameObject PlayMenu;
+    public GameObject TutorialMenu;
+    public GameObject Tutorial;
 
     public void PlayButtonPressed()
     {
@@ -17,6 +19,21 @@ public class MainMenuScript : MonoBehaviour
     {
 		FindObjectOfType<AudioManager>().Play("Node Loss");
 		Application.Quit();
+    }
+
+    public void TutorialButtonPressed()
+    {
+        FindObjectOfType<AudioManager>().Play("Menu Select");
+
+
+        if (Tutorial.activeSelf)
+        {
+            Tutorial.SetActive(false);
+        }
+        else
+        {
+            Tutorial.SetActive(true);
+        }
     }
 
     public void OptionsButtonPressed()

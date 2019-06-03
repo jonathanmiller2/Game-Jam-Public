@@ -8,6 +8,7 @@ public class MenuScript : MonoBehaviour
 {
 	public GameObject OptionsMenu;
 	public GameObject PauseMenu;
+    public GameObject TutorialMenu;
 
     public void EscapePressed()
     {	
@@ -35,6 +36,10 @@ public class MenuScript : MonoBehaviour
     		PauseMenu.SetActive(true);
 			FindObjectOfType<AudioManager>().Play("Menu Select");
 		}	
+        else if (TutorialMenu.activeSelf)
+        {
+
+        }
     }
 
     public void OptionsButtonPressed()
