@@ -5,7 +5,6 @@ using UnityEngine;
 public class CursorController : MonoBehaviour
 {
     public Material[] material;
-    public GameObject cursor;
 
     // Start is called before the first frame update
     void Start()

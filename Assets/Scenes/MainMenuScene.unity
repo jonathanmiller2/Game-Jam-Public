@@ -4690,12 +4690,12 @@ PrefabInstance:
     - target: {fileID: 5148983931312220892, guid: 4f1c85fb44dcead469db889978285540,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5148983931312220892, guid: 4f1c85fb44dcead469db889978285540,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6983309614027052874, guid: 4f1c85fb44dcead469db889978285540,
         type: 3}
@@ -6786,7 +6786,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   material:
   - {fileID: 2100000, guid: 6fdbb900760b825418413d9eb0de62b0, type: 2}
-  - {fileID: 2100000, guid: bc77eb8fcd223db49928cff961e333fc, type: 2}
+  - {fileID: 2100000, guid: ae9bfe5b10ffa884bab831a81a7b004b, type: 2}
   cursor: {fileID: 0}
 --- !u!4 &1117754992
 Transform:
