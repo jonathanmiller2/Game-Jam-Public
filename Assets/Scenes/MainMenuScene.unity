@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -4707,11 +4707,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4030649814217824109, guid: 4f1c85fb44dcead469db889978285540,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 4070391041613076950, guid: 4f1c85fb44dcead469db889978285540,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4731,11 +4726,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3100843211353467873, guid: 4f1c85fb44dcead469db889978285540,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6784904975334546223, guid: 4f1c85fb44dcead469db889978285540,
         type: 3}
@@ -4757,11 +4747,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 3351180746686315013, guid: 4f1c85fb44dcead469db889978285540,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5601023973218847625, guid: 4f1c85fb44dcead469db889978285540,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4781,6 +4766,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3351180746686315013, guid: 4f1c85fb44dcead469db889978285540,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4030649814217824109, guid: 4f1c85fb44dcead469db889978285540,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3100843211353467873, guid: 4f1c85fb44dcead469db889978285540,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7609980532248835439, guid: 4f1c85fb44dcead469db889978285540,
         type: 3}
@@ -11987,6 +11987,14 @@ MonoBehaviour:
     source: {fileID: 0}
   - clipName: Place Bridge Unit
     clip: {fileID: 8300000, guid: 397952569f06c3241aafacc63ef8fee0, type: 3}
+    volume: 1
+    pitch: 1
+    fadeSpeed: 0
+    targetVolume: 0
+    loop: 0
+    source: {fileID: 0}
+  - clipName: No Deal
+    clip: {fileID: 8300000, guid: fcf5d708e38622245ab683583a41f2b7, type: 3}
     volume: 1
     pitch: 1
     fadeSpeed: 0

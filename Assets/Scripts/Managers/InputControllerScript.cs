@@ -47,6 +47,11 @@ public class InputControllerScript : MonoBehaviour
 			SetBuildState(false);
 		}
 
+		if (Input.GetKeyDown(KeyCode.N))
+		{
+			FindObjectOfType<AudioManager>().Play("No Deal");
+		}
+
 		//Handle clicking and ALL selection logic
 		if(Input.GetMouseButtonDown(0))
 		{
