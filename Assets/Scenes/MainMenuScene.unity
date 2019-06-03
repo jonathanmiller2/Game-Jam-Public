@@ -3062,9 +3062,11 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 'Nodes give you mroe points per second
+  m_text: 'Nodes give you more points per second
 
-    and let you place paths off fo them'
+    and let you place paths off fo them
+
+    Right Click on a node to spawn an attacker'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3130,15 +3132,15 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -185.32947, w: -60.674366}
+  m_margin: {x: -20.278872, y: 0, z: -185.32947, w: -60.674366}
   m_textInfo:
     textComponent: {fileID: 380832084}
-    characterCount: 73
+    characterCount: 116
     spriteCount: 0
-    spaceCount: 14
-    wordCount: 15
+    spaceCount: 23
+    wordCount: 24
     linkCount: 0
-    lineCount: 2
+    lineCount: 3
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -18365,7 +18367,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Holding shift lets you place paths
+  m_text: Holding shift lets you place paths off of the currently selected object
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -18434,12 +18436,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: -128.10312, w: 0}
   m_textInfo:
     textComponent: {fileID: 1915350160}
-    characterCount: 34
+    characterCount: 71
     spriteCount: 0
-    spaceCount: 5
-    wordCount: 6
+    spaceCount: 11
+    wordCount: 12
     linkCount: 0
-    lineCount: 1
+    lineCount: 2
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
