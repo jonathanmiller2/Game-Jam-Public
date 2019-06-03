@@ -79,6 +79,7 @@ public class InputControllerScript : MonoBehaviour
 				{
 					if(ClickedGameObject.tag == "Attacker" && ClickedGameObject.GetComponent<AttackerScript>().GetOwner() == 1)
 					{
+						//Selection happens here
 						SelectedObject = ClickedGameObject;
 					}
 					else
@@ -88,6 +89,7 @@ public class InputControllerScript : MonoBehaviour
 				}
 				else
 				{
+					//Selection happens here
 					SelectedObject = ClickedGameObject;	
 				}
 			}
