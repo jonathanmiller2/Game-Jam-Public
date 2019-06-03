@@ -53,7 +53,7 @@ public class CursorController : MonoBehaviour
 
             foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
             {
-                renderer.material = material[++mat];
+                renderer.material = material[1];
             }
         }
 
@@ -67,7 +67,7 @@ public class CursorController : MonoBehaviour
 
             foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
             {
-                renderer.material = material[mat--];
+                renderer.material = material[0];
             }
         }
 
