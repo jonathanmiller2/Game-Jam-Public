@@ -9,12 +9,15 @@ public class AttackerScript : MonoBehaviour
 	Vector3 DesiredTarget;
 	GameObject ActualTarget;
 
-    const float NodeConnectedRadius = 1f;
-    const float BridgeConnectedRadius = 1f;
+    const float NodeConnectedRadius = 3f;
+    const float BridgeConnectedRadius = 3f;
 
 	private int Owner = 1;
 
     private float MoveWait = 1f;
+
+    public Dictionary<GameObject, GameObject> ChildDict = new Dictionary<GameObject, GameObject>();
+    private GameObject InitialObject;
 
     // Start is called before the first frame update
     void Start()
@@ -64,8 +67,29 @@ public class AttackerScript : MonoBehaviour
 
         ActualTarget = ClosestObject;
 
+        Debug.Log("Moving to object:" + ActualTarget.name);
+
+
         DijkstraSetup(ActualTarget);
-        StartCoroutine("MoveToTarget");
+
+        //If we can't actually get there, don't move 
+
+        //First find the youngest child
+        GameObject YoungestChild = InitialObject;
+        while(ChildDict.ContainsKey(YoungestChild))
+        {
+            YoungestChild = ChildDict[YoungestChild];
+        }
+
+        //Don't try to move if our last node didn't actually get there
+        if(Vector3.Distance(YoungestChild.transform.position, ActualTarget.transform.position) < .25)
+        {
+            StartCoroutine("MoveToTarget");
+        }
+        else
+        {
+            Debug.Log("Can't reach");
+        }
 
     }
 
@@ -79,13 +103,12 @@ public class AttackerScript : MonoBehaviour
     	Owner = NewOwner;
     }
 
-    public Dictionary<GameObject, GameObject> ParentDict = new Dictionary<GameObject, GameObject>();
-    private GameObject InitialObject;
+    
 
 
     private void DijkstraSetup(GameObject DestinationObject)
     {
-        ParentDict = new Dictionary<GameObject, GameObject>();
+        ChildDict = new Dictionary<GameObject, GameObject>();
 
         //Each vertex will be described with 3 values. 0: GameObject, 1:whether or not it was visited (float, unvisited:0.0, visited:1.0), 2:The Tentative distance
         Dictionary<GameObject, float[]>  Vertices = new Dictionary<GameObject, float[]>();
@@ -175,7 +198,7 @@ public class AttackerScript : MonoBehaviour
             }
             else
             {
-                ParentDict[ObjectWithSmallestTDistance] = currentNode;
+                ChildDict[currentNode] = ObjectWithSmallestTDistance;
                 Dijkstra(ObjectWithSmallestTDistance, Vertices, DestinationObject);
             }
         }
@@ -190,21 +213,11 @@ public class AttackerScript : MonoBehaviour
         GameObject CurrentlyOn = InitialObject;
 
 
-        /*
-        foreach(KeyValuePair<GameObject, GameObject> entry in ParentDict)
+        while(ChildDict.ContainsKey(CurrentlyOn))
         {
-            Debug.Log("Printing");
-            Debug.Log(entry.Key.name);
-        }
-        */
-
-        //Keybyvalue()
-
-        while(KeyByValue(ParentDict, CurrentlyOn))
-        {
-            Debug.Log("Moving to" + KeyByValue(ParentDict, CurrentlyOn).name);
-            transform.position = KeyByValue(ParentDict, CurrentlyOn).transform.position;
-            CurrentlyOn = KeyByValue(ParentDict, CurrentlyOn);
+            Debug.Log("Moving to" + ChildDict[CurrentlyOn].name);
+            transform.position = ChildDict[CurrentlyOn].transform.position;
+            CurrentlyOn = ChildDict[CurrentlyOn];
             
             yield return new WaitForSeconds(MoveWait);
         }
