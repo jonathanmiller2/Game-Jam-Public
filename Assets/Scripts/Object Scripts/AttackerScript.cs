@@ -9,15 +9,19 @@ public class AttackerScript : MonoBehaviour
 	Vector3 DesiredTarget;
 	GameObject ActualTarget;
 
-    const float NodeConnectedRadius = .75f;
-    const float BridgeConnectedRadius = .95f;
+    const float NodeConnectedRadius = 1.5f;
+    const float BridgeConnectedRadius = 1.5f;
 
 	private int Owner = 1;
 
-    private float MoveWait = 1f;
+    private float MoveWait = .5f;
 
     public Dictionary<GameObject, GameObject> ChildDict = new Dictionary<GameObject, GameObject>();
     private GameObject InitialObject;
+
+    //A list of all of our valid paths
+    private List<List<GameObject>> ValidPaths = new List<List<GameObject>>();
+    private List<GameObject> ShortestPath = null;
 
     // Start is called before the first frame update
     void Start()
@@ -72,28 +76,28 @@ public class AttackerScript : MonoBehaviour
 
         DijkstraSetup(ActualTarget);
 
-        //If we can't actually get there, don't move 
-
-        //First find the youngest child
-        GameObject YoungestChild = InitialObject;
-        while(ChildDict.ContainsKey(YoungestChild))
+        //If we found a valid path
+        if(ValidPaths.Count != 0)
         {
-            Debug.DrawLine(YoungestChild.transform.position, ChildDict[YoungestChild].transform.position, Color.white, 5f);
-            YoungestChild = ChildDict[YoungestChild];
-        }
+            int SmallestPathLength = 1000000000;
 
-        bool NodeAndWithinReachableDistance = ActualTarget.tag == "Node" && Vector3.Distance(YoungestChild.transform.position, ActualTarget.transform.position) < NodeConnectedRadius;
-        bool BridgeAndWithinReachableDistance = ActualTarget.tag == "BridgePiece" && Vector3.Distance(YoungestChild.transform.position, GetChildObjectWithTag(ActualTarget.transform, "CenterPoint").transform.position) < BridgeConnectedRadius;
+            foreach(List<GameObject> Path in ValidPaths)
+            {
+                if(Path.Count < SmallestPathLength)
+                {
+                    SmallestPathLength = Path.Count;
+                    ShortestPath = Path;
+                }
+            }
 
-        //Don't try to move if our last node didn't actually get there
-        if(NodeAndWithinReachableDistance || BridgeAndWithinReachableDistance)
-        {
             StartCoroutine("MoveToTarget");
         }
         else
         {
             Debug.Log("Can't reach");
         }
+
+        
 
     }
 
@@ -112,7 +116,8 @@ public class AttackerScript : MonoBehaviour
 
     private void DijkstraSetup(GameObject DestinationObject)
     {
-        ChildDict = new Dictionary<GameObject, GameObject>();
+        ShortestPath = null;
+        ValidPaths = new List<List<GameObject>>();
 
         //Each vertex will be described with 3 values. 0: GameObject, 1:whether or not it was visited (float, unvisited:0.0, visited:1.0), 2:The Tentative distance
         Dictionary<GameObject, float[]>  Vertices = new Dictionary<GameObject, float[]>();
@@ -156,12 +161,14 @@ public class AttackerScript : MonoBehaviour
         //Set the tentative distance of our initial node to 0
         Vertices[Current] = new float[2]{0, 0};
 
-        Dijkstra(Current, Vertices, DestinationObject);
+        Dijkstra(Current, Vertices, DestinationObject, new List<GameObject>());
 
     }
 
+
+
     
-    private void Dijkstra(GameObject currentNode, Dictionary<GameObject, float[]>  Vertices, GameObject DestinationObject)
+    private void Dijkstra(GameObject currentNode, Dictionary<GameObject, float[]>  Vertices, GameObject DestinationObject, List<GameObject> Path)
     {
         //Only do anything if this node hasn't already been checked
 
@@ -194,57 +201,47 @@ public class AttackerScript : MonoBehaviour
                 }
             }
         }
-    
-        if(SmallestTentativeDistance == float.MaxValue || Vertices[DestinationObject][0] == 1 || ObjectWithSmallestTDistance == null)
+
+        //If we've found a valid path
+        if(Vertices[DestinationObject][0] == 1)
         {
+            Path.Add(currentNode);
+            ValidPaths.Add(Path);
+            return;
+        }
+    
+        if(SmallestTentativeDistance == float.MaxValue || ObjectWithSmallestTDistance == null)
+        {
+            //Dead path
             return;
         }
         else
         {
+            Path.Add(currentNode);
             ChildDict[currentNode] = ObjectWithSmallestTDistance;
-            Dijkstra(ObjectWithSmallestTDistance, Vertices, DestinationObject);
+            Dijkstra(ObjectWithSmallestTDistance, Vertices, DestinationObject, Path);
         }
 
     }
 
     IEnumerator MoveToTarget()
     {
-        //Check what GameObject we're currently on
 
-        float SmallestDist = float.MaxValue;
+        Debug.Log(ShortestPath.Count);
 
-        GameObject CurrentlyOn = InitialObject;
-
-
-        while(ChildDict.ContainsKey(CurrentlyOn))
+        foreach(GameObject GO in ShortestPath)
         {
             yield return new WaitForSeconds(MoveWait);
-            Debug.Log("Moving to" + ChildDict[CurrentlyOn].name);
 
-            if(ChildDict[CurrentlyOn].tag == "BridgePiece")
+            if(GO.tag == "BridgePiece")
             {
-                transform.position = GetChildObjectWithTag(ChildDict[CurrentlyOn].transform, "CenterPoint").transform.position;
+                transform.position = GetChildObjectWithTag(GO.transform, "CenterPoint").transform.position;
             }
             else
             {
-                transform.position = ChildDict[CurrentlyOn].transform.position;
-            }
-            CurrentlyOn = ChildDict[CurrentlyOn];
-        }
-    }
-
-    public GameObject KeyByValue(Dictionary<GameObject, GameObject> dict, GameObject val)
-    {
-        GameObject key = null;
-        foreach (KeyValuePair<GameObject, GameObject> pair in dict)
-        {
-            if (pair.Value == val)
-            { 
-                key = pair.Key; 
-                break; 
+                transform.position = GO.transform.position;
             }
         }
-        return key;
     }
 
     //(single)
