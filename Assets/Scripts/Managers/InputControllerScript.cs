@@ -81,7 +81,20 @@ public class InputControllerScript : MonoBehaviour
 					{
 						//Selection happens here
 						SelectedObject = ClickedGameObject;
-					}
+                        // Setting isSelected on
+                        foreach (SpriteRenderer renderer in ClickedGameObject.transform.GetComponentsInChildren<SpriteRenderer>())
+                        {
+                            renderer.material.SetFloat("Vector1_63F18585", .8f);
+                        }
+                        foreach (ParticleSystemRenderer particleSystem in ClickedGameObject.GetComponentsInChildren<ParticleSystemRenderer>())
+                        {
+                            particleSystem.material.SetFloat("Vector1_63F18585", .8f);
+                        }
+                        foreach (TrailRenderer trailrenderer in ClickedGameObject.GetComponentsInChildren<TrailRenderer>())
+                        {
+                            trailrenderer.material.SetFloat("Vector1_63F18585", .8f);
+                        }
+                    }
 					else
 					{
 						SelectedObject.GetComponent<AttackerScript>().SetTarget(Camera.main.ScreenToWorldPoint(Input.mousePosition));
