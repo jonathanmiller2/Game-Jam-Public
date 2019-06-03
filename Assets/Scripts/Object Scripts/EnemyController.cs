@@ -25,6 +25,7 @@ public class EnemyController : MonoBehaviour
 
 	private const int BridgePieceCost = 1;
 	private const int AttackerCost = 5;
+	private const int MaxAttackers = 5;
 	private const float PointsPerRadius = 0.02f;
 	private const float BridgeOriginDistance = 0.25f;
 	private const float minimumPlacementDistance = 0.15f;
@@ -106,7 +107,15 @@ public class EnemyController : MonoBehaviour
 			else
 			{
 				//build attackers if I have enough money, if I don't try to attack, if I can't attack do nothing.
-				CreateAttacker();
+				if (GetAttackers().Count <= MaxAttackers)
+				{
+					CreateAttacker();
+				}
+				else
+				{
+					BuildBridgeDecide();
+				}
+				
 			}
 		}
 	}
