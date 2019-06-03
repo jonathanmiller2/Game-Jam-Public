@@ -16,7 +16,6 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
     public GameObject GhostBridgePiecePrefab;
     public GameObject AttackerPrefab;
 
-    private Toggle ToggleScriptComponent;
     private InputControllerScript inputControllerScript;
 
     //Conversion data
@@ -35,8 +34,6 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
     // Start is called before the first frame update
     void Start()
     {
-        GameObject ToggleButtonGameObject = GameObject.Find("PlaceModeToggle");
-        ToggleScriptComponent = ToggleButtonGameObject.GetComponent<Toggle>();
 
         GameObject InputControllerManagerObject = GameObject.Find("InputController");
         inputControllerScript = InputControllerManagerObject.GetComponent<InputControllerScript>();
@@ -156,7 +153,7 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
     		if (InputPointerEventData.button == PointerEventData.InputButton.Left)
     		{
     		   	//We need to see if we're in place mode and we don't have a ghost bridge piece
-    		   	if(ToggleScriptComponent.isOn && !GameObject.FindWithTag("GhostBridgePiece"))
+    		   	if(inputControllerScript.GetBuildState() && !GameObject.FindWithTag("GhostBridgePiece"))
     		   	{
     		   	    //Create a ghost bridge for the circle
     		   	    Instantiate(GhostBridgePiecePrefab, transform.position, transform.rotation);

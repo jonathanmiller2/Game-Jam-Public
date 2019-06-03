@@ -16,7 +16,7 @@ public class AttackerScript : MonoBehaviour
 
     private float MoveWait = .5f;
 
-    private int Health;
+    private int Health = 3;
     
 
     
@@ -72,7 +72,12 @@ public class AttackerScript : MonoBehaviour
         {
             HealthTickTimer += Time.deltaTime;
         }
-        
+
+
+        if(Health <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
 

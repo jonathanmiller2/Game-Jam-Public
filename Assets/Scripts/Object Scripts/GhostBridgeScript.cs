@@ -19,7 +19,6 @@ public class GhostBridgeScript : MonoBehaviour
     private PolygonCollider2D PolygonCollider;
 
     //UI
-    private Toggle ToggleScriptComponent;
 
 
     //Controller variables, only one will be used
@@ -49,8 +48,6 @@ public class GhostBridgeScript : MonoBehaviour
 
         PolygonCollider = gameObject.GetComponent<PolygonCollider2D>();
 
-        GameObject ToggleButtonGameObject = GameObject.Find("PlaceModeToggle");
-        ToggleScriptComponent = ToggleButtonGameObject.GetComponent<Toggle>();
 
         //Find the controller for the selected object
         if(SelectedObject.tag == "Node")
@@ -72,9 +69,13 @@ public class GhostBridgeScript : MonoBehaviour
 	void Update()
     {
     	//Check if we left placing mode
-    	if(!ToggleScriptComponent.isOn)
+    	if(!inputControllerScript.GetBuildState())
     	{
     		Destroy(gameObject);
+    	}
+    	else
+    	{
+    		Debug.Log(inputControllerScript.GetBuildState());
     	}
 
     	
@@ -225,35 +226,6 @@ public class GhostBridgeScript : MonoBehaviour
 			return null;
 		}
     }
-
-/*
-    public GameObject GetBridgeUnitClosestToPoint(Vector3 point)
-    {
-        GameObject ClosestBridgeUnit = null;
-        float SmallestDelta = -1f;
-
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("BridgePiece"))
-        {
-            if (obj.GetComponent<BridgeScript>().GetOwner() == OwnerID)
-            {
-                float CurrentUnitDelta = Vector3.Distance(GetChildObjectWithTag(obj.transform, "CenterPoint").transform.position, point);
-
-                if (CurrentUnitDelta < SmallestDelta)
-                {
-                    SmallestDelta = CurrentUnitDelta;
-                    ClosestBridgeUnit = obj;
-                }
-                else if (SmallestDelta == -1f)
-                {
-                    SmallestDelta = CurrentUnitDelta;
-                    ClosestBridgeUnit = obj;
-                }
-            }
-        }
-
-        return ClosestBridgeUnit;
-    }
-*/
 
     //Helper functions
     public List<GameObject> GetChildObjectsWithTag(Transform Parent, string Tag)

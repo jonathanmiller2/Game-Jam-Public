@@ -11,7 +11,7 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
 
     public Material[] BridgeMaterials;
 
-    private int Health = 2;
+    private int Health = 3;
 	
     private InputControllerScript inputControllerScript;
     private GameObject SelectedObject;
@@ -38,9 +38,6 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
     	//Find input controller
         GameObject InputControllerManagerObject = GameObject.Find("InputController");
         inputControllerScript = InputControllerManagerObject.GetComponent<InputControllerScript>();
-
-        GameObject ToggleButtonGameObject = GameObject.Find("PlaceModeToggle");
-        ToggleScriptComponent = ToggleButtonGameObject.GetComponent<Toggle>();
     }
 
     // Update is called once per frame
@@ -56,7 +53,6 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
 
         if(Health <= 0)
         {
-            // Debug.Log("aaa");
             Destroy(gameObject);
 			FindObjectOfType<AudioManager>().Play("Bridge Destroy");
 		}
@@ -189,13 +185,12 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
 
     public void TakeHealth(int TakenHealth)
     {
-        // Debug.Log("taken");
         Health -= TakenHealth;
         foreach (SpriteRenderer renderer in SelectedObject.transform.GetComponentsInChildren<SpriteRenderer>())
         {
             renderer.material.SetFloat("Vector1_373BB5F6", .7f);
         }
-        foreach (ParticleSystemRenderer particleSystem in SelectedObject.GetComponentsInChildren<ParticleSystemRenderer>())
+        foreach (ParticleSystemRenderer particleSystem in SelectedObject.transform.GetComponentsInChildren<ParticleSystemRenderer>())
         {
             particleSystem.material.SetFloat("Vector1_373BB5F6", .7f);
         }
@@ -204,14 +199,13 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
 
     public void GiveHealth(int TakenHealth)
     {
-        // Debug.Log("given");
         Health += TakenHealth;
         if(Health > 2)
         {
             Health = 2;
         }
 
-        foreach (SpriteRenderer renderer in SelectedObject.transform.GetComponentsInChildren<SpriteRenderer>())
+        foreach (SpriteRenderer renderer in SelectedObject.GetComponentsInChildren<SpriteRenderer>())
         {
             renderer.material.SetFloat("Vector1_373BB5F6", .0f);
         }
@@ -251,7 +245,7 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
                 else
                 {
                     //We need to see if we're in place mode and we don't already have a ghost
-                    if(ToggleScriptComponent.isOn && !GameObject.FindWithTag("GhostBridgePiece"))
+                    if(inputControllerScript.GetBuildState() && !GameObject.FindWithTag("GhostBridgePiece"))
                     {
                         //Create a ghost bridge for the circle
                         Instantiate(GhostBridge, transform.position, transform.rotation);

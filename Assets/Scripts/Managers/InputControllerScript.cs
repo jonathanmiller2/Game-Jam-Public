@@ -49,30 +49,19 @@ public class InputControllerScript : MonoBehaviour
 			SetBuildState(false);
 		}
 
-		if (Input.GetKeyDown(KeyCode.N))
-		{
-			FindObjectOfType<AudioManager>().Play("No Deal");
-		}
-
 		//Handle clicking and ALL selection logic
 		if(Input.GetMouseButtonDown(0))
 		{
-			/*
-			if(SelectedObject)
-			{
-				Debug.Log("Old Selected Object:" + SelectedObject.name);
-			}
-			else
-			{
-				Debug.Log("Old Selected Object: null");
-			}
-			*/
 
 			string WhatIsClicked = WhatDidIClickOn(Input.mousePosition);
 
 			if(WhatIsClicked == "GUI")
 			{
 				//Clear selection
+				if(SelectedObject != null)
+				{
+					ClearSelectMat(SelectedObject);	
+				}
 				SelectedObject = null;
 			}
 			else if(WhatIsClicked == "GameObject")
@@ -103,8 +92,7 @@ public class InputControllerScript : MonoBehaviour
 			}
 			else if(WhatIsClicked == "Nothing")
 			{
-
-				if(GameObject.Find("PlaceModeToggle").GetComponent<Toggle>().isOn)
+				if(BuildState)
 				{
 					if(SelectedObject && SelectedObject.tag == "Node")
 					{
@@ -160,16 +148,6 @@ public class InputControllerScript : MonoBehaviour
 					SelectedObject = null;
 				}
 			}
-			/*
-			if(SelectedObject)
-			{
-				Debug.Log("New Selected Object:" + SelectedObject.name);
-			}
-			else
-			{
-				Debug.Log("New Selected Object: null");
-			}
-			*/
 		}
 
 		
@@ -250,46 +228,56 @@ public class InputControllerScript : MonoBehaviour
 
 	public void SetSelectMat(GameObject inp)
 	{
-		//Select new object
-		foreach (SpriteRenderer renderer in inp.transform.GetComponentsInChildren<SpriteRenderer>())
-        {
-            renderer.material.SetFloat("Vector1_63F18585", .8f);
-        }
-        foreach (ParticleSystemRenderer particleSystem in inp.GetComponentsInChildren<ParticleSystemRenderer>())
-        {
-            particleSystem.material.SetFloat("Vector1_63F18585", .8f);
-        }
-        foreach (TrailRenderer trailrenderer in inp.GetComponentsInChildren<TrailRenderer>())
-        {
-            trailrenderer.material.SetFloat("Vector1_63F18585", .8f);
-        }
+		if(inp != null)
+		{
+			//Select new object
+			foreach (SpriteRenderer renderer in inp.transform.GetComponentsInChildren<SpriteRenderer>())
+        	{
+        	    renderer.material.SetFloat("Vector1_63F18585", .8f);
+        	}
+        	foreach (ParticleSystemRenderer particleSystem in inp.GetComponentsInChildren<ParticleSystemRenderer>())
+        	{
+        	    particleSystem.material.SetFloat("Vector1_63F18585", .8f);
+        	}
+        	foreach (TrailRenderer trailrenderer in inp.GetComponentsInChildren<TrailRenderer>())
+        	{
+        	    trailrenderer.material.SetFloat("Vector1_63F18585", .8f);
+        	}
+		}	
 	}
 
 	private void ClearSelectMat(GameObject inp)
 	{
-		foreach (SpriteRenderer renderer in ClickedGameObject.transform.GetComponentsInChildren<SpriteRenderer>())
-        {
-            renderer.material.SetFloat("Vector1_63F18585", 0f);
-        }
-        foreach (ParticleSystemRenderer particleSystem in ClickedGameObject.GetComponentsInChildren<ParticleSystemRenderer>())
-        {
-            particleSystem.material.SetFloat("Vector1_63F18585", 0f);
-        }
-        foreach (TrailRenderer trailrenderer in ClickedGameObject.GetComponentsInChildren<TrailRenderer>())
-        {
-            trailrenderer.material.SetFloat("Vector1_63F18585", 0f);
+		if(inp != null)
+		{
+			Debug.Log("Clearing");
+			foreach (SpriteRenderer renderer in inp.transform.GetComponentsInChildren<SpriteRenderer>())
+        	{
+        	    renderer.material.SetFloat("Vector1_63F18585", 0f);
+        	}
+        	foreach (ParticleSystemRenderer particleSystem in inp.GetComponentsInChildren<ParticleSystemRenderer>())
+        	{
+        	    particleSystem.material.SetFloat("Vector1_63F18585", 0f);
+        	}
+        	foreach (TrailRenderer trailrenderer in inp.GetComponentsInChildren<TrailRenderer>())
+        	{
+        	    trailrenderer.material.SetFloat("Vector1_63F18585", 0f);
+        	}
         }
 	}
 
 	// Should ONLY be used from MiscInputManager for escape handling
-	public void SetSelectedObject(GameObject Selection)
+	public void SetSelectedObject(GameObject inp)
 	{
 		//Clear old selection
 		ClearSelectMat(SelectedObject);
 
-		SelectedObject = Selection;
+		if(inp != null)
+		{
+			SelectedObject = inp;
 
-		SetSelectMat(SelectedObject);
+			SetSelectMat(SelectedObject);
+		}
 	}
 
 	public GameObject GetSelectedObject()
@@ -299,7 +287,7 @@ public class InputControllerScript : MonoBehaviour
 
 	public void SetBuildState(bool newState)
 	{
-		BuildState = true;
+		BuildState = newState;
 		
 		if(newState)
 		{
