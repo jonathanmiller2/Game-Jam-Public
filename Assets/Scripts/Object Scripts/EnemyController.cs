@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
 	public GameObject BridgePiece;
+	public GameObject Attacker;
 
 	public int OwnerID = 2;
 	public float Points = 0f;
@@ -23,7 +24,8 @@ public class EnemyController : MonoBehaviour
 	public List<GameObject> AttackableBridges = new List<GameObject>();
 
 	private const int BridgePieceCost = 1;
-	private const float PointsPerRadius = 0.1f;
+	private const int AttackerCost = 2;
+	private const float PointsPerRadius = 0.02f;
 	private const float BridgeOriginDistance = 0.25f;
 	private const float minimumPlacementDistance = 0.15f;
 
@@ -86,7 +88,7 @@ public class EnemyController : MonoBehaviour
 		if (Points > MinPointsSaved)
 		{
 			//int Choice = Random.Range(1, 3);
-			int Choice = 1;
+			int Choice = Random.Range(1, 3);
 
 			if (Choice == 1)
 			{
@@ -583,12 +585,79 @@ public class EnemyController : MonoBehaviour
 
 	public void Attack()
 	{
+		List<GameObject> attackers = GetAttackers();
 
+		if (attackers.Count > 0)
+		{
+			GameObject target = null;
+
+			if (AttackableNodes.Count > 0)
+			{
+				target = AttackableNodes[Random.Range(0, AttackableNodes.Count - 1)];
+			}
+			else if(AttackableBridges.Count > 0)
+			{
+				target = AttackableBridges[Random.Range(0, AttackableBridges.Count - 1)];
+			}
+
+			if (target != null)
+			{
+				attackers[Random.Range(0, attackers.Count - 1)].GetComponent<AttackerScript>().SetTarget(target.transform.position);
+			}
+		}
+		else
+		{
+			CreateAttacker();
+		}
 	}
 
 	public void CreateAttacker()
 	{
+		Vector3 SpawnPosition = Vector3.zero;
 
+		if (Points >= AttackerCost)
+		{
+			foreach (GameObject otherNode in GameObject.FindGameObjectsWithTag("Node"))
+			{
+				if (otherNode.GetComponent<NodeScript>().GetOwner() != OwnerID)
+				{
+					GameObject myNode = GetNodeIOwnClosestToPoint(otherNode.transform.position);
+
+					if (myNode && IsConnected(myNode, otherNode) && AttackableNodes.Contains(otherNode))
+					{
+						SpawnAttacker(myNode.transform.position);
+					}
+					else if (AttackableNodes.Count == 0)
+					{
+						GameObject node = null;
+
+						node = GetRandomNodeIOwn();
+
+						if (node)
+						{
+							SpawnAttacker(myNode.transform.position);
+						}
+
+					}
+				}
+			}
+		}
+		else
+		{
+			if (GetAttackers().Count > 0)
+			{
+				Attack();
+			}
+		}
+	}
+
+	public void SpawnAttacker (Vector3 point)
+	{
+		SpendPoints(AttackerCost);
+		GameObject NewAttacker = Instantiate(Attacker, point, Quaternion.identity);
+		NewAttacker.GetComponent<AttackerScript>().SetOwner(OwnerID);
+
+		FindObjectOfType<AudioManager>().Play("Enemy Attacker Spawn");
 	}
 
 	public List<GameObject> GetAttackers()
@@ -599,11 +668,34 @@ public class EnemyController : MonoBehaviour
 		{
 			if (atk.GetComponent<AttackerScript>().GetOwner() == OwnerID)
 			{
-				//attackers.add(atk);
+				attackers.Add(atk);
 			}
 		}
 
 		return attackers;
+	}
+
+	public GameObject GetRandomNodeIOwn()
+	{
+		List<GameObject> myNodes = new List<GameObject>();
+
+		foreach (GameObject node in GameObject.FindGameObjectsWithTag("Node"))
+		{
+			if (node.GetComponent<NodeScript>().GetOwner() == OwnerID)
+			{
+				myNodes.Add(node);
+			}
+		}
+
+		if (myNodes.Count == 0)
+		{
+			return null;
+		}
+		else
+		{
+			return myNodes[Random.Range(0, myNodes.Count - 1)];
+		}
+
 	}
 
 	public GameObject GetNodeIOwnClosestToPoint(Vector3 point)
@@ -1037,6 +1129,83 @@ public class EnemyController : MonoBehaviour
 	//---------------------------------------------------------------------------------------------------
 
 	//Helper functions
+	const float NodeConnectedRadius = 1f;
+	const float BridgeConnectedRadius = 1f;
+
+	private bool IsConnected(GameObject one, GameObject two)
+	{
+		//Construct dict of gameobjects and whether they've been visited
+		Dictionary<GameObject, bool> VisitedDict = new Dictionary<GameObject, bool>();
+
+		foreach (GameObject bridge in GameObject.FindGameObjectsWithTag("BridgePiece"))
+		{
+			if (OwnerID == bridge.GetComponent<BridgeScript>().GetOwner())
+			{
+				VisitedDict[bridge] = false;
+			}
+		}
+
+		foreach (GameObject node in GameObject.FindGameObjectsWithTag("Node"))
+		{
+			VisitedDict[node] = false;
+		}
+
+		return CheckConnectedness(VisitedDict, one, two);
+	}
+
+	private bool CheckConnectedness(Dictionary<GameObject, bool> VisitedDict, GameObject CurrentObject, GameObject GoalObject)
+	{
+		List<GameObject> ConnectedList = new List<GameObject>();
+
+		VisitedDict[CurrentObject] = false;
+
+		//Construct connectedlist
+		foreach (GameObject bridge in GameObject.FindGameObjectsWithTag("BridgePiece"))
+		{
+			//If we own it, if it isn't visited, and it's close enough
+			if (OwnerID == bridge.GetComponent<BridgeScript>().GetOwner() && VisitedDict[bridge] == false && Vector3.Distance(GetChildObjectWithTag(bridge.transform, "CenterPoint").transform.position, CurrentObject.transform.position) < BridgeConnectedRadius)
+			{
+				ConnectedList.Add(bridge);
+			}
+		}
+
+		foreach (GameObject node in GameObject.FindGameObjectsWithTag("Node"))
+		{
+			if (Vector3.Distance(node.transform.position, CurrentObject.transform.position) < NodeConnectedRadius + node.GetComponent<NodeScript>().GetRadius())
+			{
+				ConnectedList.Add(node);
+			}
+		}
+
+		//If there are no unvisitied connected nodes
+		if (ConnectedList.Count == 0)
+		{
+			return false;
+		}
+		//If we've connected to the goal
+		else if (ConnectedList.Contains(GoalObject)) ;
+		{
+			return true;
+		}
+
+		//if any children return true, this should return true
+		bool OneOfTheChildenSucceeded = false;
+		bool ChildSuccess = false;
+		//Loop over children
+		foreach (GameObject child in ConnectedList)
+		{
+			ChildSuccess = CheckConnectedness(VisitedDict, child, GoalObject);
+
+			if (ChildSuccess)
+			{
+				OneOfTheChildenSucceeded = true;
+				break;
+			}
+		}
+
+		return OneOfTheChildenSucceeded;
+	}
+
 	public List<GameObject> GetChildObjectsWithTag(Transform Parent, string Tag)
 	{
 		List<GameObject> res = new List<GameObject>();
