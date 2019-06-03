@@ -85,7 +85,6 @@ public class EnemyController : MonoBehaviour
 
 		if (Points > MinPointsSaved)
 		{
-
 			//int Choice = Random.Range(1, 3);
 			int Choice = 1;
 
@@ -96,19 +95,22 @@ public class EnemyController : MonoBehaviour
 				{
 					BuildBridgeDecide();
 				}
+				else
+				{
+					Attack();
+				}
 			}
 			else if (Choice == 2)
 			{
 				//try to attack, if I have no attackers make one if I have enough money, if I don't have a viable target then build if I can, if I can't do nothing.
+				Attack();
 			}
 			else
 			{
 				//build attackers if I have enough money, if I don't try to attack, if I can't attack do nothing.
+				CreateAttacker();
 			}
-
-			
 		}
-		
 	}
 
 	public void BuildBridgeDecide()
@@ -577,6 +579,31 @@ public class EnemyController : MonoBehaviour
 				AttackableNodes.Remove(node);
 			}
 		}
+	}
+
+	public void Attack()
+	{
+
+	}
+
+	public void CreateAttacker()
+	{
+
+	}
+
+	public List<GameObject> GetAttackers()
+	{
+		List<GameObject> attackers = new List<GameObject>();
+
+		foreach (GameObject atk in GameObject.FindGameObjectsWithTag("Attacker"))
+		{
+			if (atk.GetComponent<AttackerScript>().GetOwner() == OwnerID)
+			{
+				//attackers.add(atk);
+			}
+		}
+
+		return attackers;
 	}
 
 	public GameObject GetNodeIOwnClosestToPoint(Vector3 point)
