@@ -32,6 +32,7 @@ public class HUDController : MonoBehaviour
 				if (int.Parse(pointsText) > lastPoints)
 				{
 					FindObjectOfType<AudioManager>().Play("Gain Point");
+					lastPoints = int.Parse(pointsText);
 				}
 
 				mesh.text = pointsText;
