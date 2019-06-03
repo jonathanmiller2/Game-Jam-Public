@@ -45,7 +45,7 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
 
     void Update()
     {
-        transform.localScale = new Vector3(Radius, Radius, 1f);
+		transform.localScale = new Vector3(Radius, Radius, 1f);
 
         float Dist = 1000f;
 

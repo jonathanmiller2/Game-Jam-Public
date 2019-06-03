@@ -9,7 +9,7 @@ public class EnemyController : MonoBehaviour
 
 	public int OwnerID = 2;
 	public float Points = 0f;
-	public Color color = new Color();
+	public Color color = new Color(0f, 0f, 0f, 1f);
 
 	public const int PlayerID = 1;
 
@@ -32,9 +32,8 @@ public class EnemyController : MonoBehaviour
 	private float nextUpdate = 0f;
 	private const float timeBetweenUpdates = 1f;
 
-	// Start is called before the first frame update
-	void Start()
-    {
+	private void Awake()
+	{
 		//generate color
 		float r = Random.Range(0.3f, 1f);
 		float g = Random.Range(0f, r);
@@ -42,19 +41,16 @@ public class EnemyController : MonoBehaviour
 		float a = 1f;
 
 		color = new Color(r, g, b, a);
+	}
 
+	void Start()
+    {
 		//generate personality
 		Personality[0] = Random.Range(0f, 1f);
 		Personality[1] = Random.Range(0f, 1f);
 
 		//set build style
 		BuildStyle = GenerateBuildStyle(Personality[0], Personality[1]);
-		//TEMP, PLEASE DELETE, YOU MORON!
-		//for (int i = 0; i < 3; i++)
-		//{
-		//	BuildStyle[i] = "AggressiveAction";
-		//}
-
 	}
 
 	// Update is called once per frame
