@@ -17,10 +17,7 @@ public class AttackerScript : MonoBehaviour
     private float MoveWait = .5f;
 
     private int Health = 3;
-    
-
-    
-
+	
     private float HealthTickTimer = 0;
     private float SecondsPerHealthTick = 3;
     private float HealthTickRadius = 1f;
@@ -76,7 +73,8 @@ public class AttackerScript : MonoBehaviour
 
         if(Health <= 0)
         {
-            Destroy(gameObject);
+			FindObjectOfType<AudioManager>().Play("Attacker Death");
+			Destroy(gameObject);
         }
     }
 
