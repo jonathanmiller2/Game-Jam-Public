@@ -144,56 +144,80 @@ public class AttackerScript : MonoBehaviour
 		RefreshAppearance();
 	}
 
-	public void RefreshAppearance()
-	{
-		foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
-		{
-			//Clamp as we only have one enemy material
-			if (Owner > 2)
-			{
-				renderer.material = AttackerMaterials[2];
-			}
-			else
-			{
-				renderer.material = AttackerMaterials[Owner];
-			}
-		}
+    public void RefreshAppearance()
+    {
+        foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
+        {
+            //Clamp as we only have one enemy material
+            if (Owner > 2)
+            {
+                renderer.material = AttackerMaterials[2];
+            }
+            else
+            {
+                renderer.material = AttackerMaterials[Owner];
+            }
+        }
 
-		//Enemies have different colors
-		if (Owner > 1)
-		{
-			foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
-			{
-				if (enemy.GetComponent<EnemyController>().OwnerID == Owner)
-				{
-					Color newColor = enemy.GetComponent<EnemyController>().color;
+        foreach (TrailRenderer renderer in transform.GetComponentsInChildren<TrailRenderer>())
+        {
+            //Clamp as we only have one enemy material
+            if (Owner > 2)
+            {
+                renderer.material = AttackerMaterials[2];
+            }
+            else
+            {
+                renderer.material = AttackerMaterials[Owner];
+            }
+        }
 
-					foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
-					{
-						renderer.material.SetColor("Color_6EC6B721", newColor);
-					}
+        //Enemies have different colors
 
-					foreach (ParticleSystemRenderer particleSystem in gameObject.GetComponentsInChildren<ParticleSystemRenderer>())
-					{
-						//material 2 is enemy material
-						particleSystem.material = AttackerMaterials[2];
-						particleSystem.material.SetColor("Color_6EC6B721", newColor);
-					}
+        if (Owner > 1)
+        {
+            foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+            {
+                if (enemy.GetComponent<EnemyController>().OwnerID == Owner)
+                {
+                    Color newColor = enemy.GetComponent<EnemyController>().color;
 
-				}
-			}
-		}
-		else if (Owner == 1)
-		{
-			foreach (ParticleSystemRenderer particleSystem in gameObject.GetComponentsInChildren<ParticleSystemRenderer>())
-			{
-				//can be owner or nuetral material
-				particleSystem.material = AttackerMaterials[Owner];
-			}
-		}
-	}
+                    foreach (TrailRenderer renderer in transform.GetComponentsInChildren<TrailRenderer>())
+                    {
+                        renderer.material.SetColor("Color_6EC6B721", newColor * 3);
+                    }
 
-	private List<GameObject> Dijkstra(GameObject ActualTarget)
+                    foreach (SpriteRenderer renderer in transform.GetComponentsInChildren<SpriteRenderer>())
+                    {
+                        renderer.material.SetColor("Color_6EC6B721", newColor * 3);
+                    }
+
+                    foreach (ParticleSystemRenderer particleSystem in gameObject.GetComponentsInChildren<ParticleSystemRenderer>())
+                    {
+                        //material 2 is enemy material
+                        particleSystem.material = AttackerMaterials[2];
+                        particleSystem.material.SetColor("Color_6EC6B721", newColor * 3);
+                    }
+
+                }
+            }
+        }
+        else if (Owner == 1)
+        {
+            foreach (TrailRenderer renderer in transform.GetComponentsInChildren<TrailRenderer>())
+            {
+                renderer.material = AttackerMaterials[Owner];
+            }
+
+            foreach (ParticleSystemRenderer particleSystem in gameObject.GetComponentsInChildren<ParticleSystemRenderer>())
+            {
+                //can be owner or nuetral material
+                particleSystem.material = AttackerMaterials[Owner];
+            }
+        }
+    }
+
+    private List<GameObject> Dijkstra(GameObject ActualTarget)
     {
         Dictionary<GameObject, float>  UnvisitedVertices = new Dictionary<GameObject, float>();
         Dictionary<GameObject, GameObject> prev = new Dictionary<GameObject, GameObject>();

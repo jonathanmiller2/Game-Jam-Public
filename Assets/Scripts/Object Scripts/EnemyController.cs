@@ -36,7 +36,7 @@ public class EnemyController : MonoBehaviour
 	private void Awake()
 	{
 		//generate color
-		float r = Random.Range(0.3f, 1f);
+		float r = Random.Range(0.4f, .7f);
 		float g = Random.Range(0f, r);
 		float b = Random.Range(0f, r);
 		float a = 1f;

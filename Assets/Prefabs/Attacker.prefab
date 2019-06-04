@@ -461,9 +461,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Owner: 1
   AttackerMaterials:
+  - {fileID: 2100000, guid: efa014d5b0e988e40b15d6b8ab89fa3a, type: 2}
   - {fileID: 2100000, guid: cbad57a63ce0fc2418608156c58793fe, type: 2}
-  - {fileID: 2100000, guid: cbad57a63ce0fc2418608156c58793fe, type: 2}
-  - {fileID: 2100000, guid: cbad57a63ce0fc2418608156c58793fe, type: 2}
+  - {fileID: 2100000, guid: bc77eb8fcd223db49928cff961e333fc, type: 2}
 --- !u!58 &3384040704040540712
 CircleCollider2D:
   m_ObjectHideFlags: 0
