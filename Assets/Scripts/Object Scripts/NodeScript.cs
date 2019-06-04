@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class NodeScript : MonoBehaviour, IPointerClickHandler
 {
     [Range(0.001f, 1f)]
-    public float Radius = .13f;
+    public float Radius = 0.13f;
     public int Owner = 0;
 
     //Colors
@@ -32,6 +32,7 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
     private bool tie = true;
 
     private int AttackerPointCost = 5;
+	private float SizeVariance = 0.05f;
 
     // Start is called before the first frame update
     void Start()
@@ -39,6 +40,8 @@ public class NodeScript : MonoBehaviour, IPointerClickHandler
 
         GameObject InputControllerManagerObject = GameObject.Find("InputController");
         inputControllerScript = InputControllerManagerObject.GetComponent<InputControllerScript>();
+
+		Radius = Radius + Random.Range(-SizeVariance, SizeVariance);
 
 		RefreshAppearance();
 	}
