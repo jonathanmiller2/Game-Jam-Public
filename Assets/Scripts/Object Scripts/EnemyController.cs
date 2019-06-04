@@ -608,13 +608,22 @@ public class EnemyController : MonoBehaviour
 	{
 		List<GameObject> attackers = GetAttackers();
 
-		foreach (GameObject attacker in attackers)
+		if (attackers.Count > 0)
 		{
-			if (attacker.GetComponent<AttackerScript>().IsMoving())
+			List<GameObject> newList = attackers;
+
+			foreach (GameObject attacker in attackers)
 			{
-				attackers.Remove(attacker);
+				if (attacker.GetComponent<AttackerScript>().IsMoving())
+				{
+					newList.Remove(attacker);
+				}
 			}
+
+			attackers = newList;
+
 		}
+
 
 		if (attackers.Count > 0)
 		{
