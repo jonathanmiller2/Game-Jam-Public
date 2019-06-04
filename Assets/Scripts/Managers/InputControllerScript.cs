@@ -89,6 +89,8 @@ public class InputControllerScript : MonoBehaviour
 			}
 			else if(WhatIsClicked == "GameObject")
 			{
+				Debug.Log("Clicked on" + ClickedGameObject.name);
+
 				if(SelectedObject && SelectedObject.tag == "Attacker" && SelectedObject.GetComponent<AttackerScript>().GetOwner() == 1)
 				{
 					if(ClickedGameObject.tag == "Attacker" && ClickedGameObject.GetComponent<AttackerScript>().GetOwner() == 1)
@@ -282,7 +284,6 @@ public class InputControllerScript : MonoBehaviour
 	{
 		if(inp != null)
 		{
-			Debug.Log("Clearing");
 			foreach (SpriteRenderer renderer in inp.transform.GetComponentsInChildren<SpriteRenderer>())
         	{
         	    renderer.material.SetFloat("Vector1_63F18585", 0f);
