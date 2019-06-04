@@ -11,7 +11,7 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
 
     public Material[] BridgeMaterials;
 
-    private int Health = 3;
+    private float Health = 3;
 	
     private InputControllerScript inputControllerScript;
     private GameObject SelectedObject;
@@ -183,7 +183,7 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
 		}
 	}
 
-    public void TakeHealth(int TakenHealth)
+    public void TakeHealth(float TakenHealth)
     {
         Health -= TakenHealth;
         foreach (SpriteRenderer renderer in gameObject.transform.GetComponentsInChildren<SpriteRenderer>())
@@ -197,7 +197,7 @@ public class BridgeScript : MonoBehaviour, IPointerClickHandler
 
     }
 
-    public void GiveHealth(int TakenHealth)
+    public void GiveHealth(float TakenHealth)
     {
         Health += TakenHealth;
         if(Health > 3)

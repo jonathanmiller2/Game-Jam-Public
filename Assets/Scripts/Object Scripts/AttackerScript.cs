@@ -19,7 +19,9 @@ public class AttackerScript : MonoBehaviour
 
 	private float MoveWait = .5f;
 
-    private int Health = 3;
+    private float Health = 3;
+
+    private bool Moving = false;
 	
     private float HealthTickTimer = 0;
     private float SecondsPerHealthTick = 3;
@@ -49,7 +51,7 @@ public class AttackerScript : MonoBehaviour
                 {
                     if(bridge.GetComponent<BridgeScript>().GetOwner() == Owner)
                     {
-                        bridge.GetComponent<BridgeScript>().GiveHealth(1);
+                        bridge.GetComponent<BridgeScript>().GiveHealth(.5f);
                     }
                     else
                     {
@@ -85,6 +87,7 @@ public class AttackerScript : MonoBehaviour
 
     public void SetTarget(Vector3 newTarget)
     {
+        Moving = false;
         StopAllCoroutines();
     	DesiredTarget = newTarget;
 
@@ -395,7 +398,7 @@ public class AttackerScript : MonoBehaviour
 
     IEnumerator MoveToTarget(List<GameObject> ShortestPath)
     {
-
+        Moving = true;
         // Debug.Log(ShortestPath.Count);
         foreach(GameObject GO in ShortestPath)
         {
@@ -411,6 +414,13 @@ public class AttackerScript : MonoBehaviour
                 transform.position = GO.transform.position;
             }
         }
+
+        Moving = false;
+    }
+
+    public bool IsMoving()
+    {
+        return Moving;
     }
 
     //(single)
