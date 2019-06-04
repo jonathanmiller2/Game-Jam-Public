@@ -46,7 +46,7 @@ public class InputControllerScript : MonoBehaviour
 	}
 
     void Update()
-    {
+	{
     	/*
 		//Debug target handler (brown square)
 		if(SelectedObject)
@@ -59,6 +59,17 @@ public class InputControllerScript : MonoBehaviour
 		}
 		*/
 
+		if (Input.GetKeyDown(KeyCode.E))
+		{
+			foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+			{
+				enemy.GetComponent<EnemyController>().Points += 100;
+			}
+		}
+		else if (Input.GetKeyDown(KeyCode.P))
+		{
+			Points += 100;
+		}
 
 		//Get points
 		AquirePoints();
