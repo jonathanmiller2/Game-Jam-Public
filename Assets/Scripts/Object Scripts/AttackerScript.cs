@@ -27,9 +27,12 @@ public class AttackerScript : MonoBehaviour
     private float SecondsPerHealthTick = 3;
     private float HealthTickRadius = 1f;
 
+    private InputControllerScript inputControllerScript;
+
     // Start is called before the first frame update
     void Start()
     {
+    	GameObject InputControllerManagerObject = GameObject.Find("InputController");
 		RefreshAppearance();
 	}
 
@@ -131,6 +134,8 @@ public class AttackerScript : MonoBehaviour
             IEnumerator coro = MoveToTarget(Path);
             StartCoroutine(coro);
         }
+
+        inputControllerScript.SetSelectedObject(null);
     }
 
     public int GetOwner()
@@ -215,6 +220,8 @@ public class AttackerScript : MonoBehaviour
                 particleSystem.material = AttackerMaterials[Owner];
             }
         }
+
+
     }
 
     private List<GameObject> Dijkstra(GameObject ActualTarget)
