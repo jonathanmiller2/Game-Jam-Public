@@ -14,7 +14,7 @@ public class AttackerScript : MonoBehaviour
 	private Vector3 DesiredTarget;
 	//GameObject ActualTarget;
 
-    const float NodeConnectedRadius = 1f;
+    const float NodeConnectedRadius = 1.5f;
     const float BridgeConnectedRadius = 1f;
 
 	private float MoveWait = .5f;
