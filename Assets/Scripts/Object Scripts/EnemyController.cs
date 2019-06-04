@@ -592,11 +592,14 @@ public class EnemyController : MonoBehaviour
 
 	public void UpdateAttackableNodes()
 	{
-		foreach (GameObject node in AttackableNodes)
+		if (AttackableNodes.Count != 0)
 		{
-			if (node.GetComponent<NodeScript>().GetOwner() == OwnerID)
+			foreach (GameObject node in AttackableNodes)
 			{
-				AttackableNodes.Remove(node);
+				if (node.GetComponent<NodeScript>().GetOwner() == OwnerID)
+				{
+					AttackableNodes.Remove(node);
+				}
 			}
 		}
 	}
