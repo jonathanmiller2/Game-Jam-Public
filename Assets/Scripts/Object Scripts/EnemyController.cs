@@ -596,15 +596,13 @@ public class EnemyController : MonoBehaviour
 		{
 			List<GameObject> newList = AttackableNodes;
 
-			foreach (GameObject node in AttackableNodes)
+			foreach (GameObject node in newList)
 			{
 				if (node.GetComponent<NodeScript>().GetOwner() == OwnerID)
 				{
-					newList.Remove(node);
+					AttackableNodes.Remove(node);
 				}
 			}
-
-			AttackableNodes = newList;
 		}
 	}
 
@@ -616,16 +614,13 @@ public class EnemyController : MonoBehaviour
 		{
 			List<GameObject> newList = attackers;
 
-			foreach (GameObject attacker in attackers)
+			foreach (GameObject attacker in newList)
 			{
 				if (attacker.GetComponent<AttackerScript>().IsMoving())
 				{
-					newList.Remove(attacker);
+					attackers.Remove(attacker);
 				}
 			}
-
-			attackers = newList;
-
 		}
 
 
