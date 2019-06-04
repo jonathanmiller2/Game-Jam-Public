@@ -22,7 +22,7 @@ public class InputControllerScript : MonoBehaviour
 
 	private float Points = 0f;
 	private const int BridgePieceCost = 1;
-	private const float PointsPerRadius = 0.02f;
+	private const float PointsPerRadius = 0.04f;
 
 	void Start()
 	{

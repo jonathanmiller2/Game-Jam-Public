@@ -13553,6 +13553,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1259742679}
   - component: {fileID: 1259742680}
+  - component: {fileID: 1259742681}
   m_Layer: 0
   m_Name: Blobs and Bridges
   m_TagString: Untagged
@@ -13569,7 +13570,7 @@ Transform:
   m_GameObject: {fileID: 1259742678}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 104, z: 0}
-  m_LocalScale: {x: 18.498, y: 18.498, z: 18.498}
+  m_LocalScale: {x: 0, y: 0, z: 18.498}
   m_Children: []
   m_Father: {fileID: 1258840169}
   m_RootOrder: 0
@@ -13622,6 +13623,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1259742681
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259742678}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c7fe50e8e91ba1140a308ee7b61ae56e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1261473810
 GameObject:
   m_ObjectHideFlags: 0
@@ -13962,7 +13982,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1292104440}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 51, z: 0}
+  m_LocalPosition: {x: 0, y: 113.61, z: 0}
   m_LocalScale: {x: 2.0253155, y: 2.0253155, z: 2.0253155}
   m_Children:
   - {fileID: 196900754}
@@ -21610,7 +21630,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: d4c0ba33fd5fc5d41a398b946ad011d6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
