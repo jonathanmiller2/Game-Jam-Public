@@ -25,8 +25,8 @@ public class EnemyController : MonoBehaviour
 
 	private const int BridgePieceCost = 1;
 	private const int AttackerCost = 5;
-	private const int MaxAttackers = 5;
-	private const float PointsPerRadius = 0.02f;
+	private const int MaxAttackers = 3;
+	private const float PointsPerRadius = 0.03f;
 	private const float BridgeOriginDistance = 0.25f;
 	private const float minimumPlacementDistance = 0.15f;
 
@@ -592,15 +592,19 @@ public class EnemyController : MonoBehaviour
 
 	public void UpdateAttackableNodes()
 	{
-		if (AttackableNodes.Count != 0)
+		if (AttackableNodes.Count > 0)
 		{
+			List<GameObject> newList = AttackableNodes;
+
 			foreach (GameObject node in AttackableNodes)
 			{
 				if (node.GetComponent<NodeScript>().GetOwner() == OwnerID)
 				{
-					AttackableNodes.Remove(node);
+					newList.Remove(node);
 				}
 			}
+
+			AttackableNodes = newList;
 		}
 	}
 

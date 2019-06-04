@@ -325,9 +325,10 @@ public class AttackerScript : MonoBehaviour
         //Reading path
         List<GameObject> ShortestPath = new List<GameObject>();
         GameObject u = ActualTarget;
+
+        
         if(prev.ContainsKey(u) || u == InitialObject)
         {
-
             while(true)
             {
                 ShortestPath.Insert(0, u);
@@ -338,9 +339,9 @@ public class AttackerScript : MonoBehaviour
                 else
                 {
                     break;
-                }
-                
+                }       
             }
+            ShortestPath.Add(ActualTarget);
             return ShortestPath;
         }
         else
