@@ -174,7 +174,7 @@ public class InputControllerScript : MonoBehaviour
 		}
 
 		//If we're in build mode and there is no ghost make the ghost show up
-		if (BuildState && !GameObject.FindWithTag("GhostBridgePiece"))
+		if (BuildState && SelectedObject && !GameObject.FindWithTag("GhostBridgePiece"))
 		{
 			if (SelectedObject.tag == "Node")
 			{
