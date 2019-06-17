@@ -5,15 +5,16 @@ using UnityEngine;
 public class WinLossChecker : MonoBehaviour
 {
     private float SecondsPerCheck = 5f;
-    private float CheckTimer = 0;
+	private float LastCheck = 0f;
 
     // Update is called once per frame
     void Update()
     {
-    	if(CheckTimer > SecondsPerCheck)
+    	if(Time.time > LastCheck + SecondsPerCheck)
     	{
-    		CheckTimer = 0;
-    		
+			LastCheck = Time.time;
+			Debug.Log(Time.time + " Checking Win Condition...");
+
             bool WeOwnAllNodes = true;
             bool WeOwnNoNodes = true;
 
@@ -37,12 +38,8 @@ public class WinLossChecker : MonoBehaviour
             }
             else if(WeOwnNoNodes)
             {
-                GameObject.Find("Lose Transition").GetComponent<Animator>().SetTrigger("Lose");   
+                GameObject.Find("Lose Transition").GetComponent<Animator>().SetTrigger("Lose");
             }
-    	}
-    	else
-    	{
-    		CheckTimer += Time.deltaTime;
     	}
     }
 }
